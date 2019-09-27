@@ -1,0 +1,14 @@
+
+@font-face {
+    font-family: 'ArcadeClassic';
+    src: url('ARCADECLASSIC.TTF');
+}
+
+.label {
+    -fx-font-family: 'ARCADECLASSIC';
+    -fx-font-size: 50;
+}
+
+.button .text {
+    -fx-font-family: 'ARCADECLASSIC';
+}
