@@ -1,4 +1,6 @@
+// Imports
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,45 +50,48 @@ import javafx.stage.WindowEvent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.effect.ColorAdjust;
 
+
 import java.util.Optional;
 
 
 
-
+// The view for the application. This contains main.
 public class View extends Application{
 
-	// Set up controller
-	Controller controller = new Controller();
-
-	// used to help the song play
-	MediaPlayer playSong; 
-
-	// These will tell us which menu we're on. These are used to switch from menu to menu.
-	// Every time we create a new menu, make a new MenuClass object. It can be called whatever you please.
-	// I'll try to explain this better in later comments.
-	MenuClass onRoot = new MenuClass(); // title screen
-    MenuClass onMainMenu = new MenuClass(); // main menu
-	MenuClass onMenu2 = new MenuClass(); // choose name screen
-	MenuClass onMenu3 = new MenuClass(); // choose job screen
-	MenuClass onMenu4 = new MenuClass(); // chooose pet screen
-	MenuClass onMenu5 = new MenuClass(); // choose adult companion screen
-	MenuClass onMenu6 = new MenuClass(); // choose child 1 screen
-	MenuClass onMenu7 = new MenuClass(); // choose child 2 screen
-    MenuClass onMenu8 = new MenuClass(); // choose child 3 screen
-    MenuClass onMenu9 = new MenuClass(); // choose time of year screen
-    MenuClass onMenu10 = new MenuClass(); // Money & pre-shop screen
-    MenuClass onMenu11 = new MenuClass(); // Buy Oxen screen
-    MenuClass onMenu12 = new MenuClass(); // Buy Food screen
-    MenuClass onMenu13 = new MenuClass(); // Buy Clothing screen
-    MenuClass onMenu14 = new MenuClass(); // Buy Wagon Wheels screen
-    MenuClass onMenu15 = new MenuClass(); // Buy Wagon Axles screen
-    MenuClass onTravelingMenu = new MenuClass(); // Traveling menu
-    MenuClass onSuppliesMenu = new MenuClass(); // check supplies
-    MenuClass onRationsMenu = new MenuClass(); // set rations
-    MenuClass onMap = new MenuClass();				// map menu class
-    MenuClass onChangePaceMenu = new MenuClass(); // set pace
-    MenuClass onTubacTransitionMenu = new MenuClass(); // tubac screen
-
+	// Various miscellaneous variables such as the controller, media player, etc.
+	Controller controller = new Controller(); 						// Set up controller
+	MediaPlayer playSong; 											// used to help the song play
+	static List<MenuClass> menuList = new ArrayList<MenuClass>(); 	// Add all menu booleans to this list
+    File save_game_file = new File("saved_game.dat");		    	// For saving
+	Person mainCharacter;											// Put all of the various people/inventory objects here
+	
+	// This is what the default text color is. This is here so if you want to change the text color
+	// you can just change this one variable instead of changing every line of code that uses text
+	static Color defaultColor = Color.WHITE;
+	
+	// The screens
+	MenuClass onRoot = new MenuClass(); 							// title screen
+    MenuClass onMainMenu = new MenuClass(); 						// main menu
+	MenuClass onMenu2 = new MenuClass(); 							// choose name screen
+	MenuClass onMenu3 = new MenuClass(); 							// choose job screen
+	MenuClass onMenu4 = new MenuClass(); 							// choose pet screen
+	MenuClass onMenu5 = new MenuClass(); 							// choose adult companion screen
+	MenuClass onMenu6 = new MenuClass(); 							// choose child 1 screen
+	MenuClass onMenu7 = new MenuClass(); 							// choose child 2 screen
+    MenuClass onMenu8 = new MenuClass(); 							// choose child 3 screen
+    MenuClass onMenu9 = new MenuClass(); 							// choose time of year screen
+    MenuClass onMenu10 = new MenuClass(); 							// Money & pre-shop screen
+    MenuClass onMenu11 = new MenuClass(); 							// Buy Oxen screen
+    MenuClass onMenu12 = new MenuClass(); 							// Buy Food screen
+    MenuClass onMenu13 = new MenuClass(); 							// Buy Clothing screen
+    MenuClass onMenu14 = new MenuClass(); 							// Buy Wagon Wheels screen
+    MenuClass onMenu15 = new MenuClass(); 							// Buy Wagon Axles screen
+    MenuClass onTravelingMenu = new MenuClass(); 					// Traveling menu
+    MenuClass onSuppliesMenu = new MenuClass(); 					// check supplies
+    MenuClass onRationsMenu = new MenuClass(); 						// set rations
+    MenuClass onMap = new MenuClass();								// map menu class
+    MenuClass onChangePaceMenu = new MenuClass(); 					// set pace
+    MenuClass onTubacTransitionMenu = new MenuClass(); 				// tubac screen
     MenuClass onTucsonTransitionMenu = new MenuClass();
     MenuClass onPicachoTransitionMenu = new MenuClass();
     MenuClass onPhoenixTransitionMenu = new MenuClass();
@@ -94,43 +99,26 @@ public class View extends Application{
     MenuClass onFlagstaffTransitionMenu = new MenuClass();
     MenuClass onGrandCanyonTransitionMenu = new MenuClass();
     MenuClass onKanabTransitionMenu = new MenuClass();
-
-    MenuClass onTubacShopMenu = new MenuClass(); // tubac shop
+    MenuClass onTubacShopMenu = new MenuClass(); 					// tubac shop
     MenuClass onTucsonShopMenu = new MenuClass();
     MenuClass onPicachoShopMenu = new MenuClass();
     MenuClass onPhoenixShopMenu = new MenuClass();
     MenuClass onPrescottShopMenu = new MenuClass();
     MenuClass onFlagstaffShopMenu = new MenuClass();
     MenuClass onGrandCanyonShopMenu = new MenuClass();
-    MenuClass onSavedGameMenu = new MenuClass(); // save game
-
+    MenuClass onSavedGameMenu = new MenuClass(); 					// save game
     MenuClass onCurrStore = new MenuClass();
-
-
-    MenuClass onAllShoppingMenu = new MenuClass(); // the menu used for all shopping in towns
-
-
-    MenuClass onHuntingMenu = new MenuClass(); // hunting game
-    MenuClass onHuntingExplanationMenu = new MenuClass(); // hunting game explanation
-
-
-    MenuClass onWhileTravelingMenu = new MenuClass(); // Menu to size up situation while traveling. Different from at landmark
-
-	MenuClass onBuyingExplanation = new MenuClass(); // buying explanation
-	MenuClass onStartShop = new MenuClass(); // first shop
-
-	MenuClass onJobExplanationScreen = new MenuClass(); // Job explanation screen
-	
+    MenuClass onAllShoppingMenu = new MenuClass(); 					// the menu used for all shopping in towns
+    MenuClass onHuntingMenu = new MenuClass(); 						// hunting game
+    MenuClass onHuntingExplanationMenu = new MenuClass(); 			// hunting game explanation
+    MenuClass onWhileTravelingMenu = new MenuClass(); 				// Menu to size up situation while traveling. Different from at landmark
+	MenuClass onBuyingExplanation = new MenuClass(); 				// buying explanation
+	MenuClass onStartShop = new MenuClass(); 						// first shop
+	MenuClass onJobExplanationScreen = new MenuClass(); 			// Job explanation screen
 	MenuClass onDeathScreenMenu = new MenuClass();
 	MenuClass onStarvationMenu = new MenuClass();
 	MenuClass onThirstMenu = new MenuClass();
-	
 	MenuClass onGameOverMenu = new MenuClass();
-
-	// Add all menu booleans to this list
-	static List<MenuClass> menuList = new ArrayList<MenuClass>();
-
-
 
 	// Holds various strings used for storage and menu printing.
 	String name = "";
@@ -151,13 +139,11 @@ public class View extends Application{
     String whileTravelingChoice = "";
     String changePace = "";
     String changeRations = "";
-    
     String allShoppingChoice = "";
     String allShoppingChoiceName = "";
     String lastVisitedTown = "";
     String gameMode = "";
     String displayedDead = "";
-
     String tubacShopChoice = "";
     String tucsonShopChoice = "";
     String picachoShopChoice = "";
@@ -165,8 +151,6 @@ public class View extends Application{
     String prescottShopChoice = "";
     String flagstaffShopChoice = "";
     String grandCanyonShopChoice = "";
-
-
 
 	// Various variables for menu printing to work
 	TextClass nameText = new TextClass();
@@ -191,25 +175,12 @@ public class View extends Application{
     TextClass allShoppingChoiceText = new TextClass();
     TextClass allShoppingChoiceNameText = new TextClass();
     TextClass gameModeText = new TextClass();
-
     TextClass tucsonShopChoiceText = new TextClass();
     TextClass picachoShopChoiceText = new TextClass();
     TextClass phoenixShopChoiceText = new TextClass();
     TextClass prescottShopChoiceText = new TextClass();
     TextClass flagstaffShopChoiceText = new TextClass();
     TextClass grandCanyonShopChoiceText = new TextClass();
-
-    // For saving
-    File save_game_file = new File("saved_game.dat");
-
-
-	// Put all of the various people/inventory objects here
-	Person mainCharacter;
-
-	// This is what the default text color is. This is here so if you want to change the text color
-	// you can just change this one variable instead of changing every line of code that uses text
-	static Color defaultColor = Color.WHITE;
-
 
 	// make stores for each town
 	Store currStore = new Store();
@@ -240,10 +211,9 @@ public class View extends Application{
     StackPane menu14 = new StackPane();
     StackPane menu15 = new StackPane();
     StackPane suppliesMenu = new StackPane();
-    StackPane mapScreen = new StackPane();		// map StackPane
+    StackPane mapScreen = new StackPane();								// map StackPane
     StackPane tubacTransitionMenu = new StackPane();
     StackPane tubacShopMenu = new StackPane();
-
     StackPane tucsonTransitionMenu = new StackPane();
     StackPane picachoTransitionMenu = new StackPane();
     StackPane phoenixTransitionMenu = new StackPane();
@@ -251,22 +221,17 @@ public class View extends Application{
     StackPane flagstaffTransitionMenu = new StackPane();
     StackPane grandCanyonTransitionMenu = new StackPane();
     StackPane kanabTransitionMenu = new StackPane();
-
     StackPane tucsonShopMenu = new StackPane();
     StackPane picachoShopMenu = new StackPane();
     StackPane phoenixShopMenu = new StackPane();
     StackPane prescottShopMenu = new StackPane();
     StackPane flagstaffShopMenu = new StackPane();
     StackPane grandCanyonShopMenu = new StackPane();
-
     StackPane travelingMenu = new StackPane();
 	StackPane jobExplanationScreen = new StackPane();
-
 	StackPane rationsMenu = new StackPane();
-
 	StackPane buyingExplanation = new StackPane();
 	StackPane startShop = new StackPane();
-
 	StackPane whileTravelingMenu = new StackPane();
 	StackPane changePaceMenu = new StackPane();
     StackPane savedGameMenu = new StackPane();
@@ -278,14 +243,14 @@ public class View extends Application{
     StackPane starvationMenu = new StackPane();
     StackPane thirstMenu = new StackPane();
     
+    
+    
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
 
 		// Setup canvas and gc to draw images.
 		Canvas canvas = new Canvas(1000,500);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-
 
 		// Tells the switchMenu() method what menu we're on
         //switchMenus(root);
@@ -347,8 +312,6 @@ public class View extends Application{
         buildMenu(root, starvationMenu, Color.BLACK);
         buildMenu(root, thirstMenu, Color.BLACK);
 
-
-
 		// Add canvas to the stackpane.
 		mainMenu.getChildren().add(canvas);
 		Text introText = makeText("Press Space To Continue!", Color.BLACK, mainMenu, Pos.CENTER, 0, 0); // make text
@@ -363,16 +326,13 @@ public class View extends Application{
 		// Load game
         makeText("Press Enter to Load Previous Save",  Color.BLACK, mainMenu, Pos.CENTER, 0, 35);
 
-
 		// Make the image
-		//		change preserverRatio to true?
-		//Image trail = new Image("https://www.history.com/.image/ar_16:9%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cg_faces:center%2Cq_auto:good%2Cw_768/MTU3OTIzNTc4NTMyOTMxMjE4/9-things-you-may-not-know-about-the-oregon-trails-featured-photo.jpg", 1000, 500, false, false);
+		// change preserverRatio to true?
+		// Image trail = new Image("https://www.history.com/.image/ar_16:9%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cg_faces:center%2Cq_auto:good%2Cw_768/MTU3OTIzNTc4NTMyOTMxMjE4/9-things-you-may-not-know-about-the-oregon-trails-featured-photo.jpg", 1000, 500, false, false);
         Image trail = new Image(new File("images/oregonTrailBackground.jpg").toURI().toString(), 1000, 500, false, false);
-
 
 		// Draw the image and the text.
 		gc.drawImage(trail, 0, 0);
-
 
 		// Setup scene and show it.
 		Scene scene = new Scene(root);
@@ -382,8 +342,9 @@ public class View extends Application{
 		//primaryStage.setFullScreen(true); // If we want the stage to be fullscreen
 		primaryStage.show();
 
+		// Set up song and play it.
 		try {
-			// Set up song and play it.
+			// Default uses mp3
 			Media titleSong = new Media(new File("titletheme.mp3").toURI().toString());
 			playSong = new MediaPlayer(titleSong);
 			playSong.setCycleCount(MediaPlayer.INDEFINITE);
@@ -392,19 +353,17 @@ public class View extends Application{
 
 		// For Micheal's PC
 		catch (Exception e) {
-			// Set up song and play it.
+			// Use wav if mp3 doesn't work
 			Media titleSong = new Media(new File("titletheme.wav").toURI().toString());
 			playSong = new MediaPlayer(titleSong);
 			playSong.setCycleCount(MediaPlayer.INDEFINITE);
 			playSong.play();
-
 		}
-
 
 		// space
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+			
 		    public void handle(KeyEvent keyEvent) {
-
 		    	// When the user presses space, go FROM MAIN MENU -> MENU 2
 		        if (keyEvent.getCode() == KeyCode.SPACE)  {
                     if(onMainMenu.getTheBoolean()){
@@ -414,25 +373,25 @@ public class View extends Application{
                     }
 
 		        	if (onMainMenu.getTheBoolean()) {
-		        	// Make some intro text
-		        	controller = new Controller();
-		        	Text startText = makeText("On the Arizona Trail you'll travel from the Mexican border to Utah!", defaultColor, menu2, Pos.TOP_CENTER, 0, 0);
-
-
-		        	// Add picture
-		        	putScaledImage("images/thMRQA2QMB.jpg", menu2, Pos.CENTER, 800, 300, 0, 0);
-
-
-		        	// Ask the user for a name. 
-		        	Text askForNameText = makeText("What's your name?", defaultColor, menu2, Pos.CENTER, 0, 200);
-
-		        	//Text askForNameText = makeText("What's your name? Type and then press enter", defaultColor, menu2, Pos.CENTER, 0, 200);
-
-		        	// Have this menu be displayed at the top.
-			    	switchMenus(onMenu2);
-			    	name = "";
-		        	root.getChildren().remove(menu2);
-		        	root.getChildren().add(menu2);
+			        	// Make some intro text
+			        	controller = new Controller();
+			        	Text startText = makeText("On the Arizona Trail you'll travel from the Mexican border to Utah!", defaultColor, menu2, Pos.TOP_CENTER, 0, 0);
+	
+	
+			        	// Add picture
+			        	putScaledImage("images/thMRQA2QMB.jpg", menu2, Pos.CENTER, 800, 300, 0, 0);
+	
+	
+			        	// Ask the user for a name. 
+			        	Text askForNameText = makeText("What's your name?", defaultColor, menu2, Pos.CENTER, 0, 200);
+	
+			        	//Text askForNameText = makeText("What's your name? Type and then press enter", defaultColor, menu2, Pos.CENTER, 0, 200);
+	
+			        	// Have this menu be displayed at the top.
+				    	switchMenus(onMenu2);
+				    	name = "";
+			        	root.getChildren().remove(menu2);
+			        	root.getChildren().add(menu2);
 		        	}
 
 		        	if (onTravelingMenu.getTheBoolean()) {
@@ -471,19 +430,18 @@ public class View extends Application{
 		        			}
 		        		}
 		        		else if (controller.doDayCycle()) {
+		        			
 		        			if (lastVisitedTown.equals("")) {
-		        			switchMenus(onTubacTransitionMenu);
-
-		        			makeText("You have reached Tubac!", defaultColor, tubacTransitionMenu, Pos.TOP_CENTER, 0,0);
-		        			putScaledImage("images/Tubac_Church.jpg", tubacTransitionMenu, Pos.CENTER, 400, 400, 0, -25);
-		        			root.getChildren().remove(tubacTransitionMenu);
-		        			root.getChildren().add(tubacTransitionMenu);
-		        			lastVisitedTown = "Tubac";
+			        			switchMenus(onTubacTransitionMenu);
+			        			makeText("You have reached Tubac!", defaultColor, tubacTransitionMenu, Pos.TOP_CENTER, 0,0);
+			        			putScaledImage("images/Tubac_Church.jpg", tubacTransitionMenu, Pos.CENTER, 400, 400, 0, -25);
+			        			root.getChildren().remove(tubacTransitionMenu);
+			        			root.getChildren().add(tubacTransitionMenu);
+			        			lastVisitedTown = "Tubac";
 		        			}
 
 		        			else if (lastVisitedTown.equals("Tubac")) {
 			        			switchMenus(onTucsonTransitionMenu);
-
 			        			makeText("You have reached Tucson!", defaultColor, tucsonTransitionMenu, Pos.TOP_CENTER, 0,0);
 			        			putScaledImage("images/tucson.jpg", tucsonTransitionMenu, Pos.CENTER, 400, 400, 0, -25);
 			        			root.getChildren().remove(tucsonTransitionMenu);
@@ -493,7 +451,6 @@ public class View extends Application{
 
 		        			else if (lastVisitedTown.equals("Tucson")) {
 			        			switchMenus(onPicachoTransitionMenu);
-
 			        			makeText("You have reached Picacho!", defaultColor, picachoTransitionMenu, Pos.TOP_CENTER, 0,0);
 			        			putScaledImage("images/picacho.jpg", picachoTransitionMenu, Pos.CENTER, 400, 400, 0, -25);
 			        			root.getChildren().remove(picachoTransitionMenu);
@@ -549,7 +506,7 @@ public class View extends Application{
 		        		}
 
 		        		else {
-		        		redrawTravelingMenu(root, travelingMenu);
+			        		redrawTravelingMenu(root, travelingMenu);
 		        		}
 		        	}
 		        }
@@ -558,8 +515,8 @@ public class View extends Application{
 
 		// backspace
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+			
 		    public void handle(KeyEvent keyEvent) {
-
 		    	// When the user presses space, go FROM MAIN MENU -> MENU 2
 		        if (keyEvent.getCode() == KeyCode.BACK_SPACE) {
 		        	if (onSuppliesMenu.getTheBoolean()) {
@@ -756,14 +713,11 @@ public class View extends Application{
 							controller.setMonth(9);
 						}
 
-
 						switchMenus(onBuyingExplanation);
-
 						makeText("Before embarking on the Arizona Trail you should buy some equipment.", defaultColor, buyingExplanation, Pos.CENTER, 0, 0);
 						makeText("You have  " + controller.getMoney() + " dollars  but you don't have to spend it all here.", defaultColor, buyingExplanation, Pos.CENTER, 0, 50);
 						makeText("Press Enter to Continue", defaultColor, buyingExplanation, Pos.BOTTOM_CENTER, 0, 0);
 						putScaledImage("images/saloon.png", buyingExplanation, Pos.TOP_CENTER, 700, 200, 0, 0);
-
 						root.getChildren().remove(buyingExplanation);
 						root.getChildren().add(buyingExplanation);
 
@@ -772,12 +726,10 @@ public class View extends Application{
 					// BUYINGEXPLANATION -> STARTSHOP TRANSITION
 					else if (onBuyingExplanation.getTheBoolean()) {
 						switchMenus(onStartShop);
-
 						makeText("So, you're going on the Arizona Trail. You've come to the right place!", defaultColor, startShop, Pos.TOP_CENTER, 0, 0);
 						putScaledImage("images/merchant2.png", startShop, Pos.CENTER_LEFT, 300, 600, 0, 0);
 						makeText("You'll want bison, clothes, food, ammo, and spare parts.", defaultColor, startShop, Pos.CENTER_RIGHT, -50, -100);
 						makeText("I've got great prices, pardner, so make sure you spend a ton.", defaultColor, startShop, Pos.CENTER_RIGHT, -50, 100);
-
 						root.getChildren().remove(startShop);
 						root.getChildren().add(startShop);
 					}
@@ -805,23 +757,20 @@ public class View extends Application{
 
                     	boolean validBuy = controller.buyItem("oxen", Integer.valueOf(numOxen));
 
-
-
                     	// only continue is buy is valid
                     	if (validBuy) {
-
-                    	poundsFood = "";
-                        switchMenus(onMenu11);
-                        
-                        menu11.getChildren().clear();
-
-                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, menu11, Pos.TOP_CENTER, 0, 0);
-                        makeText("You have $" + controller.getMoney(), defaultColor, menu11, Pos.TOP_CENTER, 0, 50);
-                        makeText("How many Pounds of Food would you like to buy? I recommend at least 200 lbs.", defaultColor, menu11, Pos.TOP_CENTER, 0, 100);
-                        makeText("A pound of food is $" + controller.getCost("food"), defaultColor, menu11, Pos.TOP_CENTER, 0, 150);
-                        putScaledImage("images/lamb.png", menu11, Pos.CENTER, 150, 150, 0, 50);
-                        root.getChildren().remove(menu11);
-						root.getChildren().add(menu11);
+	                    	poundsFood = "";
+	                        switchMenus(onMenu11);
+	                        
+	                        menu11.getChildren().clear();
+	
+	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, menu11, Pos.TOP_CENTER, 0, 0);
+	                        makeText("You have $" + controller.getMoney(), defaultColor, menu11, Pos.TOP_CENTER, 0, 50);
+	                        makeText("How many Pounds of Food would you like to buy? I recommend at least 200 lbs.", defaultColor, menu11, Pos.TOP_CENTER, 0, 100);
+	                        makeText("A pound of food is $" + controller.getCost("food"), defaultColor, menu11, Pos.TOP_CENTER, 0, 150);
+	                        putScaledImage("images/lamb.png", menu11, Pos.CENTER, 150, 150, 0, 50);
+	                        root.getChildren().remove(menu11);
+							root.getChildren().add(menu11);
                     	}
 
                     }
@@ -833,18 +782,18 @@ public class View extends Application{
 
                     	// only continue if buy is valid
                     	if (validBuy) {
-                    	numClothing = "";
-                        switchMenus(onMenu12);
-
-                        menu12.getChildren().clear();
-
-                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, menu12, Pos.TOP_CENTER, 0, 0);
-                        makeText("You have $" + controller.getMoney(), defaultColor, menu12, Pos.TOP_CENTER, 0, 50);
-                        makeText("How many blankets would you like to buy? I recommend at least 10 sets.", defaultColor, menu12, Pos.TOP_CENTER, 0, 100);
-                        makeText("Blankets are $" + controller.getCost("blanket") + "   per set.", defaultColor, menu12, Pos.TOP_CENTER, 0, 150);
-                        putScaledImage("images/blanket.jpg", menu12, Pos.CENTER, 150, 150, 0, 50);
-                        root.getChildren().remove(menu12);
-						root.getChildren().add(menu12);
+	                    	numClothing = "";
+	                        switchMenus(onMenu12);
+	
+	                        menu12.getChildren().clear();
+	
+	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, menu12, Pos.TOP_CENTER, 0, 0);
+	                        makeText("You have $" + controller.getMoney(), defaultColor, menu12, Pos.TOP_CENTER, 0, 50);
+	                        makeText("How many blankets would you like to buy? I recommend at least 10 sets.", defaultColor, menu12, Pos.TOP_CENTER, 0, 100);
+	                        makeText("Blankets are $" + controller.getCost("blanket") + "   per set.", defaultColor, menu12, Pos.TOP_CENTER, 0, 150);
+	                        putScaledImage("images/blanket.jpg", menu12, Pos.CENTER, 150, 150, 0, 50);
+	                        root.getChildren().remove(menu12);
+							root.getChildren().add(menu12);
                     	}
 
                     }
@@ -854,47 +803,43 @@ public class View extends Application{
 
                     	boolean validBuy = controller.buyItem("blanket", Integer.valueOf(numClothing));
 
-
                     	// only continue is buy is valid
                     	if (validBuy) {
-
-                    	numAmmo = "";
-                        switchMenus(onMenu13);
-                        //money -= Integer.valueOf(numClothing) * 10; //$10 per set
-                        menu13.getChildren().clear();
-
-                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, menu13, Pos.TOP_CENTER, 0, 0);
-                        makeText("You have $" + controller.getMoney(), defaultColor, menu13, Pos.TOP_CENTER, 0, 50);
-                        makeText("How many bullets would you like to buy? Bullets are good for hunting.", defaultColor, menu13, Pos.TOP_CENTER, 0, 100);
-                        makeText("Bullets are $" + controller.getCost("ammo"), defaultColor, menu13, Pos.TOP_CENTER, 0, 150);
-                        putScaledImage("images/bullet.png", menu13, Pos.CENTER, 150, 150, 0, 50);
-                        root.getChildren().remove(menu13);
-						root.getChildren().add(menu13);
+	                    	numAmmo = "";
+	                        switchMenus(onMenu13);
+	                        //money -= Integer.valueOf(numClothing) * 10; //$10 per set
+	                        menu13.getChildren().clear();
+	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, menu13, Pos.TOP_CENTER, 0, 0);
+	                        makeText("You have $" + controller.getMoney(), defaultColor, menu13, Pos.TOP_CENTER, 0, 50);
+	                        makeText("How many bullets would you like to buy? Bullets are good for hunting.", defaultColor, menu13, Pos.TOP_CENTER, 0, 100);
+	                        makeText("Bullets are $" + controller.getCost("ammo"), defaultColor, menu13, Pos.TOP_CENTER, 0, 150);
+	                        putScaledImage("images/bullet.png", menu13, Pos.CENTER, 150, 150, 0, 50);
+	                        root.getChildren().remove(menu13);
+							root.getChildren().add(menu13);
                     	}
                     }
 
                     //MENU 13 -> MENU 14
                     else if (onMenu13.getTheBoolean()) {
 
-
                     	boolean validBuy = controller.buyItem("ammo", Integer.valueOf(numAmmo));
 
                     	// only continue if buy is valid
                     	if (validBuy) {
-                    		
-                    	gallonsWater = "";
-                        switchMenus(onMenu14);
-                        //money -= Integer.valueOf(numAmmo) * 2; //$2 per box
-                        
-                        menu14.getChildren().clear();
-
-                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, menu14, Pos.TOP_CENTER, 0, 0);
-                        makeText("You have $" + controller.getMoney(), defaultColor, menu14, Pos.TOP_CENTER, 0, 50);
-                        makeText("How many Gallons of water would you like to buy? I recommend at least 600 gallons. Water is very important for your health.", defaultColor, menu14, Pos.TOP_CENTER, 0, 100);
-                        makeText("One gallon is $" + controller.getCost("water"), defaultColor, menu14, Pos.TOP_CENTER, 0, 150);
-                        putScaledImage("images/water.png", menu14, Pos.CENTER, 150, 150, 0, 50);
-                        root.getChildren().remove(menu14);
-						root.getChildren().add(menu14);
+	                    		
+	                    	gallonsWater = "";
+	                        switchMenus(onMenu14);
+	                        //money -= Integer.valueOf(numAmmo) * 2; //$2 per box
+	                        
+	                        menu14.getChildren().clear();
+	
+	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, menu14, Pos.TOP_CENTER, 0, 0);
+	                        makeText("You have $" + controller.getMoney(), defaultColor, menu14, Pos.TOP_CENTER, 0, 50);
+	                        makeText("How many Gallons of water would you like to buy? I recommend at least 600 gallons. Water is very important for your health.", defaultColor, menu14, Pos.TOP_CENTER, 0, 100);
+	                        makeText("One gallon is $" + controller.getCost("water"), defaultColor, menu14, Pos.TOP_CENTER, 0, 150);
+	                        putScaledImage("images/water.png", menu14, Pos.CENTER, 150, 150, 0, 50);
+	                        root.getChildren().remove(menu14);
+							root.getChildren().add(menu14);
                     	}
                     }
 

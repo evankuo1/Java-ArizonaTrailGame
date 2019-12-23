@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 import java.io.File;
-
 import javafx.scene.paint.Color;
 
 public class Controller {
