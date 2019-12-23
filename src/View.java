@@ -272,15 +272,486 @@ public class View extends Application{
     StackPane thirstMenu = new StackPane();
     
     
+	/**
+	 * This will make a Text object that is formatted as specified. Doesn't work for special text that needs
+	 * special formatting, such as a title
+	 * @param aString The String that we want to display on the menu
+	 * @param aColor The color we want the text to be displayed in. Is defaultColor most of the time.
+	 * @param menu The menu we want this text to be displayed on.
+	 * @param position The position the text should be on the menu
+	 * @return TheText We return theText when we need user input. Most of the time this can be ignored.
+	 */
+	public static Text makeText(String aString, Color aColor, StackPane menu, Pos position, int translateX, int translateY) {
+		Text theText = new Text(aString);
+		theText.setFont(new Font("ArcadeClassic", 24));
+		theText.setFill(aColor);
+		menu.getChildren().add(theText);
+		theText.setTranslateX(translateX);
+		theText.setTranslateY(translateY);
+		StackPane.setAlignment(theText, position);
+		return theText;
+	}
+
+	/**
+	 * This method allows for the quick switching of menus
+	 * @param currMenu The menu that we want to switch to
+	 */
+	public static void switchMenus(MenuClass currMenu) {
+		// Keeps track of whether or not this menu was already in the list.
+		// If it wasn't, then it is added.
+		boolean wasntInIt = true;
+
+		// Loop through the list and see if this menu is in the list.
+		for (int i = 0; i < menuList.size(); i++) {
+			// If it is in the list, set it to true
+			if (currMenu.equals(menuList.get(i))) {
+				currMenu.setTheBoolean(true);
+				wasntInIt = false; // It was in it.
+			}
+			// If this isn't the menu we want to be displayed, then it must be false.
+			else {
+				menuList.get(i).setTheBoolean(false);
+			}
+		}
+
+		// If the menu wasn't in the list already, then add it to the list and
+		// mark it as true.
+		if (wasntInIt) {
+			currMenu.setTheBoolean(true);
+			menuList.add(currMenu);
+		}
+	}
+
+	/**
+	 * This method will print out user input onto the screen and modifies the "theString" String as to save
+	 * the user answer. This method should not be used for the user inputs where the user just types 1 number
+	 * @param keyEvent The keyEvent that is recording the user input
+	 * @param theString The String that holds the user input
+	 * @param theText A TextClass object that is used solely to make this method work
+	 * @param menu The menu the outputed text is to be written on
+	 * @param position Where on the menu the outputed text is to be written
+	 * @return theString theString is returned so that it can be saved.
+	 */
+	public String printUserInput(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
+		// If the user hits any character other than backspace
+
+		if (!keyEvent.getCharacter().equals("\b")) {
+			theString = theString + keyEvent.getCharacter();
+		}
+
+		// If the user does hit backspace.
+		else {
+			if (theString.length() > 0) {
+				theString = theString.substring(0, theString.length() - 1);
+			}
+		}
+
+		// If this is the 1st time the user has input something.
+		if (theText.getText() == null) {
+			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
+		}
+		// If not the 1st time.
+		else {
+			menu.getChildren().remove(theText.getText());
+			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
+		}
+
+		theString.trim();
+		return theString;
+	}
+
+	public String printUserInputNumber(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
+
+		if ((keyEvent.getCharacter().equals("1") || keyEvent.getCharacter().equals("2") || keyEvent.getCharacter().equals("3") || keyEvent.getCharacter().equals("4"))
+		   && theString.length() == 0) {
+			theString = keyEvent.getCharacter();
+		}
+		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
+			theString = "";
+		}
+
+		// If this is the 1st time the user has input something.
+		if (theText.getText() == null) {
+			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
+		}
+		// If not the 1st time.
+		else {
+			menu.getChildren().remove(theText.getText());
+			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
+		}
+
+		// remove possible whitespace
+		theString.trim();
+		return theString;
+	}
+
+	public String printUserInputStoreNumber(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
+
+		if ((keyEvent.getCharacter().equals("1") || keyEvent.getCharacter().equals("2") || keyEvent.getCharacter().equals("3") || keyEvent.getCharacter().equals("4") || keyEvent.getCharacter().equals("5"))
+		   && theString.length() == 0) {
+			theString = keyEvent.getCharacter();
+		}
+		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
+			theString = "";
+		}
+
+		// If this is the 1st time the user has input something.
+		if (theText.getText() == null) {
+			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
+		}
+		// If not the 1st time.
+		else {
+			menu.getChildren().remove(theText.getText());
+			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
+		}
+
+		// remove possible whitespace
+		theString.trim();
+		return theString;
+	}
+
+
+	public String printUserInputBigNumber(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
+
+		// If user inputs a number
+		if ((keyEvent.getCharacter().equals("1") || keyEvent.getCharacter().equals("2") || keyEvent.getCharacter().equals("3") ||
+			 keyEvent.getCharacter().equals("4") || keyEvent.getCharacter().equals("5") || keyEvent.getCharacter().equals("6") ||
+			 keyEvent.getCharacter().equals("7") || keyEvent.getCharacter().equals("8") || keyEvent.getCharacter().equals("9") ||
+			 keyEvent.getCharacter().equals("0"))) {
+
+			// add num
+			theString = theString + keyEvent.getCharacter();
+		}
+		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
+			theString = "";
+		}
+
+		// If this is the 1st time the user has input something.
+		if (theText.getText() == null) {
+			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
+		}
+		// If not the 1st time.
+		else {
+			menu.getChildren().remove(theText.getText());
+			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
+		}
+
+		// remove possible whitespace
+		theString.trim();
+		return theString;
+	}
+
+	public String printUserInputMediumNumber(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
+
+		// If user inputs a number
+		if ((keyEvent.getCharacter().equals("1") || keyEvent.getCharacter().equals("2") || keyEvent.getCharacter().equals("3") ||
+			 keyEvent.getCharacter().equals("4") || keyEvent.getCharacter().equals("5") || keyEvent.getCharacter().equals("6") ||
+			 keyEvent.getCharacter().equals("7") || keyEvent.getCharacter().equals("8")) && theString.length() == 0) {
+
+			// add num
+			theString = keyEvent.getCharacter();
+		}
+		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
+			theString = "";
+		}
+
+		// If this is the 1st time the user has input something.
+		if (theText.getText() == null) {
+			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
+		}
+		// If not the 1st time.
+		else {
+			menu.getChildren().remove(theText.getText());
+			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
+		}
+
+		// remove possible whitespace
+		theString.trim();
+		return theString;
+	}
+
+
+
+	public void buildMenu(StackPane root, StackPane menu, Color backgroundColor) {
+		menu.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
+		root.getChildren().add(menu);
+	}
+	
+	public void buildMapScreen(StackPane root) {
+		mapScreen.getChildren().clear();
+		root.getChildren().remove(mapScreen);
+		buildMenu(root, mapScreen, Color.BLACK);
+		
+		StackPane mapSplitter = new StackPane();
+		
+		StackPane mapDisplay =  new StackPane();
+		mapDisplay.setPrefHeight(root.getHeight());
+		mapDisplay.setPrefWidth(root.getWidth());
+		StackPane.setAlignment(mapDisplay, Pos.TOP_LEFT);
+		mapDisplay.setTranslateX(0);
+		mapDisplay.setTranslateY(0);
+		putScaledImage("images/arizona-outline-rubber-stamp_grande.png", mapDisplay, Pos.CENTER_LEFT, 1500, (int) root.getHeight() - 140, 80, 10);
+		
+		StackPane locationInfo = new StackPane();
+		locationInfo.setId("locationInfo");
+		locationInfo.setPrefHeight(root.getHeight());
+		locationInfo.setMaxWidth(root.getWidth() / 4);
+		StackPane.setAlignment(locationInfo, Pos.TOP_RIGHT);
+		locationInfo.setTranslateX(0);
+		locationInfo.setTranslateY(0);
+		locationInfo.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
+		
+		//mapDisplay.getChildren().add(locationInfo);
+		
+		Location[] allLocations = controller.getAllLocations();
+		int mapScaleX = 100;
+		int mapScaleY = 60;
+		int mapShiftX = 114;
+		int mapShiftY = 38;
+		int mapLocationSize = 30;
+		for (Location l : allLocations) {
+			Rectangle location;
+			if (l.equals(controller.getCurrLocationObj())) {
+				location = new Rectangle(mapLocationSize, mapLocationSize, Color.GREEN);
+			}
+			else if (l.equals(controller.getCurrDestination())){
+				location = new Rectangle(mapLocationSize, mapLocationSize, Color.YELLOW);
+			}
+			else if (l.getName().equals("Kanab")){
+				location = new Rectangle(mapLocationSize, mapLocationSize, Color.RED);
+			}
+			else {
+				location = new Rectangle(mapLocationSize, mapLocationSize, Color.WHITE);
+			}
+
+			location.setX((l.getLongitude() + mapShiftX) * mapScaleX);
+			location.setY((-l.getLatitude() + mapShiftY) * mapScaleY);
+			location.setTranslateX(location.getX());
+			location.setTranslateY(location.getY());
+			StackPane.setAlignment(location, Pos.TOP_LEFT);
+			
+			location.setOnMouseEntered(
+					new EventHandler<MouseEvent>() {
+						public void handle(MouseEvent event) {
+							locationInfo.getChildren().clear();
+							
+							if (l.equals(controller.getCurrLocationObj())) {
+								makeText("Current Location:", defaultColor, locationInfo, Pos.TOP_CENTER, 0, 0);
+							}
+							else if (l.equals(controller.getCurrDestination())){
+								makeText("Current Destination:", defaultColor, locationInfo, Pos.TOP_CENTER, 0, 0);
+							}
+							else if (l.getName().equals("Kanab")){
+								makeText("Final Destination:", defaultColor, locationInfo, Pos.TOP_CENTER, 0, 0);
+							}
+							
+							makeText(l.getName(), defaultColor, locationInfo, Pos.TOP_CENTER, 0, 50);
+							
+							makeText(String.format("Distance\nas the crow flies:\n\t%.3f miles", 
+											controller.calcMiles(controller.getCurrLocationObj(), l)), 
+									defaultColor,
+									locationInfo,
+									Pos.TOP_CENTER, 
+									0, 
+									100).setWrappingWidth((root.getWidth() / 4));
+							makeText(
+									String.format("Region:\n\t%s", 
+											l.getRegion().getName()), 
+									defaultColor,
+									locationInfo,
+									Pos.TOP_CENTER, 
+									0, 
+									175).setWrappingWidth((root.getWidth() / 4));
+							makeText(
+									String.format("Fall Temperature:\n\t%.0f F", 
+											l.getRegion().getBaseTemperature()), 
+									defaultColor,
+									locationInfo,
+									Pos.TOP_CENTER, 
+									0, 
+									225).setWrappingWidth((root.getWidth() / 4));
+							
+						}
+					});
+			location.setOnMouseExited(
+					new EventHandler<MouseEvent>() {
+						public void handle(MouseEvent event) {
+							initMapLocationInfo(locationInfo);
+						}
+					});
+			
+			/*
+			location.setStyle("-fx-border-width: 5px; "
+					+ "-fx-border-style: solid; "
+					+ "-fx-border-color: purple;");
+			*/
+			
+			mapDisplay.getChildren().add(location);
+			initMapLocationInfo(locationInfo);
+		}
+		
+		mapSplitter.getChildren().addAll(mapDisplay, locationInfo);
+		mapScreen.getChildren().add(mapSplitter);
+		
+		makeText("Map of Arizona", defaultColor, mapScreen, Pos.TOP_CENTER, 0, 0);
+    	makeText("Press ENTER to continue", defaultColor, mapScreen, Pos.BOTTOM_CENTER, 0, 0);
+	}
+	
+	private void initMapLocationInfo(StackPane sp) {
+		sp.getChildren().clear();
+		makeText("Mouse Over", defaultColor, sp, Pos.CENTER, 0, -50);
+		makeText("a Location", defaultColor, sp, Pos.CENTER, 0, -25);
+		makeText("for", defaultColor, sp, Pos.CENTER, 0, 0);
+		makeText("More", defaultColor, sp, Pos.CENTER, 0, 25);
+		makeText("Information", defaultColor, sp, Pos.CENTER, 0, 50);
+	}
+
+	public static void putScaledImage(String image, StackPane menu, Pos position, int width, int height, int translateX, int translateY) {
+		Image theImage = new Image(new File(image).toURI().toString(), width, height, true, false);
+		ImageView theImageView = new ImageView(theImage);
+		StackPane.setAlignment(theImageView, position);
+		theImageView.setTranslateX(translateX);
+		theImageView.setTranslateY(translateY);
+		menu.getChildren().add(theImageView);
+	}
+
+	public void redrawTravelingMenu(StackPane root, StackPane travelingMenu) {
+
+        //boolean validBuy = controller.buyItem("water", Integer.valueOf(gallonsWater));
+		whileTravelingChoice = "";
+		switchMenus(onTravelingMenu);
+
+		travelingMenu.getChildren().clear();
+
+
+		//Courtesy of ApologeticbyNature on Spriter's Resource from the Original Apple 2 Oregon Trail copyright Don Rawitsch, Bill Heinemann, and Paul Dillenberger
+		//final Image IMAGE = new Image("https://www.spriters-resource.com/resources/sheets/24/26478.gif");
+		final Image IMAGE = new Image(new File("images/OregonTrailImages26478.gif").toURI().toString());
+		final int COLUMNS  =   1;
+		final int COUNT    =  2;
+		final int OFFSET_X =  0;
+		final int OFFSET_Y =  0;
+		final int WIDTH    = 96;
+		final int HEIGHT   = 29;
+
+	    final ImageView imageView = new ImageView(IMAGE);
+	    imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+	    final Animation animation = new WagonAnimation(imageView, Duration.millis(1000), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+	    animation.setCycleCount(Animation.INDEFINITE);
+	    animation.play();
+	    Rectangle sky = new Rectangle(1000,300,Color.SKYBLUE);
+	    Rectangle ground = new Rectangle(1000,500,Color.DARKGOLDENROD);
+		sky.setY(-100);
+		ground.setY(200);
+	    ImageView layer3 = new ImageView(new Image("Layer3.png",1000,100,false,false));
+
+	    ImageView layer3a = new ImageView(new Image("Layer3.png",1000,100,false,false));
+		Pane background = new Pane();
+
+		background.getChildren().addAll(ground,sky,layer3,layer3a);
+
+		layer3a.setX(-1000);
+		layer3a.setY(100);
+		layer3.setY(100);
+		ground.setFill(controller.getGround());
+		// change mountain color
+		ColorAdjust groundColorEffect = changeMountainColor(controller.getGround());
+		layer3a.setEffect(groundColorEffect);
+		layer3.setEffect(groundColorEffect);
+
+		TranslateTransition tt3 = new TranslateTransition(Duration.millis(5000),layer3);
+		tt3.setByX(1000f);
+		tt3.setCycleCount(Animation.INDEFINITE);
+		tt3.setInterpolator(Interpolator.LINEAR);
+		tt3.play();
+
+		TranslateTransition tr3 = new TranslateTransition(Duration.millis(5000),layer3a);
+		tr3.setByX(1000f);
+
+		tr3.setCycleCount(Animation.INDEFINITE);
+		tr3.setInterpolator(Interpolator.LINEAR);
+		tr3.play();
+		travelingMenu.getChildren().add(background);
+	    travelingMenu.getChildren().add(imageView);
+
+	    makeText("Travel Speed - " + controller.getPaceName(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -200);
+	    makeText("Date - " + controller.getFullDate(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -175);
+	    makeText("Weather - " + controller.getWeather(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -150);
+	    makeText("Health - " + controller.getFamilyStatus(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -125);
+	    makeText("Food - " + controller.getItemAmount("food"), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -100);
+        makeText("Water - " + controller.getItemAmount("water"), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -75);
+	    makeText("Next Landmark - " + controller.nextLandmarkXMilesAwayString(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -50);
+	    makeText("Miles Traveled - " + controller.totalMilesTraveledString(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -25);
+	    if (controller.getPace() == 0) {
+	    	makeText("Press Space  to  Rest", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 0);
+	    }
+	    else {
+	    	makeText("Press Space  to  Travel", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 0);
+	    }
+	    makeText("Press Enter to size up the situation", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 50);
+	    root.getChildren().remove(travelingMenu);
+	    root.getChildren().add(travelingMenu);
+	}
+
+	public void buyAtShop(Controller controller, String item, int amount, Store store, StackPane menu, MenuClass menuClass, StackPane root) {
+
+    	boolean validBuy = controller.buyItemTownStore(item, amount, store);
+
+    	// only continue if buy is valid
+    	if (validBuy) {
+	    	allShoppingChoice = "";
+	        switchMenus(menuClass);
+	        root.getChildren().remove(menu);
+			root.getChildren().add(menu);
+    	}
+	}
+
+	public static void shoppingAtShop(MenuClass menuClass, StackPane menu, Store store, String item, StackPane root, Controller controller, String image) {
+		switchMenus(menuClass);
+		menu.getChildren().clear();
+		makeText("I have " + store.getItem(item).getQuantity() + " " + item + "in stock.", defaultColor, menu, Pos.TOP_CENTER, 0, 0);
+		makeText("Each " +  item + " costs " + store.getItem(item).getCost() + " dollars.", defaultColor, menu, Pos.TOP_CENTER, 0, 25);
+		makeText("You have " + controller.getItemAmount(item) + " " + item + " in your inventory.", defaultColor, menu, Pos.TOP_CENTER, 0, 75);
+		makeText("You have " + String.format("%.2f", controller.getMoney()) + " dollars to spend.", defaultColor, menu, Pos.TOP_CENTER, 0, 100);
+		makeText("Choose how many to buy.", defaultColor, menu, Pos.TOP_CENTER, 0, 150);
+		putScaledImage(image, menu, Pos.CENTER, 150, 150, 0, 0);
+		root.getChildren().remove(menu);
+		root.getChildren().add(menu);
+	}
+
+	public static void reduceShoppingCode(MenuClass onAllShoppingMenu, StackPane allShoppingMenu, Store store, String item, StackPane root, Controller controller, String image, String allShoppingChoiceName, Store currStore, MenuClass onCurrStoreMenu, MenuClass onShopMenu, StackPane currStoreMenu, StackPane storeMenu) {
+		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, store, item, root, controller, image);
+		allShoppingChoiceName = item;
+		currStore = store;
+		onCurrStoreMenu = onShopMenu;
+		currStoreMenu = storeMenu;
+	}
+
+	public ColorAdjust changeMountainColor(Color c) {
+		Image mountain =  new Image("Layer3.png",1000,100,false,false);
+		PixelReader pr = mountain.getPixelReader();
+		Color actualMountainColor = pr.getColor((int) mountain.getWidth() - 1, (int) mountain.getHeight() - 1);
+		Color groundColor = controller.getGround();
+		ColorAdjust groundColorEffect = new ColorAdjust(
+				(groundColor.getHue() - actualMountainColor.getHue()) / 360,
+				groundColor.getSaturation() - actualMountainColor.getSaturation(),
+				groundColor.getBrightness() - actualMountainColor.getBrightness(),
+				0.0);
+
+		return groundColorEffect;
+	}
+    
+    
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
 		// Setup canvas and gc to draw images.
 		Canvas canvas = new Canvas(1000,500);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-
-		// Go to main menu
-		switchMenus(onMainMenu);
+		mainMenu.getChildren().add(canvas);
+		
+		// Make the image
+        Image trail = new Image(new File("images/oregonTrailBackground.jpg").toURI().toString(), 1000, 500, false, false);
 
         // Build the menus
         buildMenu(root, mainMenu, Color.BLACK);
@@ -328,25 +799,21 @@ public class View extends Application{
         buildMenu(root, gameOverMenu, Color.BLACK);
         buildMenu(root, starvationMenu, Color.BLACK);
         buildMenu(root, thirstMenu, Color.BLACK);
-
-		// Add canvas to the stackpane.
-		mainMenu.getChildren().add(canvas);
-		makeText("Press Space To Continue!", Color.BLACK, mainMenu, Pos.CENTER, 0, 0); // make text
-
-		// Add title text
+        
+        
+		// Go to main menu
+		switchMenus(onMainMenu);
+        
+        // Create text
+		makeText("Press Space To Continue!", Color.BLACK, mainMenu, Pos.CENTER, 0, 0);
+        makeText("Press Enter to Load Previous Save",  Color.BLACK, mainMenu, Pos.CENTER, 0, 35);
+        
+        // Create title text
 		Text titleText = new Text("The  Arizona  Trail");
 		titleText.setFont(new Font("ArcadeClassic", 100));
 		StackPane.setAlignment(titleText, Pos.TOP_CENTER);
 		mainMenu.getChildren().add(titleText);
 		mainMenu.toFront();
-		
-		// Load game
-        makeText("Press Enter to Load Previous Save",  Color.BLACK, mainMenu, Pos.CENTER, 0, 35);
-
-		// Make the image
-		// change preserverRatio to true?
-		// Image trail = new Image("https://www.history.com/.image/ar_16:9%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cg_faces:center%2Cq_auto:good%2Cw_768/MTU3OTIzNTc4NTMyOTMxMjE4/9-things-you-may-not-know-about-the-oregon-trails-featured-photo.jpg", 1000, 500, false, false);
-        Image trail = new Image(new File("images/oregonTrailBackground.jpg").toURI().toString(), 1000, 500, false, false);
 
 		// Draw the image and the text.
 		gc.drawImage(trail, 0, 0);
@@ -356,7 +823,6 @@ public class View extends Application{
 		scene.getStylesheets().add(getClass().getResource("/fontstyle.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("The Arizona Trail");
-		//primaryStage.setFullScreen(true); // If we want the stage to be fullscreen
 		primaryStage.show();
 
 		// Set up song and play it.
@@ -377,32 +843,25 @@ public class View extends Application{
 			playSong.play();
 		}
 
-		// space
+		
+		// If the user presses space on the main menu
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			
 		    public void handle(KeyEvent keyEvent) {
+		    	
 		    	// When the user presses space, go FROM MAIN MENU -> MENU 2
 		        if (keyEvent.getCode() == KeyCode.SPACE)  {
-                    if(onMainMenu.getTheBoolean()){
-                        //if user picks 1, start game normally, switch to root menu
-                        //else if user picks 2, load game from saved file, switch to travel menu
-                        //switchMenus(onRootMenu);
-                    }
 
 		        	if (onMainMenu.getTheBoolean()) {
+		        		
 			        	// Make some intro text
-			        	controller = new Controller();
 			        	Text startText = makeText("On the Arizona Trail you'll travel from the Mexican border to Utah!", defaultColor, onNameStack, Pos.TOP_CENTER, 0, 0);
-	
 	
 			        	// Add picture
 			        	putScaledImage("images/thMRQA2QMB.jpg", onNameStack, Pos.CENTER, 800, 300, 0, 0);
 	
-	
 			        	// Ask the user for a name. 
 			        	Text askForNameText = makeText("What's your name?", defaultColor, onNameStack, Pos.CENTER, 0, 200);
-	
-			        	//Text askForNameText = makeText("What's your name? Type and then press enter", defaultColor, onNameStack, Pos.CENTER, 0, 200);
 	
 			        	// Have this menu be displayed at the top.
 				    	switchMenus(onNameMenu);
@@ -1832,475 +2291,6 @@ public class View extends Application{
                 controller.saveGame(save_game_file);
             }
         });
-	}
-
-	/**
-	 * This will make a Text object that is formatted as specified. Doesn't work for special text that needs
-	 * special formatting, such as a title
-	 * @param aString The String that we want to display on the menu
-	 * @param aColor The color we want the text to be displayed in. Is defaultColor most of the time.
-	 * @param menu The menu we want this text to be displayed on.
-	 * @param position The position the text should be on the menu
-	 * @return TheText We return theText when we need user input. Most of the time this can be ignored.
-	 */
-	public static Text makeText(String aString, Color aColor, StackPane menu, Pos position, int translateX, int translateY) {
-		Text theText = new Text(aString);
-		theText.setFont(new Font("ArcadeClassic", 24));
-		theText.setFill(aColor);
-		menu.getChildren().add(theText);
-		theText.setTranslateX(translateX);
-		theText.setTranslateY(translateY);
-		StackPane.setAlignment(theText, position);
-		return theText;
-	}
-
-	/**
-	 * This method allows for the quick switching of menus
-	 * @param currMenu The menu that we want to switch to
-	 */
-	public static void switchMenus(MenuClass currMenu) {
-		// Keeps track of whether or not this menu was already in the list.
-		// If it wasn't, then it is added.
-		boolean wasntInIt = true;
-
-		// Loop through the list and see if this menu is in the list.
-		for (int i = 0; i < menuList.size(); i++) {
-			// If it is in the list, set it to true
-			if (currMenu.equals(menuList.get(i))) {
-				currMenu.setTheBoolean(true);
-				wasntInIt = false; // It was in it.
-			}
-			// If this isn't the menu we want to be displayed, then it must be false.
-			else {
-				menuList.get(i).setTheBoolean(false);
-			}
-		}
-
-		// If the menu wasn't in the list already, then add it to the list and
-		// mark it as true.
-		if (wasntInIt) {
-			currMenu.setTheBoolean(true);
-			menuList.add(currMenu);
-		}
-	}
-
-	/**
-	 * This method will print out user input onto the screen and modifies the "theString" String as to save
-	 * the user answer. This method should not be used for the user inputs where the user just types 1 number
-	 * @param keyEvent The keyEvent that is recording the user input
-	 * @param theString The String that holds the user input
-	 * @param theText A TextClass object that is used solely to make this method work
-	 * @param menu The menu the outputed text is to be written on
-	 * @param position Where on the menu the outputed text is to be written
-	 * @return theString theString is returned so that it can be saved.
-	 */
-	public String printUserInput(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
-		// If the user hits any character other than backspace
-
-		if (!keyEvent.getCharacter().equals("\b")) {
-			theString = theString + keyEvent.getCharacter();
-		}
-
-		// If the user does hit backspace.
-		else {
-			if (theString.length() > 0) {
-				theString = theString.substring(0, theString.length() - 1);
-			}
-		}
-
-		// If this is the 1st time the user has input something.
-		if (theText.getText() == null) {
-			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
-		}
-		// If not the 1st time.
-		else {
-			menu.getChildren().remove(theText.getText());
-			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
-		}
-
-		theString.trim();
-		return theString;
-	}
-
-	public String printUserInputNumber(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
-
-		if ((keyEvent.getCharacter().equals("1") || keyEvent.getCharacter().equals("2") || keyEvent.getCharacter().equals("3") || keyEvent.getCharacter().equals("4"))
-		   && theString.length() == 0) {
-			theString = keyEvent.getCharacter();
-		}
-		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
-			theString = "";
-		}
-
-		// If this is the 1st time the user has input something.
-		if (theText.getText() == null) {
-			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
-		}
-		// If not the 1st time.
-		else {
-			menu.getChildren().remove(theText.getText());
-			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
-		}
-
-		// remove possible whitespace
-		theString.trim();
-		return theString;
-	}
-
-	public String printUserInputStoreNumber(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
-
-		if ((keyEvent.getCharacter().equals("1") || keyEvent.getCharacter().equals("2") || keyEvent.getCharacter().equals("3") || keyEvent.getCharacter().equals("4") || keyEvent.getCharacter().equals("5"))
-		   && theString.length() == 0) {
-			theString = keyEvent.getCharacter();
-		}
-		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
-			theString = "";
-		}
-
-		// If this is the 1st time the user has input something.
-		if (theText.getText() == null) {
-			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
-		}
-		// If not the 1st time.
-		else {
-			menu.getChildren().remove(theText.getText());
-			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
-		}
-
-		// remove possible whitespace
-		theString.trim();
-		return theString;
-	}
-
-
-	public String printUserInputBigNumber(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
-
-		// If user inputs a number
-		if ((keyEvent.getCharacter().equals("1") || keyEvent.getCharacter().equals("2") || keyEvent.getCharacter().equals("3") ||
-			 keyEvent.getCharacter().equals("4") || keyEvent.getCharacter().equals("5") || keyEvent.getCharacter().equals("6") ||
-			 keyEvent.getCharacter().equals("7") || keyEvent.getCharacter().equals("8") || keyEvent.getCharacter().equals("9") ||
-			 keyEvent.getCharacter().equals("0"))) {
-
-			// add num
-			theString = theString + keyEvent.getCharacter();
-		}
-		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
-			theString = "";
-		}
-
-		// If this is the 1st time the user has input something.
-		if (theText.getText() == null) {
-			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
-		}
-		// If not the 1st time.
-		else {
-			menu.getChildren().remove(theText.getText());
-			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
-		}
-
-		// remove possible whitespace
-		theString.trim();
-		return theString;
-	}
-
-	public String printUserInputMediumNumber(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
-
-		// If user inputs a number
-		if ((keyEvent.getCharacter().equals("1") || keyEvent.getCharacter().equals("2") || keyEvent.getCharacter().equals("3") ||
-			 keyEvent.getCharacter().equals("4") || keyEvent.getCharacter().equals("5") || keyEvent.getCharacter().equals("6") ||
-			 keyEvent.getCharacter().equals("7") || keyEvent.getCharacter().equals("8")) && theString.length() == 0) {
-
-			// add num
-			theString = keyEvent.getCharacter();
-		}
-		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
-			theString = "";
-		}
-
-		// If this is the 1st time the user has input something.
-		if (theText.getText() == null) {
-			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
-		}
-		// If not the 1st time.
-		else {
-			menu.getChildren().remove(theText.getText());
-			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
-		}
-
-		// remove possible whitespace
-		theString.trim();
-		return theString;
-	}
-
-
-
-	public void buildMenu(StackPane root, StackPane menu, Color backgroundColor) {
-		menu.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
-		root.getChildren().add(menu);
-	}
-	
-	public void buildMapScreen(StackPane root) {
-		mapScreen.getChildren().clear();
-		root.getChildren().remove(mapScreen);
-		buildMenu(root, mapScreen, Color.BLACK);
-		
-		StackPane mapSplitter = new StackPane();
-		
-		StackPane mapDisplay =  new StackPane();
-		mapDisplay.setPrefHeight(root.getHeight());
-		mapDisplay.setPrefWidth(root.getWidth());
-		StackPane.setAlignment(mapDisplay, Pos.TOP_LEFT);
-		mapDisplay.setTranslateX(0);
-		mapDisplay.setTranslateY(0);
-		putScaledImage("images/arizona-outline-rubber-stamp_grande.png", mapDisplay, Pos.CENTER_LEFT, 1500, (int) root.getHeight() - 140, 80, 10);
-		
-		StackPane locationInfo = new StackPane();
-		locationInfo.setId("locationInfo");
-		locationInfo.setPrefHeight(root.getHeight());
-		locationInfo.setMaxWidth(root.getWidth() / 4);
-		StackPane.setAlignment(locationInfo, Pos.TOP_RIGHT);
-		locationInfo.setTranslateX(0);
-		locationInfo.setTranslateY(0);
-		locationInfo.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
-		
-		//mapDisplay.getChildren().add(locationInfo);
-		
-		Location[] allLocations = controller.getAllLocations();
-		int mapScaleX = 100;
-		int mapScaleY = 60;
-		int mapShiftX = 114;
-		int mapShiftY = 38;
-		int mapLocationSize = 30;
-		for (Location l : allLocations) {
-			Rectangle location;
-			if (l.equals(controller.getCurrLocationObj())) {
-				location = new Rectangle(mapLocationSize, mapLocationSize, Color.GREEN);
-			}
-			else if (l.equals(controller.getCurrDestination())){
-				location = new Rectangle(mapLocationSize, mapLocationSize, Color.YELLOW);
-			}
-			else if (l.getName().equals("Kanab")){
-				location = new Rectangle(mapLocationSize, mapLocationSize, Color.RED);
-			}
-			else {
-				location = new Rectangle(mapLocationSize, mapLocationSize, Color.WHITE);
-			}
-
-			location.setX((l.getLongitude() + mapShiftX) * mapScaleX);
-			location.setY((-l.getLatitude() + mapShiftY) * mapScaleY);
-			location.setTranslateX(location.getX());
-			location.setTranslateY(location.getY());
-			StackPane.setAlignment(location, Pos.TOP_LEFT);
-			
-			location.setOnMouseEntered(
-					new EventHandler<MouseEvent>() {
-						public void handle(MouseEvent event) {
-							locationInfo.getChildren().clear();
-							
-							if (l.equals(controller.getCurrLocationObj())) {
-								makeText("Current Location:", defaultColor, locationInfo, Pos.TOP_CENTER, 0, 0);
-							}
-							else if (l.equals(controller.getCurrDestination())){
-								makeText("Current Destination:", defaultColor, locationInfo, Pos.TOP_CENTER, 0, 0);
-							}
-							else if (l.getName().equals("Kanab")){
-								makeText("Final Destination:", defaultColor, locationInfo, Pos.TOP_CENTER, 0, 0);
-							}
-							
-							makeText(l.getName(), defaultColor, locationInfo, Pos.TOP_CENTER, 0, 50);
-							
-							makeText(String.format("Distance\nas the crow flies:\n\t%.3f miles", 
-											controller.calcMiles(controller.getCurrLocationObj(), l)), 
-									defaultColor,
-									locationInfo,
-									Pos.TOP_CENTER, 
-									0, 
-									100).setWrappingWidth((root.getWidth() / 4));
-							makeText(
-									String.format("Region:\n\t%s", 
-											l.getRegion().getName()), 
-									defaultColor,
-									locationInfo,
-									Pos.TOP_CENTER, 
-									0, 
-									175).setWrappingWidth((root.getWidth() / 4));
-							makeText(
-									String.format("Fall Temperature:\n\t%.0f F", 
-											l.getRegion().getBaseTemperature()), 
-									defaultColor,
-									locationInfo,
-									Pos.TOP_CENTER, 
-									0, 
-									225).setWrappingWidth((root.getWidth() / 4));
-							
-						}
-					});
-			location.setOnMouseExited(
-					new EventHandler<MouseEvent>() {
-						public void handle(MouseEvent event) {
-							initMapLocationInfo(locationInfo);
-						}
-					});
-			
-			/*
-			location.setStyle("-fx-border-width: 5px; "
-					+ "-fx-border-style: solid; "
-					+ "-fx-border-color: purple;");
-			*/
-			
-			mapDisplay.getChildren().add(location);
-			initMapLocationInfo(locationInfo);
-		}
-		
-		mapSplitter.getChildren().addAll(mapDisplay, locationInfo);
-		mapScreen.getChildren().add(mapSplitter);
-		
-		makeText("Map of Arizona", defaultColor, mapScreen, Pos.TOP_CENTER, 0, 0);
-    	makeText("Press ENTER to continue", defaultColor, mapScreen, Pos.BOTTOM_CENTER, 0, 0);
-	}
-	
-	private void initMapLocationInfo(StackPane sp) {
-		sp.getChildren().clear();
-		makeText("Mouse Over", defaultColor, sp, Pos.CENTER, 0, -50);
-		makeText("a Location", defaultColor, sp, Pos.CENTER, 0, -25);
-		makeText("for", defaultColor, sp, Pos.CENTER, 0, 0);
-		makeText("More", defaultColor, sp, Pos.CENTER, 0, 25);
-		makeText("Information", defaultColor, sp, Pos.CENTER, 0, 50);
-	}
-
-	public static void putScaledImage(String image, StackPane menu, Pos position, int width, int height, int translateX, int translateY) {
-		Image theImage = new Image(new File(image).toURI().toString(), width, height, true, false);
-		ImageView theImageView = new ImageView(theImage);
-		StackPane.setAlignment(theImageView, position);
-		theImageView.setTranslateX(translateX);
-		theImageView.setTranslateY(translateY);
-		menu.getChildren().add(theImageView);
-	}
-
-	public void redrawTravelingMenu(StackPane root, StackPane travelingMenu) {
-
-        //boolean validBuy = controller.buyItem("water", Integer.valueOf(gallonsWater));
-		whileTravelingChoice = "";
-		switchMenus(onTravelingMenu);
-
-		travelingMenu.getChildren().clear();
-
-
-		//Courtesy of ApologeticbyNature on Spriter's Resource from the Original Apple 2 Oregon Trail copyright Don Rawitsch, Bill Heinemann, and Paul Dillenberger
-		//final Image IMAGE = new Image("https://www.spriters-resource.com/resources/sheets/24/26478.gif");
-		final Image IMAGE = new Image(new File("images/OregonTrailImages26478.gif").toURI().toString());
-		final int COLUMNS  =   1;
-		final int COUNT    =  2;
-		final int OFFSET_X =  0;
-		final int OFFSET_Y =  0;
-		final int WIDTH    = 96;
-		final int HEIGHT   = 29;
-
-	    final ImageView imageView = new ImageView(IMAGE);
-	    imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-	    final Animation animation = new WagonAnimation(imageView, Duration.millis(1000), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
-	    animation.setCycleCount(Animation.INDEFINITE);
-	    animation.play();
-	    Rectangle sky = new Rectangle(1000,300,Color.SKYBLUE);
-	    Rectangle ground = new Rectangle(1000,500,Color.DARKGOLDENROD);
-		sky.setY(-100);
-		ground.setY(200);
-	    ImageView layer3 = new ImageView(new Image("Layer3.png",1000,100,false,false));
-
-	    ImageView layer3a = new ImageView(new Image("Layer3.png",1000,100,false,false));
-		Pane background = new Pane();
-
-		background.getChildren().addAll(ground,sky,layer3,layer3a);
-
-		layer3a.setX(-1000);
-		layer3a.setY(100);
-		layer3.setY(100);
-		ground.setFill(controller.getGround());
-		// change mountain color
-		ColorAdjust groundColorEffect = changeMountainColor(controller.getGround());
-		layer3a.setEffect(groundColorEffect);
-		layer3.setEffect(groundColorEffect);
-
-		TranslateTransition tt3 = new TranslateTransition(Duration.millis(5000),layer3);
-		tt3.setByX(1000f);
-		tt3.setCycleCount(Animation.INDEFINITE);
-		tt3.setInterpolator(Interpolator.LINEAR);
-		tt3.play();
-
-		TranslateTransition tr3 = new TranslateTransition(Duration.millis(5000),layer3a);
-		tr3.setByX(1000f);
-
-		tr3.setCycleCount(Animation.INDEFINITE);
-		tr3.setInterpolator(Interpolator.LINEAR);
-		tr3.play();
-		travelingMenu.getChildren().add(background);
-	    travelingMenu.getChildren().add(imageView);
-
-	    makeText("Travel Speed - " + controller.getPaceName(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -200);
-	    makeText("Date - " + controller.getFullDate(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -175);
-	    makeText("Weather - " + controller.getWeather(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -150);
-	    makeText("Health - " + controller.getFamilyStatus(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -125);
-	    makeText("Food - " + controller.getItemAmount("food"), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -100);
-        makeText("Water - " + controller.getItemAmount("water"), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -75);
-	    makeText("Next Landmark - " + controller.nextLandmarkXMilesAwayString(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -50);
-	    makeText("Miles Traveled - " + controller.totalMilesTraveledString(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -25);
-	    if (controller.getPace() == 0) {
-	    	makeText("Press Space  to  Rest", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 0);
-	    }
-	    else {
-	    	makeText("Press Space  to  Travel", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 0);
-	    }
-	    makeText("Press Enter to size up the situation", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 50);
-	    root.getChildren().remove(travelingMenu);
-	    root.getChildren().add(travelingMenu);
-	}
-
-	public void buyAtShop(Controller controller, String item, int amount, Store store, StackPane menu, MenuClass menuClass, StackPane root) {
-
-    	boolean validBuy = controller.buyItemTownStore(item, amount, store);
-
-    	// only continue if buy is valid
-    	if (validBuy) {
-	    	allShoppingChoice = "";
-	        switchMenus(menuClass);
-	        root.getChildren().remove(menu);
-			root.getChildren().add(menu);
-    	}
-	}
-
-	public static void shoppingAtShop(MenuClass menuClass, StackPane menu, Store store, String item, StackPane root, Controller controller, String image) {
-		switchMenus(menuClass);
-		menu.getChildren().clear();
-		makeText("I have " + store.getItem(item).getQuantity() + " " + item + "in stock.", defaultColor, menu, Pos.TOP_CENTER, 0, 0);
-		makeText("Each " +  item + " costs " + store.getItem(item).getCost() + " dollars.", defaultColor, menu, Pos.TOP_CENTER, 0, 25);
-		makeText("You have " + controller.getItemAmount(item) + " " + item + " in your inventory.", defaultColor, menu, Pos.TOP_CENTER, 0, 75);
-		makeText("You have " + String.format("%.2f", controller.getMoney()) + " dollars to spend.", defaultColor, menu, Pos.TOP_CENTER, 0, 100);
-		makeText("Choose how many to buy.", defaultColor, menu, Pos.TOP_CENTER, 0, 150);
-		putScaledImage(image, menu, Pos.CENTER, 150, 150, 0, 0);
-		root.getChildren().remove(menu);
-		root.getChildren().add(menu);
-	}
-
-	public static void reduceShoppingCode(MenuClass onAllShoppingMenu, StackPane allShoppingMenu, Store store, String item, StackPane root, Controller controller, String image, String allShoppingChoiceName, Store currStore, MenuClass onCurrStoreMenu, MenuClass onShopMenu, StackPane currStoreMenu, StackPane storeMenu) {
-		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, store, item, root, controller, image);
-		allShoppingChoiceName = item;
-		currStore = store;
-		onCurrStoreMenu = onShopMenu;
-		currStoreMenu = storeMenu;
-	}
-
-	public ColorAdjust changeMountainColor(Color c) {
-		Image mountain =  new Image("Layer3.png",1000,100,false,false);
-		PixelReader pr = mountain.getPixelReader();
-		Color actualMountainColor = pr.getColor((int) mountain.getWidth() - 1, (int) mountain.getHeight() - 1);
-		Color groundColor = controller.getGround();
-		ColorAdjust groundColorEffect = new ColorAdjust(
-				(groundColor.getHue() - actualMountainColor.getHue()) / 360,
-				groundColor.getSaturation() - actualMountainColor.getSaturation(),
-				groundColor.getBrightness() - actualMountainColor.getBrightness(),
-				0.0);
-
-		return groundColorEffect;
 	}
 
 	public static void main(String []args) {
