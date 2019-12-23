@@ -147,13 +147,13 @@ public class View extends Application{
     // Shop choices
     String tubacShopChoiceString = "";
     String tucsonShopChoiceString = "";
-    String picachoShopChoice = "";
-    String phoenixShopChoice = "";
-    String prescottShopChoice = "";
-    String flagstaffShopChoice = "";
-    String grandCanyonShopChoice = "";
-    String allShoppingChoice = "";
-    String allShoppingChoiceName = "";
+    String picachoShopChoiceString = "";
+    String phoenixShopChoiceString = "";
+    String prescottShopChoiceString = "";
+    String flagstaffShopChoiceString = "";
+    String grandCanyonShopChoiceString = "";
+    String allShoppingChoiceString = "";
+    String allShoppingChoiceNameString = "";
     
     // Menu strings
     String whileTravelingChoice = "";
@@ -372,7 +372,7 @@ public class View extends Application{
 			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
 		}
 
-		// Trim the string
+		// Remove whitespace
 		theString.trim();
 		
 		// Return it
@@ -381,11 +381,13 @@ public class View extends Application{
 
 	public String printUserInputNumber(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
 
+		// If the user pressed 1, 2, 3, or 4
 		if ((keyEvent.getCharacter().equals("1") || keyEvent.getCharacter().equals("2") || keyEvent.getCharacter().equals("3") || keyEvent.getCharacter().equals("4"))
 		   && theString.length() == 0) {
 			theString = keyEvent.getCharacter();
 		}
 		
+		// If the user pressed backspace
 		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
 			theString = "";
 		}
@@ -410,11 +412,13 @@ public class View extends Application{
 
 	public String printUserInputStoreNumber(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
 
+		// If the user put 1, 2, 3, or 4
 		if ((keyEvent.getCharacter().equals("1") || keyEvent.getCharacter().equals("2") || keyEvent.getCharacter().equals("3") || keyEvent.getCharacter().equals("4") || keyEvent.getCharacter().equals("5"))
 		   && theString.length() == 0) {
 			theString = keyEvent.getCharacter();
 		}
 		
+		// If the user pressed backspace
 		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
 			theString = "";
 		}
@@ -439,7 +443,7 @@ public class View extends Application{
 
 	public String printUserInputBigNumber(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
 
-		// If user inputs a number
+		// If user inputs any number
 		if ((keyEvent.getCharacter().equals("1") || keyEvent.getCharacter().equals("2") || keyEvent.getCharacter().equals("3") ||
 			 keyEvent.getCharacter().equals("4") || keyEvent.getCharacter().equals("5") || keyEvent.getCharacter().equals("6") ||
 			 keyEvent.getCharacter().equals("7") || keyEvent.getCharacter().equals("8") || keyEvent.getCharacter().equals("9") ||
@@ -449,6 +453,7 @@ public class View extends Application{
 			theString = theString + keyEvent.getCharacter();
 		}
 		
+		// If the user pressed backspace
 		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
 			theString = "";
 		}
@@ -473,7 +478,7 @@ public class View extends Application{
 
 	public String printUserInputMediumNumber(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
 
-		// If user inputs a number
+		// If user inputs a number other than 9
 		if ((keyEvent.getCharacter().equals("1") || keyEvent.getCharacter().equals("2") || keyEvent.getCharacter().equals("3") ||
 			 keyEvent.getCharacter().equals("4") || keyEvent.getCharacter().equals("5") || keyEvent.getCharacter().equals("6") ||
 			 keyEvent.getCharacter().equals("7") || keyEvent.getCharacter().equals("8")) && theString.length() == 0) {
@@ -482,6 +487,7 @@ public class View extends Application{
 			theString = keyEvent.getCharacter();
 		}
 		
+		// If the user presses backspace
 		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
 			theString = "";
 		}
@@ -514,6 +520,7 @@ public class View extends Application{
 	}
 	
 	
+	// Builds the map
 	public void buildMapScreen(StackPane root) {
 		
 		mapScreen.getChildren().clear();
@@ -583,38 +590,21 @@ public class View extends Application{
 							
 							makeText(l.getName(), defaultColor, locationInfo, Pos.TOP_CENTER, 0, 50);
 							
-							makeText(String.format("Distance\nas the crow flies:\n\t%.3f miles", 
-											controller.calcMiles(controller.getCurrLocationObj(), l)), 
-									defaultColor,
-									locationInfo,
-									Pos.TOP_CENTER, 
-									0, 
-									100).setWrappingWidth((root.getWidth() / 4));
-							makeText(
-									String.format("Region:\n\t%s", 
-											l.getRegion().getName()), 
-									defaultColor,
-									locationInfo,
-									Pos.TOP_CENTER, 
-									0, 
-									175).setWrappingWidth((root.getWidth() / 4));
-							makeText(
-									String.format("Fall Temperature:\n\t%.0f F", 
-											l.getRegion().getBaseTemperature()), 
-									defaultColor,
-									locationInfo,
-									Pos.TOP_CENTER, 
-									0, 
-									225).setWrappingWidth((root.getWidth() / 4));
+							makeText(String.format("Distance\nas the crow flies:\n\t%.3f miles", controller.calcMiles(controller.getCurrLocationObj(), l)), defaultColor,locationInfo,Pos.TOP_CENTER, 0, 100).setWrappingWidth((root.getWidth() / 4));
+							makeText(String.format("Region:\n\t%s", l.getRegion().getName()), defaultColor, locationInfo,Pos.TOP_CENTER, 0, 175).setWrappingWidth((root.getWidth() / 4));
+							makeText(String.format("Fall Temperature:\n\t%.0f F", l.getRegion().getBaseTemperature()), defaultColor, locationInfo, Pos.TOP_CENTER, 0, 225).setWrappingWidth((root.getWidth() / 4));
 							
 						}
-					});
+					}
+			);
+			
 			location.setOnMouseExited(
 					new EventHandler<MouseEvent>() {
 						public void handle(MouseEvent event) {
 							initMapLocationInfo(locationInfo);
 						}
-					});
+					}
+			);
 			
 			mapDisplay.getChildren().add(location);
 			initMapLocationInfo(locationInfo);
@@ -627,6 +617,7 @@ public class View extends Application{
     	makeText("Press ENTER to continue", defaultColor, mapScreen, Pos.BOTTOM_CENTER, 0, 0);
 	}
 	
+	// Used for map text display
 	private void initMapLocationInfo(StackPane sp) {
 		sp.getChildren().clear();
 		makeText("Mouse Over", defaultColor, sp, Pos.CENTER, 0, -50);
@@ -636,6 +627,7 @@ public class View extends Application{
 		makeText("Information", defaultColor, sp, Pos.CENTER, 0, 50);
 	}
 
+	// Puts images
 	public static void putScaledImage(String image, StackPane menu, Pos position, int width, int height, int translateX, int translateY) {
 		Image theImage = new Image(new File(image).toURI().toString(), width, height, true, false);
 		ImageView theImageView = new ImageView(theImage);
@@ -645,6 +637,7 @@ public class View extends Application{
 		menu.getChildren().add(theImageView);
 	}
 
+	// Redraws the traveling menu every time the user presses space or goes back to the traveling menu
 	public void redrawTravelingMenu(StackPane root, StackPane travelingMenu) {
 
         //boolean validBuy = controller.buyItem("water", Integer.valueOf(gallonsWater));
@@ -721,17 +714,19 @@ public class View extends Application{
 	    makeText("Press Enter to size up the situation", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 50);
 	}
 
+	// Buys items at shops
 	public void buyAtShop(Controller controller, String item, int amount, Store store, StackPane menu, MenuClass menuClass, StackPane root) {
 
     	boolean validBuy = controller.buyItemTownStore(item, amount, store);
 
     	// only continue if buy is valid
     	if (validBuy) {
-	    	allShoppingChoice = "";
+	    	allShoppingChoiceString = "";
 	        switchMenus(menuClass, menu);
     	}
 	}
 
+	// Display shop
 	public static void shoppingAtShop(MenuClass menuClass, StackPane menu, Store store, String item, StackPane root, Controller controller, String image) {
 		switchMenus(menuClass, menu);
 		menu.getChildren().clear();
@@ -743,14 +738,16 @@ public class View extends Application{
 		putScaledImage(image, menu, Pos.CENTER, 150, 150, 0, 0);
 	}
 
-	public static void reduceShoppingCode(MenuClass onAllShoppingMenu, StackPane allShoppingMenu, Store store, String item, StackPane root, Controller controller, String image, String allShoppingChoiceName, Store currStore, MenuClass onCurrStoreMenu, MenuClass onShopMenu, StackPane currStoreMenu, StackPane storeMenu) {
+	// Helper function for shop
+	public static void reduceShoppingCode(MenuClass onAllShoppingMenu, StackPane allShoppingMenu, Store store, String item, StackPane root, Controller controller, String image, String allShoppingChoiceNameString, Store currStore, MenuClass onCurrStoreMenu, MenuClass onShopMenu, StackPane currStoreMenu, StackPane storeMenu) {
 		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, store, item, root, controller, image);
-		allShoppingChoiceName = item;
+		allShoppingChoiceNameString = item;
 		currStore = store;
 		onCurrStoreMenu = onShopMenu;
 		currStoreMenu = storeMenu;
 	}
 
+	// Used to make the mountains change color with the season
 	public ColorAdjust changeMountainColor(Color c) {
 		Image mountain =  new Image("Layer3.png",1000,100,false,false);
 		PixelReader pr = mountain.getPixelReader();
@@ -1492,7 +1489,7 @@ public class View extends Application{
 
 					// hit enter on transition menu
                     else if (onTubacTransitionMenu.getTheBoolean()) {
-                    	allShoppingChoice = "";
+                    	allShoppingChoiceString = "";
                     	tubacShopChoiceString = "";
                     	switchMenus(onTubacShopMenu, tubacShopMenu);
 
@@ -1515,7 +1512,7 @@ public class View extends Application{
                     }
 
                     else if (onTucsonTransitionMenu.getTheBoolean()) {
-                    	allShoppingChoice = "";
+                    	allShoppingChoiceString = "";
                     	tucsonShopChoiceString = "";
                     	switchMenus(onTucsonShopMenu, tucsonShopMenu);
 
@@ -1538,8 +1535,8 @@ public class View extends Application{
                     }
 
                     else if (onPicachoTransitionMenu.getTheBoolean()) {
-                    	allShoppingChoice = "";
-                    	picachoShopChoice = "";
+                    	allShoppingChoiceString = "";
+                    	picachoShopChoiceString = "";
                     	switchMenus(onPicachoShopMenu, picachoShopMenu);
 
                     	// Fill each town's store with items
@@ -1562,8 +1559,8 @@ public class View extends Application{
                     }
 
                     else if (onPhoenixTransitionMenu.getTheBoolean()) {
-                    	allShoppingChoice = "";
-                    	phoenixShopChoice = "";
+                    	allShoppingChoiceString = "";
+                    	phoenixShopChoiceString = "";
                     	switchMenus(onPhoenixShopMenu, phoenixShopMenu);
 
                     	// Fill each town's store with items
@@ -1589,8 +1586,8 @@ public class View extends Application{
 
 
                     else if (onPrescottTransitionMenu.getTheBoolean()) {
-                    	allShoppingChoice = "";
-                    	prescottShopChoice = "";
+                    	allShoppingChoiceString = "";
+                    	prescottShopChoiceString = "";
                     	switchMenus(onPrescottShopMenu, prescottShopMenu);
 
                     	// Fill each town's store with items
@@ -1612,8 +1609,8 @@ public class View extends Application{
                     }
 
                     else if (onFlagstaffTransitionMenu.getTheBoolean()) {
-                    	allShoppingChoice = "";
-                    	flagstaffShopChoice = "";
+                    	allShoppingChoiceString = "";
+                    	flagstaffShopChoiceString = "";
                     	switchMenus(onFlagstaffShopMenu, flagstaffShopMenu);
 
                     	// Fill each town's store with items
@@ -1635,8 +1632,8 @@ public class View extends Application{
                     }
 
                     else if (onGrandCanyonTransitionMenu.getTheBoolean()) {
-                    	allShoppingChoice = "";
-                    	grandCanyonShopChoice = "";
+                    	allShoppingChoiceString = "";
+                    	grandCanyonShopChoiceString = "";
                     	switchMenus(onGrandCanyonShopMenu, grandCanyonShopMenu);
 
                     	// Fill each town's store with items
@@ -1666,7 +1663,7 @@ public class View extends Application{
                     else if (onTubacShopMenu.getTheBoolean()) {
                     	if (tubacShopChoiceString.equals("1")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tubacStore, "oxen", root, controller, "images/ox.png");
-                    		allShoppingChoiceName = "oxen";
+                    		allShoppingChoiceNameString = "oxen";
                     		currStore = tubacStore;
                     		onCurrStoreMenu = onTubacShopMenu;
                     		currStoreMenu = tubacShopMenu;
@@ -1674,7 +1671,7 @@ public class View extends Application{
 
                     	else if (tubacShopChoiceString.equals("2")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tubacStore, "food", root, controller, "images/lamb.png");
-                    		allShoppingChoiceName = "food";
+                    		allShoppingChoiceNameString = "food";
                     		currStore = tubacStore;
                     		onCurrStoreMenu = onTubacShopMenu;
                     		currStoreMenu = tubacShopMenu;
@@ -1682,7 +1679,7 @@ public class View extends Application{
 
                     	else if (tubacShopChoiceString.equals("3")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tubacStore, "water", root, controller, "images/water.png");
-                    		allShoppingChoiceName = "water";
+                    		allShoppingChoiceNameString = "water";
                     		currStore = tubacStore;
                     		onCurrStoreMenu = onTubacShopMenu;
                     		currStoreMenu = tubacShopMenu;
@@ -1690,7 +1687,7 @@ public class View extends Application{
 
                     	else if (tubacShopChoiceString.equals("4")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tubacStore, "ammo", root, controller, "images/bullet.png");
-                    		allShoppingChoiceName = "ammo";
+                    		allShoppingChoiceNameString = "ammo";
                     		currStore = tubacStore;
                     		onCurrStoreMenu = onTubacShopMenu;
                     		currStoreMenu = tubacShopMenu;
@@ -1706,7 +1703,7 @@ public class View extends Application{
                     else if (onTucsonShopMenu.getTheBoolean()) {
                     	if (tucsonShopChoiceString.equals("1")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tucsonStore, "oxen", root, controller, "images/ox.png");
-                    		allShoppingChoiceName = "oxen";
+                    		allShoppingChoiceNameString = "oxen";
                     		currStore = tucsonStore;
                     		onCurrStoreMenu = onTucsonShopMenu;
                     		currStoreMenu = tucsonShopMenu;
@@ -1714,7 +1711,7 @@ public class View extends Application{
 
                     	else if (tucsonShopChoiceString.equals("2")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tucsonStore, "blanket", root, controller, "images/blanket.jpg");
-                    		allShoppingChoiceName = "blanket";
+                    		allShoppingChoiceNameString = "blanket";
                     		currStore = tucsonStore;
                     		onCurrStoreMenu = onTucsonShopMenu;
                     		currStoreMenu = tucsonShopMenu;
@@ -1722,7 +1719,7 @@ public class View extends Application{
 
                     	else if (tucsonShopChoiceString.equals("3")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tucsonStore, "water", root, controller, "images/water.png");
-                    		allShoppingChoiceName = "water";
+                    		allShoppingChoiceNameString = "water";
                     		currStore = tucsonStore;
                     		onCurrStoreMenu = onTucsonShopMenu;
                     		currStoreMenu = tucsonShopMenu;
@@ -1730,7 +1727,7 @@ public class View extends Application{
 
                     	else if (tucsonShopChoiceString.equals("4")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tucsonStore, "ammo", root, controller, "images/bullet.png");
-                    		allShoppingChoiceName = "ammo";
+                    		allShoppingChoiceNameString = "ammo";
                     		currStore = tucsonStore;
                     		onCurrStoreMenu = onTucsonShopMenu;
                     		currStoreMenu = tucsonShopMenu;
@@ -1745,207 +1742,207 @@ public class View extends Application{
 					// hit enter on shop menu
                     else if (onPicachoShopMenu.getTheBoolean()) {
                     	
-                    	if (picachoShopChoice.equals("1")) {
+                    	if (picachoShopChoiceString.equals("1")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, picachoStore, "oxen", root, controller, "images/ox.png");
-                    		allShoppingChoiceName = "oxen";
+                    		allShoppingChoiceNameString = "oxen";
                     		currStore = picachoStore;
                     		onCurrStoreMenu = onPicachoShopMenu;
                     		currStoreMenu = picachoShopMenu;
                     	}
 
-                    	else if (picachoShopChoice.equals("2")) {
+                    	else if (picachoShopChoiceString.equals("2")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, picachoStore, "blanket", root, controller, "images/blanket.jpg");
-                    		allShoppingChoiceName = "blanket";
+                    		allShoppingChoiceNameString = "blanket";
                     		currStore = picachoStore;
                     		onCurrStoreMenu = onPicachoShopMenu;
                     		currStoreMenu = picachoShopMenu;
                     	}
 
-                    	else if (picachoShopChoice.equals("3")) {
+                    	else if (picachoShopChoiceString.equals("3")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, picachoStore, "water", root, controller, "images/water.png");
-                    		allShoppingChoiceName = "water";
+                    		allShoppingChoiceNameString = "water";
                     		currStore = picachoStore;
                     		onCurrStoreMenu = onPicachoShopMenu;
                     		currStoreMenu = picachoShopMenu;
                     	}
 
-                    	else if (picachoShopChoice.equals("4")) {
+                    	else if (picachoShopChoiceString.equals("4")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, picachoStore, "ammo", root, controller, "images/bullet.png");
-                    		allShoppingChoiceName = "ammo";
+                    		allShoppingChoiceNameString = "ammo";
                     		currStore = picachoStore;
                     		onCurrStoreMenu = onPicachoShopMenu;
                     		currStoreMenu = picachoShopMenu;
                     	}
 
-                    	else if (picachoShopChoice.equals("5")) {
+                    	else if (picachoShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
-                    	picachoShopChoice = "";
+                    	picachoShopChoiceString = "";
                     }
 
                     else if (onPhoenixShopMenu.getTheBoolean()) {
-                    	if (phoenixShopChoice.equals("1")) {
+                    	if (phoenixShopChoiceString.equals("1")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, phoenixStore, "oxen", root, controller, "images/ox.png");
-                    		allShoppingChoiceName = "oxen";
+                    		allShoppingChoiceNameString = "oxen";
                     		currStore = phoenixStore;
                     		onCurrStoreMenu = onPhoenixShopMenu;
                     		currStoreMenu = phoenixShopMenu;
                     	}
 
-                    	else if (phoenixShopChoice.equals("2")) {
+                    	else if (phoenixShopChoiceString.equals("2")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, phoenixStore, "blanket", root, controller, "images/blanket.jpg");
-                    		allShoppingChoiceName = "blanket";
+                    		allShoppingChoiceNameString = "blanket";
                     		currStore = phoenixStore;
                     		onCurrStoreMenu = onPhoenixShopMenu;
                     		currStoreMenu = phoenixShopMenu;
                     	}
 
-                    	else if (phoenixShopChoice.equals("3")) {
+                    	else if (phoenixShopChoiceString.equals("3")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, phoenixStore, "water", root, controller, "images/water.png");
-                    		allShoppingChoiceName = "water";
+                    		allShoppingChoiceNameString = "water";
                     		currStore = phoenixStore;
                     		onCurrStoreMenu = onPhoenixShopMenu; 
                     		currStoreMenu = phoenixShopMenu;
                     	}
 
-                    	else if (phoenixShopChoice.equals("4")) {
+                    	else if (phoenixShopChoiceString.equals("4")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, phoenixStore, "ammo", root, controller, "images/bullet.png");
-                    		allShoppingChoiceName = "ammo";
+                    		allShoppingChoiceNameString = "ammo";
                     		currStore = phoenixStore;
                     		onCurrStoreMenu = onPhoenixShopMenu;
                     		currStoreMenu = phoenixShopMenu;
                     	}
 
-                    	else if (phoenixShopChoice.equals("5")) {
+                    	else if (phoenixShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
-                    	phoenixShopChoice = "";
+                    	phoenixShopChoiceString = "";
                     }
 
 
                     else if (onPrescottShopMenu.getTheBoolean()) {
-                    	if (prescottShopChoice.equals("1")) {
+                    	if (prescottShopChoiceString.equals("1")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, prescottStore, "oxen", root, controller, "images/ox.png");
-                    		allShoppingChoiceName = "oxen";
+                    		allShoppingChoiceNameString = "oxen";
                     		currStore = prescottStore;
                     		onCurrStoreMenu = onPrescottShopMenu;
                     		currStoreMenu = prescottShopMenu;
                     	}
 
-                    	else if (prescottShopChoice.equals("2")) {
+                    	else if (prescottShopChoiceString.equals("2")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, prescottStore, "food", root, controller, "images/lamb.png");
-                    		allShoppingChoiceName = "food";
+                    		allShoppingChoiceNameString = "food";
                     		currStore = prescottStore;
                     		onCurrStoreMenu = onPrescottShopMenu;
                     		currStoreMenu = prescottShopMenu;
                     	}
 
-                    	else if (prescottShopChoice.equals("3")) {
+                    	else if (prescottShopChoiceString.equals("3")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, prescottStore, "water", root, controller, "images/water.png");
-                    		allShoppingChoiceName = "water";
+                    		allShoppingChoiceNameString = "water";
                     		currStore = prescottStore;
                     		onCurrStoreMenu = onPrescottShopMenu;
                     		currStoreMenu = prescottShopMenu;
                     	}
 
-                    	else if (prescottShopChoice.equals("4")) {
+                    	else if (prescottShopChoiceString.equals("4")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, prescottStore, "ammo", root, controller, "images/bullet.png");
-                    		allShoppingChoiceName = "ammo";
+                    		allShoppingChoiceNameString = "ammo";
                     		currStore = prescottStore;
                     		onCurrStoreMenu = onPrescottShopMenu;
                     		currStoreMenu = prescottShopMenu;
                     	}
 
-                    	else if (prescottShopChoice.equals("5")) {
+                    	else if (prescottShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
-                    	prescottShopChoice = "";
+                    	prescottShopChoiceString = "";
                     }
 
 
                     else if (onFlagstaffShopMenu.getTheBoolean()) {
-                    	if (flagstaffShopChoice.equals("1")) {
+                    	if (flagstaffShopChoiceString.equals("1")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, flagstaffStore, "blanket", root, controller, "images/blanket.jpg");
-                    		allShoppingChoiceName = "blanket";
+                    		allShoppingChoiceNameString = "blanket";
                     		currStore = flagstaffStore;
                     		onCurrStoreMenu = onFlagstaffShopMenu;
                     		currStoreMenu = flagstaffShopMenu;
                     	}
 
-                    	else if (flagstaffShopChoice.equals("2")) {
+                    	else if (flagstaffShopChoiceString.equals("2")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, flagstaffStore, "food", root, controller, "images/lamb.png");
-                    		allShoppingChoiceName = "food";
+                    		allShoppingChoiceNameString = "food";
                     		currStore = flagstaffStore;
                     		onCurrStoreMenu = onFlagstaffShopMenu;
                     		currStoreMenu = flagstaffShopMenu;
                     	}
 
-                    	else if (flagstaffShopChoice.equals("3")) {
+                    	else if (flagstaffShopChoiceString.equals("3")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, flagstaffStore, "water", root, controller, "images/water.png");
-                    		allShoppingChoiceName = "water";
+                    		allShoppingChoiceNameString = "water";
                     		currStore = flagstaffStore;
                     		onCurrStoreMenu = onFlagstaffShopMenu;
                     		currStoreMenu = flagstaffShopMenu;
                     	}
 
-                    	else if (flagstaffShopChoice.equals("4")) {
+                    	else if (flagstaffShopChoiceString.equals("4")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, flagstaffStore, "ammo", root, controller, "images/bullet.png");
-                    		allShoppingChoiceName = "ammo";
+                    		allShoppingChoiceNameString = "ammo";
                     		currStore = flagstaffStore;
                     		onCurrStoreMenu = onFlagstaffShopMenu;
                     		currStoreMenu = flagstaffShopMenu;
                     	}
 
-                    	else if (flagstaffShopChoice.equals("5")) {
+                    	else if (flagstaffShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
-                    	flagstaffShopChoice = "";
+                    	flagstaffShopChoiceString = "";
                     }
 
 
                     else if (onGrandCanyonShopMenu.getTheBoolean()) {
-                    	if (grandCanyonShopChoice.equals("1")) {
+                    	if (grandCanyonShopChoiceString.equals("1")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, grandCanyonStore, "oxen", root, controller, "images/ox.png");
-                    		allShoppingChoiceName = "oxen";
+                    		allShoppingChoiceNameString = "oxen";
                     		currStore = grandCanyonStore;
                     		onCurrStoreMenu = onGrandCanyonShopMenu;
                     		currStoreMenu = grandCanyonShopMenu;
                     	}
 
-                    	else if (grandCanyonShopChoice.equals("2")) {
+                    	else if (grandCanyonShopChoiceString.equals("2")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, grandCanyonStore, "food", root, controller, "images/lamb.png");
-                    		allShoppingChoiceName = "food";
+                    		allShoppingChoiceNameString = "food";
                     		currStore = grandCanyonStore;
                     		onCurrStoreMenu = onGrandCanyonShopMenu;
                     		currStoreMenu = grandCanyonShopMenu;
                     	}
 
-                    	else if (grandCanyonShopChoice.equals("3")) {
+                    	else if (grandCanyonShopChoiceString.equals("3")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, grandCanyonStore, "water", root, controller, "images/water.png");
-                    		allShoppingChoiceName = "water";
+                    		allShoppingChoiceNameString = "water";
                     		currStore = grandCanyonStore;
                     		onCurrStoreMenu = onGrandCanyonShopMenu;
                     		currStoreMenu = grandCanyonShopMenu;
                     	}
 
-                    	else if (grandCanyonShopChoice.equals("4")) {
+                    	else if (grandCanyonShopChoiceString.equals("4")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, grandCanyonStore, "ammo", root, controller, "images/bullet.png");
-                    		allShoppingChoiceName = "ammo";
+                    		allShoppingChoiceNameString = "ammo";
                     		currStore = grandCanyonStore;
                     		onCurrStoreMenu = onGrandCanyonShopMenu;
                     		currStoreMenu = grandCanyonShopMenu;
                     	}
 
-                    	else if (grandCanyonShopChoice.equals("5")) {
+                    	else if (grandCanyonShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
-                    	grandCanyonShopChoice = "";
+                    	grandCanyonShopChoiceString = "";
                     }
 
 					// If player made a purchase
                     else if (onAllShoppingMenu.getTheBoolean()) {
 
-                    	buyAtShop(controller, allShoppingChoiceName, Integer.valueOf(allShoppingChoice), currStore, currStoreMenu, onCurrStoreMenu, root );
+                    	buyAtShop(controller, allShoppingChoiceNameString, Integer.valueOf(allShoppingChoiceString), currStore, currStoreMenu, onCurrStoreMenu, root );
                     }
 
                     else if (onSavedGameMenu.getTheBoolean()){
@@ -2114,27 +2111,27 @@ public class View extends Application{
                 }
 
                 else if (onPicachoShopMenu.getTheBoolean()) {
-                	picachoShopChoice = printUserInputStoreNumber(keyEvent, picachoShopChoice, picachoShopChoiceText, picachoShopMenu, Pos.BOTTOM_CENTER);
+                	picachoShopChoiceString = printUserInputStoreNumber(keyEvent, picachoShopChoiceString, picachoShopChoiceText, picachoShopMenu, Pos.BOTTOM_CENTER);
                 }
 
                 else if (onPhoenixShopMenu.getTheBoolean()) {
-                	phoenixShopChoice = printUserInputStoreNumber(keyEvent, phoenixShopChoice, phoenixShopChoiceText, phoenixShopMenu, Pos.BOTTOM_CENTER);
+                	phoenixShopChoiceString = printUserInputStoreNumber(keyEvent, phoenixShopChoiceString, phoenixShopChoiceText, phoenixShopMenu, Pos.BOTTOM_CENTER);
                 }
 
                 else if (onPrescottShopMenu.getTheBoolean()) {
-                	prescottShopChoice = printUserInputStoreNumber(keyEvent, prescottShopChoice, prescottShopChoiceText, prescottShopMenu, Pos.BOTTOM_CENTER);
+                	prescottShopChoiceString = printUserInputStoreNumber(keyEvent, prescottShopChoiceString, prescottShopChoiceText, prescottShopMenu, Pos.BOTTOM_CENTER);
                 }
 
                 else if (onFlagstaffShopMenu.getTheBoolean()) {
-                	flagstaffShopChoice = printUserInputStoreNumber(keyEvent, flagstaffShopChoice, flagstaffShopChoiceText, flagstaffShopMenu, Pos.BOTTOM_CENTER);
+                	flagstaffShopChoiceString = printUserInputStoreNumber(keyEvent, flagstaffShopChoiceString, flagstaffShopChoiceText, flagstaffShopMenu, Pos.BOTTOM_CENTER);
                 }
 
                 else if (onGrandCanyonShopMenu.getTheBoolean()) {
-                	grandCanyonShopChoice = printUserInputStoreNumber(keyEvent, grandCanyonShopChoice, grandCanyonShopChoiceText, grandCanyonShopMenu, Pos.BOTTOM_CENTER);
+                	grandCanyonShopChoiceString = printUserInputStoreNumber(keyEvent, grandCanyonShopChoiceString, grandCanyonShopChoiceText, grandCanyonShopMenu, Pos.BOTTOM_CENTER);
                 }
 
                 else if (onAllShoppingMenu.getTheBoolean()) {
-                	allShoppingChoice = printUserInputBigNumber(keyEvent, allShoppingChoice, allShoppingChoiceText, allShoppingMenu, Pos.BOTTOM_CENTER);
+                	allShoppingChoiceString = printUserInputBigNumber(keyEvent, allShoppingChoiceString, allShoppingChoiceText, allShoppingMenu, Pos.BOTTOM_CENTER);
                 }
 			}
 		});
