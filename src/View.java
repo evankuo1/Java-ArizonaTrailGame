@@ -65,29 +65,29 @@ public class View extends Application{
 	/* The Screens */
 	
 	// These are the beginning screens
-	MenuClass onRootMenu = new MenuClass(); 							// title screen
+	MenuClass onRootMenu = new MenuClass(); 						// title screen
     MenuClass onMainMenu = new MenuClass(); 						// main menu
 	MenuClass onNameMenu = new MenuClass(); 						// choose name screen
-	MenuClass onJobMenu = new MenuClass(); 						// choose job screen
-	MenuClass onPetMenu = new MenuClass(); 						// choose pet screen
+	MenuClass onJobMenu = new MenuClass(); 							// choose job screen
+	MenuClass onPetMenu = new MenuClass(); 							// choose pet screen
 	MenuClass onCompanionMenu = new MenuClass(); 					// choose adult companion screen
-	MenuClass onChild1Menu = new MenuClass(); 					// choose child 1 screen
-	MenuClass onChild2Menu = new MenuClass(); 					// choose child 2 screen
-    MenuClass onChild3Menu = new MenuClass(); 					// choose child 3 screen
-    MenuClass onSeasonMenu = new MenuClass(); 					// choose time of year screen
+	MenuClass onChild1Menu = new MenuClass(); 						// choose child 1 screen
+	MenuClass onChild2Menu = new MenuClass(); 						// choose child 2 screen
+    MenuClass onChild3Menu = new MenuClass(); 						// choose child 3 screen
+    MenuClass onSeasonMenu = new MenuClass(); 						// choose time of year screen
     MenuClass onShopIntroductionMenu = new MenuClass(); 			// Money & pre-shop screen
-    MenuClass onBuyOxenMenu = new MenuClass(); 					// Buy Oxen screen
-    MenuClass onBuyFoodMenu = new MenuClass(); 					// Buy Food screen
-    MenuClass onBuyClothesMenu = new MenuClass(); 				// Buy Clothing screen
+    MenuClass onBuyOxenMenu = new MenuClass(); 						// Buy Oxen screen
+    MenuClass onBuyFoodMenu = new MenuClass(); 						// Buy Food screen
+    MenuClass onBuyClothesMenu = new MenuClass(); 					// Buy Clothing screen
     MenuClass onBuyWheelsMenu = new MenuClass(); 					// Buy Wagon Wheels screen
     MenuClass onBuyAxlesMenu = new MenuClass(); 					// Buy Wagon Axles screen
-	MenuClass onJobExplanationMenu = new MenuClass(); 			// Job explanation screen
+	MenuClass onJobExplanationMenu = new MenuClass(); 				// Job explanation screen
     
     // These are the traveling screens
     MenuClass onTravelingMenu = new MenuClass(); 					// Traveling menu
     MenuClass onSuppliesMenu = new MenuClass(); 					// check supplies
     MenuClass onRationsMenu = new MenuClass(); 						// set rations
-    MenuClass onMapMenu = new MenuClass();								// map menu class
+    MenuClass onMapMenu = new MenuClass();							// map menu class
     MenuClass onChangePaceMenu = new MenuClass(); 					// set pace
     MenuClass onWhileTravelingMenu = new MenuClass(); 				// Menu to size up situation while traveling. Different from at landmark
     MenuClass onSavedGameMenu = new MenuClass(); 					// save game
@@ -106,7 +106,7 @@ public class View extends Application{
     MenuClass onCurrStoreMenu = new MenuClass();
     MenuClass onAllShoppingMenu = new MenuClass(); 					// the menu used for all shopping in towns
 	MenuClass onBuyExplanationMenu = new MenuClass(); 				// buying explanation
-	MenuClass onStartShopMenu = new MenuClass(); 						// first shop
+	MenuClass onStartShopMenu = new MenuClass(); 					// first shop
     MenuClass onTubacShopMenu = new MenuClass(); 					// tubac shop
     MenuClass onTucsonShopMenu = new MenuClass();					// tucson shop
     MenuClass onPicachoShopMenu = new MenuClass();					// pichacho shop
@@ -239,7 +239,7 @@ public class View extends Application{
     StackPane onBuyAxlesStack = new StackPane();
     
     StackPane suppliesMenu = new StackPane();
-    StackPane mapScreen = new StackPane();								// map StackPane
+    StackPane mapScreen = new StackPane();								
     StackPane tubacTransitionMenu = new StackPane();
     StackPane tubacShopMenu = new StackPane();
     StackPane tucsonTransitionMenu = new StackPane();
@@ -1235,7 +1235,6 @@ public class View extends Application{
 	                        putScaledImage("images/lamb.png", onBuyOxenStack, Pos.CENTER, 150, 150, 0, 50);
 
                     	}
-
                     }
 
                     // buy oxen -> buy food
@@ -1257,7 +1256,6 @@ public class View extends Application{
 	                        putScaledImage("images/blanket.jpg", onBuyFoodStack, Pos.CENTER, 150, 150, 0, 50);
 
                     	}
-
                     }
 
                     // buy food -> buy clothes
@@ -1287,7 +1285,7 @@ public class View extends Application{
 
                     	// only continue if buy is valid
                     	if (validBuy) {
-	                    		
+	               		
 	                    	gallonsWaterString = "";
 	                        switchMenus(onBuyWheelsMenu, onBuyWheelsStack);
 	                        //money -= Integer.valueOf(numAmmo) * 2; //$2 per box
@@ -1309,18 +1307,12 @@ public class View extends Application{
                  			buildMapScreen(root);
                  			switchMenus(onMapMenu, mapScreen);
                     	 }
-                    	}
-
+                    }
 
                     // map -> traveling
                     else if (onMapMenu.getTheBoolean()) {
                             boolean validBuy = controller.buyItem("water", Integer.valueOf(gallonsWaterString));
                     		redrawTravelingMenu(root, travelingMenu);
-                    }
-
-                    else if (onBuyAxlesMenu.getTheBoolean()){
-                        //switchMenus(onTravelingMenu);
-                        //makeText("Your current Inventory: ", defaultColor, menu);
                     }
 
 					// If on the traveling menu
@@ -1336,8 +1328,7 @@ public class View extends Application{
                     	makeText("5. Change food rations.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 50);
                     	makeText("6. Hunt for food.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 100);
                     	makeText("7. Save Game.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 150);
-                    	makeText("8. Main Menu - !!!WILL NOT SAVE GAME!!!.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 200);
-
+                    	makeText("8. Main Menu - WILL NOT SAVE GAME!.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 200);
                     }
 
 					// This is for the various choices the user can pick on the whileTraveling menu
@@ -1346,8 +1337,6 @@ public class View extends Application{
                     	// Return to traveling menu
                     	if (whileTravelingChoice.equals("1")) {
                     		redrawTravelingMenu(root, travelingMenu);
-
-
                     	}
 
                     	else if (whileTravelingChoice.equals("2")) {
@@ -1371,7 +1360,6 @@ public class View extends Application{
                     	}
 
                         else if (whileTravelingChoice.equals("4")) {
-                    		//change travel pace
                         	changePace = "";
                             switchMenus(onChangePaceMenu, changePaceMenu);
 
@@ -1399,20 +1387,6 @@ public class View extends Application{
                             makeText("2 - Meager: meals are small", defaultColor, rationsMenu, Pos.CENTER, 0,50);
                             makeText("3 - Bare Bones: meals are very small", defaultColor, rationsMenu, Pos.CENTER, 0,100);
 
-                            // scene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-                            //
-                            //     @Override
-                            //     public void handle(KeyEvent keyEvent) {
-                            //         if(keyEvent.getCode() == KeyCode.ENTER) {
-                            //             switchMenus(onTravelingMenu);
-                            //             root.getChildren().remove(travelingMenu);
-                            //             root.getChildren().add(travelingMenu);
-                            //             //primaryStage.setScene(scene);
-                            //         }
-                            //
-                            //     }
-                            // });
-
                     	}
 
                     	// chose hunting game
@@ -1425,9 +1399,7 @@ public class View extends Application{
                     	}
 
                         else if (whileTravelingChoice.equals("7")) {
-                    		//save game
                             switchMenus(onSavedGameMenu, savedGameMenu);
-
                             makeText("Your Game Was Saved!", defaultColor, savedGameMenu, Pos.TOP_CENTER, 0,50);
                             putScaledImage("images/save_game.jpg", savedGameMenu, Pos.CENTER, 300, 600, 0, 50);
                             makeText("Press Enter to continue.", defaultColor, savedGameMenu, Pos.BOTTOM_CENTER, 0,0);
@@ -1450,26 +1422,25 @@ public class View extends Application{
 							primaryStage.setScene(huntingGameScene);
 							huntingGameScene.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 
-								@Override
-								public void handle(KeyEvent keyEvent) {
-									if(keyEvent.getCode() == KeyCode.ESCAPE) {
-										primaryStage.setScene(scene);
-										primaryStage.setWidth(1000);
-										primaryStage.setHeight(700);
-										controller.useItemAmount("ammo", originalNumBullets - huntingGame.getBullets());
-										controller.addHuntingFood(huntingGame.getMeat());
-										redrawTravelingMenu(root, travelingMenu);
-									}
-
+							@Override
+							public void handle(KeyEvent keyEvent) {
+								if(keyEvent.getCode() == KeyCode.ESCAPE) {
+									primaryStage.setScene(scene);
+									primaryStage.setWidth(1000);
+									primaryStage.setHeight(700);
+									controller.useItemAmount("ammo", originalNumBullets - huntingGame.getBullets());
+									controller.addHuntingFood(huntingGame.getMeat());
+									redrawTravelingMenu(root, travelingMenu);
 								}
+							}
 							});
-						} catch (Exception e) {
+                		} 
+                		catch (Exception e) {
 							e.printStackTrace();
 						}
                     }
 
                     else if (onHuntingMenu.getTheBoolean()) {
-
                 		redrawTravelingMenu(root, travelingMenu);
                 		primaryStage.setScene(scene);
                     }
@@ -1480,7 +1451,6 @@ public class View extends Application{
                     }
 
                     else if (onChangePaceMenu.getTheBoolean()) {
-
                     	if (1 <= Integer.valueOf(changePace) && Integer.valueOf(changePace) <= 5) {
                     		controller.setPace(Integer.valueOf(changePace));
                     		redrawTravelingMenu(root, travelingMenu);
@@ -1489,6 +1459,7 @@ public class View extends Application{
 
 					// hit enter on transition menu
                     else if (onTubacTransitionMenu.getTheBoolean()) {
+                    	
                     	allShoppingChoiceString = "";
                     	tubacShopChoiceString = "";
                     	switchMenus(onTubacShopMenu, tubacShopMenu);
@@ -1512,6 +1483,7 @@ public class View extends Application{
                     }
 
                     else if (onTucsonTransitionMenu.getTheBoolean()) {
+                    	
                     	allShoppingChoiceString = "";
                     	tucsonShopChoiceString = "";
                     	switchMenus(onTucsonShopMenu, tucsonShopMenu);
@@ -1535,6 +1507,7 @@ public class View extends Application{
                     }
 
                     else if (onPicachoTransitionMenu.getTheBoolean()) {
+                    	
                     	allShoppingChoiceString = "";
                     	picachoShopChoiceString = "";
                     	switchMenus(onPicachoShopMenu, picachoShopMenu);
@@ -1555,10 +1528,10 @@ public class View extends Application{
                     	makeText("4. Buy Ammo", defaultColor, picachoShopMenu, Pos.CENTER, 0, 100);
                     	makeText("5. Leave store and continue on Arizona Trail", defaultColor, picachoShopMenu, Pos.CENTER, 0, 125);
 
-
                     }
 
                     else if (onPhoenixTransitionMenu.getTheBoolean()) {
+                    	
                     	allShoppingChoiceString = "";
                     	phoenixShopChoiceString = "";
                     	switchMenus(onPhoenixShopMenu, phoenixShopMenu);
@@ -1586,6 +1559,7 @@ public class View extends Application{
 
 
                     else if (onPrescottTransitionMenu.getTheBoolean()) {
+                    	
                     	allShoppingChoiceString = "";
                     	prescottShopChoiceString = "";
                     	switchMenus(onPrescottShopMenu, prescottShopMenu);
@@ -1609,6 +1583,7 @@ public class View extends Application{
                     }
 
                     else if (onFlagstaffTransitionMenu.getTheBoolean()) {
+                    	
                     	allShoppingChoiceString = "";
                     	flagstaffShopChoiceString = "";
                     	switchMenus(onFlagstaffShopMenu, flagstaffShopMenu);
@@ -1632,6 +1607,7 @@ public class View extends Application{
                     }
 
                     else if (onGrandCanyonTransitionMenu.getTheBoolean()) {
+                    	
                     	allShoppingChoiceString = "";
                     	grandCanyonShopChoiceString = "";
                     	switchMenus(onGrandCanyonShopMenu, grandCanyonShopMenu);
@@ -1696,6 +1672,7 @@ public class View extends Application{
                     	else if (tubacShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
+                    	
                     	tubacShopChoiceString = "";
                     }
 
@@ -1736,6 +1713,7 @@ public class View extends Application{
                     	else if (tucsonShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
+                    	
                     	tucsonShopChoiceString = "";
                     }
 
@@ -1816,6 +1794,7 @@ public class View extends Application{
                     	else if (phoenixShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
+                    	
                     	phoenixShopChoiceString = "";
                     }
 
@@ -1856,6 +1835,7 @@ public class View extends Application{
                     	else if (prescottShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
+                    	
                     	prescottShopChoiceString = "";
                     }
 
@@ -1896,6 +1876,7 @@ public class View extends Application{
                     	else if (flagstaffShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
+                    	
                     	flagstaffShopChoiceString = "";
                     }
 
@@ -1936,12 +1917,12 @@ public class View extends Application{
                     	else if (grandCanyonShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
+                    	
                     	grandCanyonShopChoiceString = "";
                     }
 
 					// If player made a purchase
                     else if (onAllShoppingMenu.getTheBoolean()) {
-
                     	buyAtShop(controller, allShoppingChoiceNameString, Integer.valueOf(allShoppingChoiceString), currStore, currStoreMenu, onCurrStoreMenu, root );
                     }
 
@@ -1960,7 +1941,7 @@ public class View extends Application{
 					
                     else if (onDeathScreenMenu.getTheBoolean()) {
                     	if (!controller.getFamilyDead()) {
-                    	redrawTravelingMenu(root, travelingMenu);
+                    		redrawTravelingMenu(root, travelingMenu);
                     	}
                     	
                     	else {
@@ -1974,7 +1955,7 @@ public class View extends Application{
 					
                     else if (onStarvationMenu.getTheBoolean()) {
                     	if (!controller.getFamilyDead()) {
-                    	redrawTravelingMenu(root, travelingMenu);
+                    		redrawTravelingMenu(root, travelingMenu);
                     	}
                     	
                     	else {
@@ -1988,7 +1969,7 @@ public class View extends Application{
 					
                     else if (onThirstMenu.getTheBoolean()) {
                     	if (!controller.getFamilyDead()) {
-                    	redrawTravelingMenu(root, travelingMenu);
+                    		redrawTravelingMenu(root, travelingMenu);
                     	}
                     	
                     	else {
