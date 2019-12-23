@@ -1,24 +1,26 @@
 // Imports
-import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+// IO
+import java.io.File;
+
+// Data structures
+import java.util.ArrayList;
+import java.util.List;
+
+// Animation
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
+
+// Application
 import javafx.application.Application;
+
+// Events and geometry
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 
+// Scene
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.input.KeyCode;
@@ -26,163 +28,186 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
-
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-
 import javafx.scene.control.Alert;
-import javafx.stage.WindowEvent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.effect.ColorAdjust;
 
-
+// Additional utils
+import javafx.util.Duration;
 import java.util.Optional;
-
 
 
 // The view for the application. This contains main.
 public class View extends Application{
 
-	// Various miscellaneous variables such as the controller, media player, etc.
+	/* Various miscellaneous variables */
 	Controller controller = new Controller(); 						// Set up controller
 	MediaPlayer playSong; 											// used to help the song play
 	static List<MenuClass> menuList = new ArrayList<MenuClass>(); 	// Add all menu booleans to this list
     File save_game_file = new File("saved_game.dat");		    	// For saving
 	Person mainCharacter;											// Put all of the various people/inventory objects here
+	static Color defaultColor = Color.WHITE;						// the color for the text
 	
-	// This is what the default text color is. This is here so if you want to change the text color
-	// you can just change this one variable instead of changing every line of code that uses text
-	static Color defaultColor = Color.WHITE;
 	
-	// The screens
-	MenuClass onRoot = new MenuClass(); 							// title screen
+	/* The Screens */
+	
+	// These are the beginning screens
+	MenuClass onRootMenu = new MenuClass(); 							// title screen
     MenuClass onMainMenu = new MenuClass(); 						// main menu
-	MenuClass onMenu2 = new MenuClass(); 							// choose name screen
-	MenuClass onMenu3 = new MenuClass(); 							// choose job screen
-	MenuClass onMenu4 = new MenuClass(); 							// choose pet screen
-	MenuClass onMenu5 = new MenuClass(); 							// choose adult companion screen
-	MenuClass onMenu6 = new MenuClass(); 							// choose child 1 screen
-	MenuClass onMenu7 = new MenuClass(); 							// choose child 2 screen
-    MenuClass onMenu8 = new MenuClass(); 							// choose child 3 screen
-    MenuClass onMenu9 = new MenuClass(); 							// choose time of year screen
-    MenuClass onMenu10 = new MenuClass(); 							// Money & pre-shop screen
-    MenuClass onMenu11 = new MenuClass(); 							// Buy Oxen screen
-    MenuClass onMenu12 = new MenuClass(); 							// Buy Food screen
-    MenuClass onMenu13 = new MenuClass(); 							// Buy Clothing screen
-    MenuClass onMenu14 = new MenuClass(); 							// Buy Wagon Wheels screen
-    MenuClass onMenu15 = new MenuClass(); 							// Buy Wagon Axles screen
+	MenuClass onNameMenu = new MenuClass(); 						// choose name screen
+	MenuClass onJobMenu = new MenuClass(); 						// choose job screen
+	MenuClass onPetMenu = new MenuClass(); 						// choose pet screen
+	MenuClass onCompanionMenu = new MenuClass(); 					// choose adult companion screen
+	MenuClass onChild1Menu = new MenuClass(); 					// choose child 1 screen
+	MenuClass onChild2Menu = new MenuClass(); 					// choose child 2 screen
+    MenuClass onChild3Menu = new MenuClass(); 					// choose child 3 screen
+    MenuClass onSeasonMenu = new MenuClass(); 					// choose time of year screen
+    MenuClass onShopIntroductionMenu = new MenuClass(); 			// Money & pre-shop screen
+    MenuClass onBuyOxenMenu = new MenuClass(); 					// Buy Oxen screen
+    MenuClass onBuyFoodMenu = new MenuClass(); 					// Buy Food screen
+    MenuClass onBuyClothesMenu = new MenuClass(); 				// Buy Clothing screen
+    MenuClass onBuyWheelsMenu = new MenuClass(); 					// Buy Wagon Wheels screen
+    MenuClass onBuyAxlesMenu = new MenuClass(); 					// Buy Wagon Axles screen
+	MenuClass onJobExplanationMenu = new MenuClass(); 			// Job explanation screen
+    
+    // These are the traveling screens
     MenuClass onTravelingMenu = new MenuClass(); 					// Traveling menu
     MenuClass onSuppliesMenu = new MenuClass(); 					// check supplies
     MenuClass onRationsMenu = new MenuClass(); 						// set rations
-    MenuClass onMap = new MenuClass();								// map menu class
+    MenuClass onMapMenu = new MenuClass();								// map menu class
     MenuClass onChangePaceMenu = new MenuClass(); 					// set pace
-    MenuClass onTubacTransitionMenu = new MenuClass(); 				// tubac screen
-    MenuClass onTucsonTransitionMenu = new MenuClass();
-    MenuClass onPicachoTransitionMenu = new MenuClass();
-    MenuClass onPhoenixTransitionMenu = new MenuClass();
-    MenuClass onPrescottTransitionMenu = new MenuClass();
-    MenuClass onFlagstaffTransitionMenu = new MenuClass();
-    MenuClass onGrandCanyonTransitionMenu = new MenuClass();
-    MenuClass onKanabTransitionMenu = new MenuClass();
-    MenuClass onTubacShopMenu = new MenuClass(); 					// tubac shop
-    MenuClass onTucsonShopMenu = new MenuClass();
-    MenuClass onPicachoShopMenu = new MenuClass();
-    MenuClass onPhoenixShopMenu = new MenuClass();
-    MenuClass onPrescottShopMenu = new MenuClass();
-    MenuClass onFlagstaffShopMenu = new MenuClass();
-    MenuClass onGrandCanyonShopMenu = new MenuClass();
+    MenuClass onWhileTravelingMenu = new MenuClass(); 				// Menu to size up situation while traveling. Different from at landmark
     MenuClass onSavedGameMenu = new MenuClass(); 					// save game
-    MenuClass onCurrStore = new MenuClass();
+    
+    // These are the city transition screens
+    MenuClass onTubacTransitionMenu = new MenuClass(); 				// tubac screen
+    MenuClass onTucsonTransitionMenu = new MenuClass();				// tucson screen
+    MenuClass onPicachoTransitionMenu = new MenuClass();			// pichacho screen
+    MenuClass onPhoenixTransitionMenu = new MenuClass();			// phoenix screen
+    MenuClass onPrescottTransitionMenu = new MenuClass();			// prescott screen
+    MenuClass onFlagstaffTransitionMenu = new MenuClass();			// flagstaff screen
+    MenuClass onGrandCanyonTransitionMenu = new MenuClass();		// grand canyon screen
+    MenuClass onKanabTransitionMenu = new MenuClass();				// kanab screen
+    
+    // These are the shopping screens
+    MenuClass onCurrStoreMenu = new MenuClass();
     MenuClass onAllShoppingMenu = new MenuClass(); 					// the menu used for all shopping in towns
+	MenuClass onBuyExplanationMenu = new MenuClass(); 				// buying explanation
+	MenuClass onStartShopMenu = new MenuClass(); 						// first shop
+    MenuClass onTubacShopMenu = new MenuClass(); 					// tubac shop
+    MenuClass onTucsonShopMenu = new MenuClass();					// tucson shop
+    MenuClass onPicachoShopMenu = new MenuClass();					// pichacho shop
+    MenuClass onPhoenixShopMenu = new MenuClass();					// phoenix shop
+    MenuClass onPrescottShopMenu = new MenuClass();					// prescott shop
+    MenuClass onFlagstaffShopMenu = new MenuClass();				// flagstaff shop		
+    MenuClass onGrandCanyonShopMenu = new MenuClass();				// grand canyon shop
+	
+	// These are the hunting screens
     MenuClass onHuntingMenu = new MenuClass(); 						// hunting game
     MenuClass onHuntingExplanationMenu = new MenuClass(); 			// hunting game explanation
-    MenuClass onWhileTravelingMenu = new MenuClass(); 				// Menu to size up situation while traveling. Different from at landmark
-	MenuClass onBuyingExplanation = new MenuClass(); 				// buying explanation
-	MenuClass onStartShop = new MenuClass(); 						// first shop
-	MenuClass onJobExplanationScreen = new MenuClass(); 			// Job explanation screen
-	MenuClass onDeathScreenMenu = new MenuClass();
-	MenuClass onStarvationMenu = new MenuClass();
-	MenuClass onThirstMenu = new MenuClass();
-	MenuClass onGameOverMenu = new MenuClass();
+    
+    // These are the various game over screens
+	MenuClass onDeathScreenMenu = new MenuClass();					// death
+	MenuClass onStarvationMenu = new MenuClass();					// starvation
+	MenuClass onThirstMenu = new MenuClass();						// thirst
+	MenuClass onGameOverMenu = new MenuClass();						// game over
 
-	// Holds various strings used for storage and menu printing.
-	String name = "";
-	String jobPicked = "";
-	String dogName = "";
-	String travelingCompanionName = "";
-	String childCompanionName = "";
-	String startingMonth = "";
-    String companionName = "";
-    String child1 = "";
-    String child2 = "";
-    String child3 = "";
-    String numOxen = "";
-    String poundsFood = "";
-    String numClothing = "";
-    String numAmmo = "";
-    String gallonsWater = "";
-    String whileTravelingChoice = "";
-    String changePace = "";
-    String changeRations = "";
-    String allShoppingChoice = "";
-    String allShoppingChoiceName = "";
-    String lastVisitedTown = "";
-    String gameMode = "";
-    String displayedDead = "";
-    String tubacShopChoice = "";
-    String tucsonShopChoice = "";
+	
+	/* Strings for storage and menu printing */
+	
+	// People and companions
+	String nameString = "";
+	String dogNameString = "";
+	String travelingCompanionNameString = "";
+    String companionNameString = "";
+    String child1String = "";
+    String child2String = "";
+    String child3String = "";
+    
+    // Supplies
+    String numOxenString = "";
+    String poundsFoodString = "";
+    String numClothingString = "";
+    String numAmmoString = "";
+    String gallonsWaterString = "";
+    
+    // Shop choices
+    String tubacShopChoiceString = "";
+    String tucsonShopChoiceString = "";
     String picachoShopChoice = "";
     String phoenixShopChoice = "";
     String prescottShopChoice = "";
     String flagstaffShopChoice = "";
     String grandCanyonShopChoice = "";
-
-	// Various variables for menu printing to work
+    String allShoppingChoice = "";
+    String allShoppingChoiceName = "";
+    
+    // Menu strings
+    String whileTravelingChoice = "";
+    String changePace = "";
+    String changeRations = "";
+    
+    // Miscellaneous
+	String jobPicked = "";
+	String startingMonth = "";
+    String lastVisitedTown = "";
+    String gameMode = "";
+    String displayedDead = "";
+    
+    
+	/* Textclasses for menu printing */
+    
+    // Person and companions
 	TextClass nameText = new TextClass();
-	TextClass jobPickedText = new TextClass();
-	TextClass dogNameText = new TextClass();
     TextClass companionNameText = new TextClass();
     TextClass child1Text = new TextClass();
     TextClass child2Text = new TextClass();
     TextClass child3Text = new TextClass();
+	TextClass jobPickedText = new TextClass();
+	TextClass dogNameText = new TextClass();
 	TextClass travelingCompanionNameText = new TextClass();
 	TextClass childCompanionNameText = new TextClass();
-	TextClass startingMonthText = new TextClass();
+	
+	// Supplies
     TextClass numOxenText = new TextClass();
     TextClass poundsFoodText = new TextClass();
     TextClass numClothingText = new TextClass();
     TextClass numAmmoText = new TextClass();
     TextClass gallonsWaterText = new TextClass();
-    TextClass whileTravelingChoiceText = new TextClass();
-    TextClass changeRationsText = new TextClass();
-    TextClass changePaceText = new TextClass();
-    TextClass tubacShopChoiceText = new TextClass();
-    TextClass allShoppingChoiceText = new TextClass();
-    TextClass allShoppingChoiceNameText = new TextClass();
-    TextClass gameModeText = new TextClass();
+    
+    // Shops
     TextClass tucsonShopChoiceText = new TextClass();
     TextClass picachoShopChoiceText = new TextClass();
     TextClass phoenixShopChoiceText = new TextClass();
     TextClass prescottShopChoiceText = new TextClass();
     TextClass flagstaffShopChoiceText = new TextClass();
     TextClass grandCanyonShopChoiceText = new TextClass();
+    TextClass tubacShopChoiceText = new TextClass();
+    TextClass allShoppingChoiceText = new TextClass();
+    TextClass allShoppingChoiceNameText = new TextClass();
+    
+    // Menus and Choices
+    TextClass whileTravelingChoiceText = new TextClass();
+    TextClass changeRationsText = new TextClass();
+    TextClass changePaceText = new TextClass();
+	TextClass startingMonthText = new TextClass();
+    TextClass gameModeText = new TextClass();
 
-	// make stores for each town
+    
+    /* Make the stores */
 	Store currStore = new Store();
 	Store tubacStore = new Store();
 	Store tucsonStore = new Store();
@@ -193,23 +218,26 @@ public class View extends Application{
 	Store grandCanyonStore = new Store();
 
 
-	// Set up the StackPanes that will hold everything
+	/* Set up the StackPanes that will hold everything */
+	
+	// Beginning
 	StackPane root = new StackPane();
     StackPane mainMenu = new StackPane();
-	StackPane menu2 = new StackPane();
-	StackPane menu3 = new StackPane();
-	StackPane menu4 = new StackPane();
-	StackPane menu5 = new StackPane();
-	StackPane menu6 = new StackPane();
-	StackPane menu7 = new StackPane();
-    StackPane menu8 = new StackPane();
-    StackPane menu9 = new StackPane();
-    StackPane menu10 = new StackPane();
-    StackPane menu11 = new StackPane();
-    StackPane menu12 = new StackPane();
-    StackPane menu13 = new StackPane();
-    StackPane menu14 = new StackPane();
-    StackPane menu15 = new StackPane();
+	StackPane onNameStack = new StackPane();
+	StackPane onJobStack = new StackPane();
+	StackPane onPetStack = new StackPane();
+	StackPane onCompanionStack = new StackPane();
+	StackPane onChild1Stack = new StackPane();
+	StackPane onChild2Stack = new StackPane();
+    StackPane onChild3Stack = new StackPane();
+    StackPane onSeasonStack = new StackPane();
+    StackPane onShopIntroductionStack = new StackPane();
+    StackPane onBuyOxenStack = new StackPane();
+    StackPane onBuyFoodStack = new StackPane();
+    StackPane onBuyClothesStack = new StackPane();
+    StackPane onBuyWheelsStack = new StackPane();
+    StackPane onBuyAxlesStack = new StackPane();
+    
     StackPane suppliesMenu = new StackPane();
     StackPane mapScreen = new StackPane();								// map StackPane
     StackPane tubacTransitionMenu = new StackPane();
@@ -244,7 +272,6 @@ public class View extends Application{
     StackPane thirstMenu = new StackPane();
     
     
-    
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
@@ -252,41 +279,31 @@ public class View extends Application{
 		Canvas canvas = new Canvas(1000,500);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 
-		// Tells the switchMenu() method what menu we're on
-        //switchMenus(root);
+		// Go to main menu
 		switchMenus(onMainMenu);
 
-        //add main menu
+        // Build the menus
         buildMenu(root, mainMenu, Color.BLACK);
-
-		// Set up the 2nd menu and add it to the stackpane that'll hold all other stackpanes.
-		buildMenu(root, menu2, Color.BLACK);
-
-		// Set up 3rd menu
-		buildMenu(root, menu3, Color.BLACK);
-
-		// 4th menu
-		buildMenu(root, menu4, Color.BLACK);
-
-		// 5th, 6th, 7th, job explanation, and many more
-		buildMenu(root, menu5, Color.BLACK);
-		buildMenu(root, menu6, Color.BLACK);
-		buildMenu(root, menu7, Color.BLACK);
-        buildMenu(root, menu8, Color.BLACK);
-        buildMenu(root, menu9, Color.BLACK);
-        buildMenu(root, menu10, Color.BLACK);
-        buildMenu(root, menu11, Color.BLACK);
-        buildMenu(root, menu12, Color.BLACK);
-        buildMenu(root, menu13, Color.BLACK);
-        buildMenu(root, menu14, Color.BLACK);
-        buildMenu(root, menu15, Color.BLACK);
+		buildMenu(root, onNameStack, Color.BLACK);
+		buildMenu(root, onJobStack, Color.BLACK);
+		buildMenu(root, onPetStack, Color.BLACK);
+		buildMenu(root, onCompanionStack, Color.BLACK);
+		buildMenu(root, onChild1Stack, Color.BLACK);
+		buildMenu(root, onChild2Stack, Color.BLACK);
+        buildMenu(root, onChild3Stack, Color.BLACK);
+        buildMenu(root, onSeasonStack, Color.BLACK);
+        buildMenu(root, onShopIntroductionStack, Color.BLACK);
+        buildMenu(root, onBuyOxenStack, Color.BLACK);
+        buildMenu(root, onBuyFoodStack, Color.BLACK);
+        buildMenu(root, onBuyClothesStack, Color.BLACK);
+        buildMenu(root, onBuyWheelsStack, Color.BLACK);
+        buildMenu(root, onBuyAxlesStack, Color.BLACK);
 		buildMenu(root, jobExplanationScreen, Color.BLACK);
 		buildMenu(root, buyingExplanation, Color.BLACK);
 		buildMenu(root, startShop, Color.BLACK);
 		buildMenu(root, travelingMenu, Color.BLACK);
 		buildMenu(root, whileTravelingMenu, Color.BLACK);
 		buildMenu(root, suppliesMenu, Color.BLACK);
-		//buildMapScreen(root);							// build map screen
 		buildMenu(root, rationsMenu, Color.BLACK);
 		buildMenu(root, changePaceMenu, Color.BLACK);
 		buildMenu(root, tubacTransitionMenu, Color.BLACK);
@@ -314,7 +331,7 @@ public class View extends Application{
 
 		// Add canvas to the stackpane.
 		mainMenu.getChildren().add(canvas);
-		Text introText = makeText("Press Space To Continue!", Color.BLACK, mainMenu, Pos.CENTER, 0, 0); // make text
+		makeText("Press Space To Continue!", Color.BLACK, mainMenu, Pos.CENTER, 0, 0); // make text
 
 		// Add title text
 		Text titleText = new Text("The  Arizona  Trail");
@@ -369,29 +386,29 @@ public class View extends Application{
                     if(onMainMenu.getTheBoolean()){
                         //if user picks 1, start game normally, switch to root menu
                         //else if user picks 2, load game from saved file, switch to travel menu
-                        //switchMenus(onRoot);
+                        //switchMenus(onRootMenu);
                     }
 
 		        	if (onMainMenu.getTheBoolean()) {
 			        	// Make some intro text
 			        	controller = new Controller();
-			        	Text startText = makeText("On the Arizona Trail you'll travel from the Mexican border to Utah!", defaultColor, menu2, Pos.TOP_CENTER, 0, 0);
+			        	Text startText = makeText("On the Arizona Trail you'll travel from the Mexican border to Utah!", defaultColor, onNameStack, Pos.TOP_CENTER, 0, 0);
 	
 	
 			        	// Add picture
-			        	putScaledImage("images/thMRQA2QMB.jpg", menu2, Pos.CENTER, 800, 300, 0, 0);
+			        	putScaledImage("images/thMRQA2QMB.jpg", onNameStack, Pos.CENTER, 800, 300, 0, 0);
 	
 	
 			        	// Ask the user for a name. 
-			        	Text askForNameText = makeText("What's your name?", defaultColor, menu2, Pos.CENTER, 0, 200);
+			        	Text askForNameText = makeText("What's your name?", defaultColor, onNameStack, Pos.CENTER, 0, 200);
 	
-			        	//Text askForNameText = makeText("What's your name? Type and then press enter", defaultColor, menu2, Pos.CENTER, 0, 200);
+			        	//Text askForNameText = makeText("What's your name? Type and then press enter", defaultColor, onNameStack, Pos.CENTER, 0, 200);
 	
 			        	// Have this menu be displayed at the top.
-				    	switchMenus(onMenu2);
-				    	name = "";
-			        	root.getChildren().remove(menu2);
-			        	root.getChildren().add(menu2);
+				    	switchMenus(onNameMenu);
+				    	nameString = "";
+			        	root.getChildren().remove(onNameStack);
+			        	root.getChildren().add(onNameStack);
 		        	}
 
 		        	if (onTravelingMenu.getTheBoolean()) {
@@ -527,7 +544,7 @@ public class View extends Application{
 		});
 
 
-		// If we're on menu2 and press enter. GO FROM MENU2 -> MENU3
+		// If we're on onNameStack and press enter. GO FROM onNameStack -> onJobStack
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent keyEvent) {
 				if (keyEvent.getCode() == KeyCode.ENTER) {
@@ -537,35 +554,35 @@ public class View extends Application{
                     	mainMenu.toFront();
 					}
 					// If user presses enter on MENU 2. MENU 2 -> MENU 3 TRANSITION
-					else if (onMenu2.getTheBoolean()) {
+					else if (onNameMenu.getTheBoolean()) {
 
 						// Add main character to family
-						controller.addFamilyMember(name);
+						controller.addFamilyMember(nameString);
 
 						// Switch to menu 3 and set it up
 						jobPicked = "";
-						switchMenus(onMenu3);
-						menu3.getChildren().clear();
-						Text whatJobText = makeText(name + ", what job do you have? Pick a Number.", defaultColor, menu3, Pos.TOP_CENTER, 0, 0);
+						switchMenus(onJobMenu);
+						onJobStack.getChildren().clear();
+						Text whatJobText = makeText(nameString + ", what job do you have? Pick a Number.", defaultColor, onJobStack, Pos.TOP_CENTER, 0, 0);
 
 						// cowboy
-						putScaledImage("images/cowboy_concept_procedural_animation_by_grimmdev-d8l0klm_noBackground.png", menu3, Pos.CENTER, 150, 150, 0, -100);
+						putScaledImage("images/cowboy_concept_procedural_animation_by_grimmdev-d8l0klm_noBackground.png", onJobStack, Pos.CENTER, 150, 150, 0, -100);
 
 						// Job selection
-						Text bankerText = makeText("1. You are a rich banker", defaultColor, menu3, Pos.CENTER, 0, 0);
-						Text carpenterText = makeText("2. You are a carpenter", defaultColor, menu3, Pos.CENTER, 0, 50);
-						Text programmerText = makeText("3. You are a debt ridden  U  of A programming student", defaultColor, menu3, Pos.CENTER, 0, 100);
-						Text explanationText = makeText("4. Get an explanation about how your choices matter.", defaultColor, menu3, Pos.CENTER, 0, 150);
+						Text bankerText = makeText("1. You are a rich banker", defaultColor, onJobStack, Pos.CENTER, 0, 0);
+						Text carpenterText = makeText("2. You are a carpenter", defaultColor, onJobStack, Pos.CENTER, 0, 50);
+						Text programmerText = makeText("3. You are a debt ridden  U  of A programming student", defaultColor, onJobStack, Pos.CENTER, 0, 100);
+						Text explanationText = makeText("4. Get an explanation about how your choices matter.", defaultColor, onJobStack, Pos.CENTER, 0, 150);
 
 
 						// switch to menu 3
-						root.getChildren().remove(menu3);
-						root.getChildren().add(menu3);
+						root.getChildren().remove(onJobStack);
+						root.getChildren().add(onJobStack);
 
 					}
 
 					// If user presses enter on MENU 3. MENU 3 -> MENU 4 TRANSITION
-					else if (onMenu3.getTheBoolean()) {
+					else if (onJobMenu.getTheBoolean()) {
 
 						// If the user has made a pick
 						if (jobPicked.length() > 0) {
@@ -583,18 +600,18 @@ public class View extends Application{
 								controller.setMoney(400);
 							}
 
-							dogName = "";
-							switchMenus(onMenu4);
+							dogNameString = "";
+							switchMenus(onPetMenu);
 
-							makeText("What is the name of your dog?", defaultColor, menu4, Pos.TOP_CENTER, 0, 0);
+							makeText("What is the name of your dog?", defaultColor, onPetStack, Pos.TOP_CENTER, 0, 0);
 
-							putScaledImage("images/annoying_dog_animation_pixel_art_by_tha_jackable-dadc6y2.png", menu4, Pos.CENTER, 150, 150, 0, 0);
-							root.getChildren().remove(menu4);
-							root.getChildren().add(menu4);
+							putScaledImage("images/annoying_dog_animation_pixel_art_by_tha_jackable-dadc6y2.png", onPetStack, Pos.CENTER, 150, 150, 0, 0);
+							root.getChildren().remove(onPetStack);
+							root.getChildren().add(onPetStack);
 
 							// If the user actually wanted to go to the explanation screen.
 							if (jobPicked.equals("4")) {
-								switchMenus(onJobExplanationScreen);
+								switchMenus(onJobExplanationMenu);
 
 								makeText("Traveling in the hot Arizona desert requires lots of cash.", defaultColor, jobExplanationScreen, Pos.TOP_CENTER, 0, 0);
 								makeText("If you're the banker, you'll have a lot of money to buy supplies.", defaultColor, jobExplanationScreen, Pos.TOP_CENTER, 0, 50);
@@ -610,93 +627,93 @@ public class View extends Application{
 					}
 
 					// MENU 4 -> MENU 5 TRANSITION
-					else if (onMenu4.getTheBoolean()) {
+					else if (onPetMenu.getTheBoolean()) {
 
 						// Add dog
-						controller.addFamilyMember(dogName);
+						controller.addFamilyMember(dogNameString);
 
-						companionName = "";
-						travelingCompanionName = "";
-						switchMenus(onMenu5);
+						companionNameString = "";
+						travelingCompanionNameString = "";
+						switchMenus(onCompanionMenu);
 
-						makeText("What is the name of your adult traveling companion?", defaultColor, menu5, Pos.TOP_CENTER, 0, 0);
-						putScaledImage("images/aol_s_running_man___pixel_edition_by_breadfries-d8aytm5.png", menu5, Pos.CENTER, 150, 150, 0,0);
-						root.getChildren().remove(menu5);
-						root.getChildren().add(menu5);
+						makeText("What is the name of your adult traveling companion?", defaultColor, onCompanionStack, Pos.TOP_CENTER, 0, 0);
+						putScaledImage("images/aol_s_running_man___pixel_edition_by_breadfries-d8aytm5.png", onCompanionStack, Pos.CENTER, 150, 150, 0,0);
+						root.getChildren().remove(onCompanionStack);
+						root.getChildren().add(onCompanionStack);
 					}
 
 					// MENU 5 -> MENU 6 TRANSITION
-					else if (onMenu5.getTheBoolean()) {
+					else if (onCompanionMenu.getTheBoolean()) {
 
 						// Add adult
-						controller.addFamilyMember(travelingCompanionName);
+						controller.addFamilyMember(travelingCompanionNameString);
 
-						child1 = "";
-						switchMenus(onMenu6);
+						child1String = "";
+						switchMenus(onChild1Menu);
 
-						makeText("What is the name of your first child?", defaultColor, menu6, Pos.TOP_CENTER, 0, 0);
+						makeText("What is the name of your first child?", defaultColor, onChild1Stack, Pos.TOP_CENTER, 0, 0);
 
-						//makeText("What is the name of your child traveling companion?", defaultColor, menu6, Pos.TOP_CENTER, 0, 0);
-						putScaledImage("images/child.png", menu6, Pos.CENTER, 150, 150, 0, 0);
-						root.getChildren().remove(menu6);
-						root.getChildren().add(menu6);
+						//makeText("What is the name of your child traveling companion?", defaultColor, onChild1Stack, Pos.TOP_CENTER, 0, 0);
+						putScaledImage("images/child.png", onChild1Stack, Pos.CENTER, 150, 150, 0, 0);
+						root.getChildren().remove(onChild1Stack);
+						root.getChildren().add(onChild1Stack);
 					}
 
                     //MENU 6 -> MENU 7
-                    else if (onMenu6.getTheBoolean()) {
+                    else if (onChild1Menu.getTheBoolean()) {
 
                     	// Add child 1
-                    	controller.addFamilyMember(child1);
+                    	controller.addFamilyMember(child1String);
 
-                    	child2 = "";
-						switchMenus(onMenu7);
+                    	child2String = "";
+						switchMenus(onChild2Menu);
 
-						putScaledImage("images/photo-961.png", menu7, Pos.CENTER, 150, 150, 0, 0);
-						makeText("What is the name of your second child?", defaultColor, menu7, Pos.TOP_CENTER, 0, 0);
-						root.getChildren().remove(menu7);
-						root.getChildren().add(menu7);
+						putScaledImage("images/photo-961.png", onChild2Stack, Pos.CENTER, 150, 150, 0, 0);
+						makeText("What is the name of your second child?", defaultColor, onChild2Stack, Pos.TOP_CENTER, 0, 0);
+						root.getChildren().remove(onChild2Stack);
+						root.getChildren().add(onChild2Stack);
 					}
 
                     //MENU 7 -> 8
-                    else if (onMenu7.getTheBoolean()) {
+                    else if (onChild2Menu.getTheBoolean()) {
 
                     	// Add child 2
-                    	controller.addFamilyMember(child2);
+                    	controller.addFamilyMember(child2String);
 
-                    	child3 = "";
-						switchMenus(onMenu8);
+                    	child3String = "";
+						switchMenus(onChild3Menu);
 
-						putScaledImage("images/girl.png", menu8, Pos.CENTER, 150, 150, 0, 0);
-						makeText("What is the name of your third child?", defaultColor, menu8, Pos.TOP_CENTER, 0, 0);
-						root.getChildren().remove(menu8);
-						root.getChildren().add(menu8);
+						putScaledImage("images/girl.png", onChild3Stack, Pos.CENTER, 150, 150, 0, 0);
+						makeText("What is the name of your third child?", defaultColor, onChild3Stack, Pos.TOP_CENTER, 0, 0);
+						root.getChildren().remove(onChild3Stack);
+						root.getChildren().add(onChild3Stack);
 					}
 
 					// MENU 8 -> MENU 9 TRANSITION
-					else if (onMenu8.getTheBoolean()) {
+					else if (onChild3Menu.getTheBoolean()) {
 
                     	// Add child 3
-                    	controller.addFamilyMember(child3);
+                    	controller.addFamilyMember(child3String);
 
                     	startingMonth = "";
-						switchMenus(onMenu9);
+						switchMenus(onSeasonMenu);
 
-						makeText("It is the year 1840.", defaultColor, menu9, Pos.TOP_CENTER, 0, 0);
-						makeText("Your jumping  off point is the  town  of  Nogales  near  the  Mexican  border.", defaultColor, menu9, Pos.TOP_CENTER, 0, 50);
-						makeText("What month  will you  be  leaving?", defaultColor, menu9, Pos.TOP_CENTER, 0, 100);
+						makeText("It is the year 1840.", defaultColor, onSeasonStack, Pos.TOP_CENTER, 0, 0);
+						makeText("Your jumping  off point is the  town  of  Nogales  near  the  Mexican  border.", defaultColor, onSeasonStack, Pos.TOP_CENTER, 0, 50);
+						makeText("What month  will you  be  leaving?", defaultColor, onSeasonStack, Pos.TOP_CENTER, 0, 100);
 						
-						putScaledImage("images/season.jpg", menu9, Pos.CENTER, 150, 150, 0, -50);
-						makeText("1. January", defaultColor, menu9, Pos.CENTER, 0, 50);
-						makeText("2. March", defaultColor, menu9, Pos.CENTER, 0,  75);
-						makeText("3. May", defaultColor, menu9, Pos.CENTER, 0, 100);
-						makeText("4. October", defaultColor, menu9, Pos.CENTER, 0, 125);
+						putScaledImage("images/season.jpg", onSeasonStack, Pos.CENTER, 150, 150, 0, -50);
+						makeText("1. January", defaultColor, onSeasonStack, Pos.CENTER, 0, 50);
+						makeText("2. March", defaultColor, onSeasonStack, Pos.CENTER, 0,  75);
+						makeText("3. May", defaultColor, onSeasonStack, Pos.CENTER, 0, 100);
+						makeText("4. October", defaultColor, onSeasonStack, Pos.CENTER, 0, 125);
 
-						root.getChildren().remove(menu9);
-						root.getChildren().add(menu9);
+						root.getChildren().remove(onSeasonStack);
+						root.getChildren().add(onSeasonStack);
 					}
 
 					// MENU 7 -> BUYINGEXPLANATION TRANSITION
-					else if (onMenu9.getTheBoolean()) {
+					else if (onSeasonMenu.getTheBoolean()) {
 						if (startingMonth.equals("1")) {
 							controller.setMonth(0);
 						}
@@ -713,7 +730,7 @@ public class View extends Application{
 							controller.setMonth(9);
 						}
 
-						switchMenus(onBuyingExplanation);
+						switchMenus(onBuyExplanationMenu);
 						makeText("Before embarking on the Arizona Trail you should buy some equipment.", defaultColor, buyingExplanation, Pos.CENTER, 0, 0);
 						makeText("You have  " + controller.getMoney() + " dollars  but you don't have to spend it all here.", defaultColor, buyingExplanation, Pos.CENTER, 0, 50);
 						makeText("Press Enter to Continue", defaultColor, buyingExplanation, Pos.BOTTOM_CENTER, 0, 0);
@@ -724,8 +741,8 @@ public class View extends Application{
 					}
 
 					// BUYINGEXPLANATION -> STARTSHOP TRANSITION
-					else if (onBuyingExplanation.getTheBoolean()) {
-						switchMenus(onStartShop);
+					else if (onBuyExplanationMenu.getTheBoolean()) {
+						switchMenus(onStartShopMenu);
 						makeText("So, you're going on the Arizona Trail. You've come to the right place!", defaultColor, startShop, Pos.TOP_CENTER, 0, 0);
 						putScaledImage("images/merchant2.png", startShop, Pos.CENTER_LEFT, 300, 600, 0, 0);
 						makeText("You'll want bison, clothes, food, ammo, and spare parts.", defaultColor, startShop, Pos.CENTER_RIGHT, -50, -100);
@@ -735,128 +752,128 @@ public class View extends Application{
 					}
 
                     //MENU 9 -> MENU 10
-                    else if (onStartShop.getTheBoolean()) {
+                    else if (onStartShopMenu.getTheBoolean()) {
 
-                    	numOxen = "";
-                        switchMenus(onMenu10);
+                    	numOxenString = "";
+                        switchMenus(onShopIntroductionMenu);
 
-                        makeText("Before  heading out for the trail you should buy equipment and supplies.", defaultColor, menu10, Pos.TOP_CENTER, 0, 0);
-                        makeText("You have " + controller.getMoney() + " dollars.", defaultColor, menu10, Pos.TOP_CENTER, 0, 50);
-                        makeText("How many Oxen  would you like to buy? I recommend at least 2 Oxen.", defaultColor, menu10, Pos.TOP_CENTER, 0, 100);
-                        makeText("Oxen are " + controller.getCost("oxen") + " dollars.", defaultColor, menu10, Pos.TOP_CENTER, 0, 150);
-                        putScaledImage("images/ox.png", menu10, Pos.CENTER, 150, 150, 0, 50);
-                        root.getChildren().remove(menu10);
-						root.getChildren().add(menu10);
+                        makeText("Before  heading out for the trail you should buy equipment and supplies.", defaultColor, onShopIntroductionStack, Pos.TOP_CENTER, 0, 0);
+                        makeText("You have " + controller.getMoney() + " dollars.", defaultColor, onShopIntroductionStack, Pos.TOP_CENTER, 0, 50);
+                        makeText("How many Oxen  would you like to buy? I recommend at least 2 Oxen.", defaultColor, onShopIntroductionStack, Pos.TOP_CENTER, 0, 100);
+                        makeText("Oxen are " + controller.getCost("oxen") + " dollars.", defaultColor, onShopIntroductionStack, Pos.TOP_CENTER, 0, 150);
+                        putScaledImage("images/ox.png", onShopIntroductionStack, Pos.CENTER, 150, 150, 0, 50);
+                        root.getChildren().remove(onShopIntroductionStack);
+						root.getChildren().add(onShopIntroductionStack);
                     }
 
 
 
 
                     //MENU 10 -> MENU 11
-                    else if (onMenu10.getTheBoolean()) {
+                    else if (onShopIntroductionMenu.getTheBoolean()) {
 
-                    	boolean validBuy = controller.buyItem("oxen", Integer.valueOf(numOxen));
+                    	boolean validBuy = controller.buyItem("oxen", Integer.valueOf(numOxenString));
 
                     	// only continue is buy is valid
                     	if (validBuy) {
-	                    	poundsFood = "";
-	                        switchMenus(onMenu11);
+	                    	poundsFoodString = "";
+	                        switchMenus(onBuyOxenMenu);
 	                        
-	                        menu11.getChildren().clear();
+	                        onBuyOxenStack.getChildren().clear();
 	
-	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, menu11, Pos.TOP_CENTER, 0, 0);
-	                        makeText("You have $" + controller.getMoney(), defaultColor, menu11, Pos.TOP_CENTER, 0, 50);
-	                        makeText("How many Pounds of Food would you like to buy? I recommend at least 200 lbs.", defaultColor, menu11, Pos.TOP_CENTER, 0, 100);
-	                        makeText("A pound of food is $" + controller.getCost("food"), defaultColor, menu11, Pos.TOP_CENTER, 0, 150);
-	                        putScaledImage("images/lamb.png", menu11, Pos.CENTER, 150, 150, 0, 50);
-	                        root.getChildren().remove(menu11);
-							root.getChildren().add(menu11);
+	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, onBuyOxenStack, Pos.TOP_CENTER, 0, 0);
+	                        makeText("You have $" + controller.getMoney(), defaultColor, onBuyOxenStack, Pos.TOP_CENTER, 0, 50);
+	                        makeText("How many Pounds of Food would you like to buy? I recommend at least 200 lbs.", defaultColor, onBuyOxenStack, Pos.TOP_CENTER, 0, 100);
+	                        makeText("A pound of food is $" + controller.getCost("food"), defaultColor, onBuyOxenStack, Pos.TOP_CENTER, 0, 150);
+	                        putScaledImage("images/lamb.png", onBuyOxenStack, Pos.CENTER, 150, 150, 0, 50);
+	                        root.getChildren().remove(onBuyOxenStack);
+							root.getChildren().add(onBuyOxenStack);
                     	}
 
                     }
 
                     //MENU 11 -> MENU 12
-                    else if (onMenu11.getTheBoolean()) {
+                    else if (onBuyOxenMenu.getTheBoolean()) {
 
-                    	boolean validBuy = controller.buyItem("food", Integer.valueOf(poundsFood));
+                    	boolean validBuy = controller.buyItem("food", Integer.valueOf(poundsFoodString));
 
                     	// only continue if buy is valid
                     	if (validBuy) {
-	                    	numClothing = "";
-	                        switchMenus(onMenu12);
+	                    	numClothingString = "";
+	                        switchMenus(onBuyFoodMenu);
 	
-	                        menu12.getChildren().clear();
+	                        onBuyFoodStack.getChildren().clear();
 	
-	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, menu12, Pos.TOP_CENTER, 0, 0);
-	                        makeText("You have $" + controller.getMoney(), defaultColor, menu12, Pos.TOP_CENTER, 0, 50);
-	                        makeText("How many blankets would you like to buy? I recommend at least 10 sets.", defaultColor, menu12, Pos.TOP_CENTER, 0, 100);
-	                        makeText("Blankets are $" + controller.getCost("blanket") + "   per set.", defaultColor, menu12, Pos.TOP_CENTER, 0, 150);
-	                        putScaledImage("images/blanket.jpg", menu12, Pos.CENTER, 150, 150, 0, 50);
-	                        root.getChildren().remove(menu12);
-							root.getChildren().add(menu12);
+	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, onBuyFoodStack, Pos.TOP_CENTER, 0, 0);
+	                        makeText("You have $" + controller.getMoney(), defaultColor, onBuyFoodStack, Pos.TOP_CENTER, 0, 50);
+	                        makeText("How many blankets would you like to buy? I recommend at least 10 sets.", defaultColor, onBuyFoodStack, Pos.TOP_CENTER, 0, 100);
+	                        makeText("Blankets are $" + controller.getCost("blanket") + "   per set.", defaultColor, onBuyFoodStack, Pos.TOP_CENTER, 0, 150);
+	                        putScaledImage("images/blanket.jpg", onBuyFoodStack, Pos.CENTER, 150, 150, 0, 50);
+	                        root.getChildren().remove(onBuyFoodStack);
+							root.getChildren().add(onBuyFoodStack);
                     	}
 
                     }
 
                     //MENU 12 -> MENU 13
-                    else if (onMenu12.getTheBoolean()) {
+                    else if (onBuyFoodMenu.getTheBoolean()) {
 
-                    	boolean validBuy = controller.buyItem("blanket", Integer.valueOf(numClothing));
+                    	boolean validBuy = controller.buyItem("blanket", Integer.valueOf(numClothingString));
 
                     	// only continue is buy is valid
                     	if (validBuy) {
-	                    	numAmmo = "";
-	                        switchMenus(onMenu13);
+	                    	numAmmoString = "";
+	                        switchMenus(onBuyClothesMenu);
 	                        //money -= Integer.valueOf(numClothing) * 10; //$10 per set
-	                        menu13.getChildren().clear();
-	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, menu13, Pos.TOP_CENTER, 0, 0);
-	                        makeText("You have $" + controller.getMoney(), defaultColor, menu13, Pos.TOP_CENTER, 0, 50);
-	                        makeText("How many bullets would you like to buy? Bullets are good for hunting.", defaultColor, menu13, Pos.TOP_CENTER, 0, 100);
-	                        makeText("Bullets are $" + controller.getCost("ammo"), defaultColor, menu13, Pos.TOP_CENTER, 0, 150);
-	                        putScaledImage("images/bullet.png", menu13, Pos.CENTER, 150, 150, 0, 50);
-	                        root.getChildren().remove(menu13);
-							root.getChildren().add(menu13);
+	                        onBuyClothesStack.getChildren().clear();
+	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, onBuyClothesStack, Pos.TOP_CENTER, 0, 0);
+	                        makeText("You have $" + controller.getMoney(), defaultColor, onBuyClothesStack, Pos.TOP_CENTER, 0, 50);
+	                        makeText("How many bullets would you like to buy? Bullets are good for hunting.", defaultColor, onBuyClothesStack, Pos.TOP_CENTER, 0, 100);
+	                        makeText("Bullets are $" + controller.getCost("ammo"), defaultColor, onBuyClothesStack, Pos.TOP_CENTER, 0, 150);
+	                        putScaledImage("images/bullet.png", onBuyClothesStack, Pos.CENTER, 150, 150, 0, 50);
+	                        root.getChildren().remove(onBuyClothesStack);
+							root.getChildren().add(onBuyClothesStack);
                     	}
                     }
 
                     //MENU 13 -> MENU 14
-                    else if (onMenu13.getTheBoolean()) {
+                    else if (onBuyClothesMenu.getTheBoolean()) {
 
-                    	boolean validBuy = controller.buyItem("ammo", Integer.valueOf(numAmmo));
+                    	boolean validBuy = controller.buyItem("ammo", Integer.valueOf(numAmmoString));
 
                     	// only continue if buy is valid
                     	if (validBuy) {
 	                    		
-	                    	gallonsWater = "";
-	                        switchMenus(onMenu14);
+	                    	gallonsWaterString = "";
+	                        switchMenus(onBuyWheelsMenu);
 	                        //money -= Integer.valueOf(numAmmo) * 2; //$2 per box
 	                        
-	                        menu14.getChildren().clear();
+	                        onBuyWheelsStack.getChildren().clear();
 	
-	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, menu14, Pos.TOP_CENTER, 0, 0);
-	                        makeText("You have $" + controller.getMoney(), defaultColor, menu14, Pos.TOP_CENTER, 0, 50);
-	                        makeText("How many Gallons of water would you like to buy? I recommend at least 600 gallons. Water is very important for your health.", defaultColor, menu14, Pos.TOP_CENTER, 0, 100);
-	                        makeText("One gallon is $" + controller.getCost("water"), defaultColor, menu14, Pos.TOP_CENTER, 0, 150);
-	                        putScaledImage("images/water.png", menu14, Pos.CENTER, 150, 150, 0, 50);
-	                        root.getChildren().remove(menu14);
-							root.getChildren().add(menu14);
+	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, onBuyWheelsStack, Pos.TOP_CENTER, 0, 0);
+	                        makeText("You have $" + controller.getMoney(), defaultColor, onBuyWheelsStack, Pos.TOP_CENTER, 0, 50);
+	                        makeText("How many Gallons of water would you like to buy? I recommend at least 600 gallons. Water is very important for your health.", defaultColor, onBuyWheelsStack, Pos.TOP_CENTER, 0, 100);
+	                        makeText("One gallon is $" + controller.getCost("water"), defaultColor, onBuyWheelsStack, Pos.TOP_CENTER, 0, 150);
+	                        putScaledImage("images/water.png", onBuyWheelsStack, Pos.CENTER, 150, 150, 0, 50);
+	                        root.getChildren().remove(onBuyWheelsStack);
+							root.getChildren().add(onBuyWheelsStack);
                     	}
                     }
 
                     //MENU 14 -> MENU 15
-                     else if (onMenu14.getTheBoolean()) {
-                    	 if (controller.buyItem("water", Integer.valueOf(gallonsWater))) {
+                     else if (onBuyWheelsMenu.getTheBoolean()) {
+                    	 if (controller.buyItem("water", Integer.valueOf(gallonsWaterString))) {
                  			buildMapScreen(root);
-                 			switchMenus(onMap);
+                 			switchMenus(onMapMenu);
                  			mapScreen.toFront();
                     	 }
                     	}
 
 
                     //MENU 15 -> MENU 16
-                    else if (onMap.getTheBoolean()) {
+                    else if (onMapMenu.getTheBoolean()) {
                     		
-                            boolean validBuy = controller.buyItem("water", Integer.valueOf(gallonsWater));
+                            boolean validBuy = controller.buyItem("water", Integer.valueOf(gallonsWaterString));
                     		switchMenus(onTravelingMenu);
 
                     		travelingMenu.getChildren().clear();
@@ -940,7 +957,7 @@ public class View extends Application{
 
                     }
 
-                    else if (onMenu15.getTheBoolean()){
+                    else if (onBuyAxlesMenu.getTheBoolean()){
                         //switchMenus(onTravelingMenu);
                         //makeText("Your current Inventory: ", defaultColor, menu);
                     }
@@ -994,7 +1011,7 @@ public class View extends Application{
                         else if (whileTravelingChoice.equals("3")) {
                     		//view map
                         	buildMapScreen(root);
-                        	switchMenus(onMap);
+                        	switchMenus(onMapMenu);
                         	mapScreen.toFront();
                     	}
 
@@ -1127,7 +1144,7 @@ public class View extends Application{
 					// hit enter on transition menu
                     else if (onTubacTransitionMenu.getTheBoolean()) {
                     	allShoppingChoice = "";
-                    	tubacShopChoice = "";
+                    	tubacShopChoiceString = "";
                     	switchMenus(onTubacShopMenu);
 
                     	// Fill each town's store with items
@@ -1154,7 +1171,7 @@ public class View extends Application{
 
                     else if (onTucsonTransitionMenu.getTheBoolean()) {
                     	allShoppingChoice = "";
-                    	tucsonShopChoice = "";
+                    	tucsonShopChoiceString = "";
                     	switchMenus(onTucsonShopMenu);
 
                     	// Fill each town's store with items
@@ -1313,89 +1330,89 @@ public class View extends Application{
                     }
 					
 					// enter to go back from map to traveling menu
-                    else if(onMap.getTheBoolean()) {
+                    else if(onMapMenu.getTheBoolean()) {
                     	switchMenus(onWhileTravelingMenu);
                     	whileTravelingMenu.toFront();
 			        }
 
 					// hit enter on shop menu
                     else if (onTubacShopMenu.getTheBoolean()) {
-                    	if (tubacShopChoice.equals("1")) {
+                    	if (tubacShopChoiceString.equals("1")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tubacStore, "oxen", root, controller, "images/ox.png");
                     		allShoppingChoiceName = "oxen";
                     		currStore = tubacStore;
-                    		onCurrStore = onTubacShopMenu;
+                    		onCurrStoreMenu = onTubacShopMenu;
                     		currStoreMenu = tubacShopMenu;
                     	}
 
-                    	else if (tubacShopChoice.equals("2")) {
+                    	else if (tubacShopChoiceString.equals("2")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tubacStore, "food", root, controller, "images/lamb.png");
                     		allShoppingChoiceName = "food";
                     		currStore = tubacStore;
-                    		onCurrStore = onTubacShopMenu;
+                    		onCurrStoreMenu = onTubacShopMenu;
                     		currStoreMenu = tubacShopMenu;
                     	}
 
-                    	else if (tubacShopChoice.equals("3")) {
+                    	else if (tubacShopChoiceString.equals("3")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tubacStore, "water", root, controller, "images/water.png");
                     		allShoppingChoiceName = "water";
                     		currStore = tubacStore;
-                    		onCurrStore = onTubacShopMenu;
+                    		onCurrStoreMenu = onTubacShopMenu;
                     		currStoreMenu = tubacShopMenu;
                     	}
 
-                    	else if (tubacShopChoice.equals("4")) {
+                    	else if (tubacShopChoiceString.equals("4")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tubacStore, "ammo", root, controller, "images/bullet.png");
                     		allShoppingChoiceName = "ammo";
                     		currStore = tubacStore;
-                    		onCurrStore = onTubacShopMenu;
+                    		onCurrStoreMenu = onTubacShopMenu;
                     		currStoreMenu = tubacShopMenu;
                     	}
 
-                    	else if (tubacShopChoice.equals("5")) {
+                    	else if (tubacShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
-                    	tubacShopChoice = "";
+                    	tubacShopChoiceString = "";
                     }
 
 					// hit enter on shop menu
                     else if (onTucsonShopMenu.getTheBoolean()) {
-                    	if (tucsonShopChoice.equals("1")) {
+                    	if (tucsonShopChoiceString.equals("1")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tucsonStore, "oxen", root, controller, "images/ox.png");
                     		allShoppingChoiceName = "oxen";
                     		currStore = tucsonStore;
-                    		onCurrStore = onTucsonShopMenu;
+                    		onCurrStoreMenu = onTucsonShopMenu;
                     		currStoreMenu = tucsonShopMenu;
                     	}
 
-                    	else if (tucsonShopChoice.equals("2")) {
+                    	else if (tucsonShopChoiceString.equals("2")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tucsonStore, "blanket", root, controller, "images/blanket.jpg");
                     		allShoppingChoiceName = "blanket";
                     		currStore = tucsonStore;
-                    		onCurrStore = onTucsonShopMenu;
+                    		onCurrStoreMenu = onTucsonShopMenu;
                     		currStoreMenu = tucsonShopMenu;
                     	}
 
-                    	else if (tucsonShopChoice.equals("3")) {
+                    	else if (tucsonShopChoiceString.equals("3")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tucsonStore, "water", root, controller, "images/water.png");
                     		allShoppingChoiceName = "water";
                     		currStore = tucsonStore;
-                    		onCurrStore = onTucsonShopMenu;
+                    		onCurrStoreMenu = onTucsonShopMenu;
                     		currStoreMenu = tucsonShopMenu;
                     	}
 
-                    	else if (tucsonShopChoice.equals("4")) {
+                    	else if (tucsonShopChoiceString.equals("4")) {
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, tucsonStore, "ammo", root, controller, "images/bullet.png");
                     		allShoppingChoiceName = "ammo";
                     		currStore = tucsonStore;
-                    		onCurrStore = onTucsonShopMenu;
+                    		onCurrStoreMenu = onTucsonShopMenu;
                     		currStoreMenu = tucsonShopMenu;
                     	}
 
-                    	else if (tucsonShopChoice.equals("5")) {
+                    	else if (tucsonShopChoiceString.equals("5")) {
                     		redrawTravelingMenu(root, travelingMenu);
                     	}
-                    	tucsonShopChoice = "";
+                    	tucsonShopChoiceString = "";
                     }
 
 					// hit enter on shop menu
@@ -1405,7 +1422,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, picachoStore, "oxen", root, controller, "images/ox.png");
                     		allShoppingChoiceName = "oxen";
                     		currStore = picachoStore;
-                    		onCurrStore = onPicachoShopMenu;
+                    		onCurrStoreMenu = onPicachoShopMenu;
                     		currStoreMenu = picachoShopMenu;
                     	}
 
@@ -1413,7 +1430,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, picachoStore, "blanket", root, controller, "images/blanket.jpg");
                     		allShoppingChoiceName = "blanket";
                     		currStore = picachoStore;
-                    		onCurrStore = onPicachoShopMenu;
+                    		onCurrStoreMenu = onPicachoShopMenu;
                     		currStoreMenu = picachoShopMenu;
                     	}
 
@@ -1421,7 +1438,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, picachoStore, "water", root, controller, "images/water.png");
                     		allShoppingChoiceName = "water";
                     		currStore = picachoStore;
-                    		onCurrStore = onPicachoShopMenu;
+                    		onCurrStoreMenu = onPicachoShopMenu;
                     		currStoreMenu = picachoShopMenu;
                     	}
 
@@ -1429,7 +1446,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, picachoStore, "ammo", root, controller, "images/bullet.png");
                     		allShoppingChoiceName = "ammo";
                     		currStore = picachoStore;
-                    		onCurrStore = onPicachoShopMenu;
+                    		onCurrStoreMenu = onPicachoShopMenu;
                     		currStoreMenu = picachoShopMenu;
                     	}
 
@@ -1444,7 +1461,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, phoenixStore, "oxen", root, controller, "images/ox.png");
                     		allShoppingChoiceName = "oxen";
                     		currStore = phoenixStore;
-                    		onCurrStore = onPhoenixShopMenu;
+                    		onCurrStoreMenu = onPhoenixShopMenu;
                     		currStoreMenu = phoenixShopMenu;
                     	}
 
@@ -1452,7 +1469,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, phoenixStore, "blanket", root, controller, "images/blanket.jpg");
                     		allShoppingChoiceName = "blanket";
                     		currStore = phoenixStore;
-                    		onCurrStore = onPhoenixShopMenu;
+                    		onCurrStoreMenu = onPhoenixShopMenu;
                     		currStoreMenu = phoenixShopMenu;
                     	}
 
@@ -1460,7 +1477,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, phoenixStore, "water", root, controller, "images/water.png");
                     		allShoppingChoiceName = "water";
                     		currStore = phoenixStore;
-                    		onCurrStore = onPhoenixShopMenu; 
+                    		onCurrStoreMenu = onPhoenixShopMenu; 
                     		currStoreMenu = phoenixShopMenu;
                     	}
 
@@ -1468,7 +1485,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, phoenixStore, "ammo", root, controller, "images/bullet.png");
                     		allShoppingChoiceName = "ammo";
                     		currStore = phoenixStore;
-                    		onCurrStore = onPhoenixShopMenu;
+                    		onCurrStoreMenu = onPhoenixShopMenu;
                     		currStoreMenu = phoenixShopMenu;
                     	}
 
@@ -1484,7 +1501,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, prescottStore, "oxen", root, controller, "images/ox.png");
                     		allShoppingChoiceName = "oxen";
                     		currStore = prescottStore;
-                    		onCurrStore = onPrescottShopMenu;
+                    		onCurrStoreMenu = onPrescottShopMenu;
                     		currStoreMenu = prescottShopMenu;
                     	}
 
@@ -1492,7 +1509,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, prescottStore, "food", root, controller, "images/lamb.png");
                     		allShoppingChoiceName = "food";
                     		currStore = prescottStore;
-                    		onCurrStore = onPrescottShopMenu;
+                    		onCurrStoreMenu = onPrescottShopMenu;
                     		currStoreMenu = prescottShopMenu;
                     	}
 
@@ -1500,7 +1517,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, prescottStore, "water", root, controller, "images/water.png");
                     		allShoppingChoiceName = "water";
                     		currStore = prescottStore;
-                    		onCurrStore = onPrescottShopMenu;
+                    		onCurrStoreMenu = onPrescottShopMenu;
                     		currStoreMenu = prescottShopMenu;
                     	}
 
@@ -1508,7 +1525,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, prescottStore, "ammo", root, controller, "images/bullet.png");
                     		allShoppingChoiceName = "ammo";
                     		currStore = prescottStore;
-                    		onCurrStore = onPrescottShopMenu;
+                    		onCurrStoreMenu = onPrescottShopMenu;
                     		currStoreMenu = prescottShopMenu;
                     	}
 
@@ -1524,7 +1541,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, flagstaffStore, "blanket", root, controller, "images/blanket.jpg");
                     		allShoppingChoiceName = "blanket";
                     		currStore = flagstaffStore;
-                    		onCurrStore = onFlagstaffShopMenu;
+                    		onCurrStoreMenu = onFlagstaffShopMenu;
                     		currStoreMenu = flagstaffShopMenu;
                     	}
 
@@ -1532,7 +1549,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, flagstaffStore, "food", root, controller, "images/lamb.png");
                     		allShoppingChoiceName = "food";
                     		currStore = flagstaffStore;
-                    		onCurrStore = onFlagstaffShopMenu;
+                    		onCurrStoreMenu = onFlagstaffShopMenu;
                     		currStoreMenu = flagstaffShopMenu;
                     	}
 
@@ -1540,7 +1557,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, flagstaffStore, "water", root, controller, "images/water.png");
                     		allShoppingChoiceName = "water";
                     		currStore = flagstaffStore;
-                    		onCurrStore = onFlagstaffShopMenu;
+                    		onCurrStoreMenu = onFlagstaffShopMenu;
                     		currStoreMenu = flagstaffShopMenu;
                     	}
 
@@ -1548,7 +1565,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, flagstaffStore, "ammo", root, controller, "images/bullet.png");
                     		allShoppingChoiceName = "ammo";
                     		currStore = flagstaffStore;
-                    		onCurrStore = onFlagstaffShopMenu;
+                    		onCurrStoreMenu = onFlagstaffShopMenu;
                     		currStoreMenu = flagstaffShopMenu;
                     	}
 
@@ -1564,7 +1581,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, grandCanyonStore, "oxen", root, controller, "images/ox.png");
                     		allShoppingChoiceName = "oxen";
                     		currStore = grandCanyonStore;
-                    		onCurrStore = onGrandCanyonShopMenu;
+                    		onCurrStoreMenu = onGrandCanyonShopMenu;
                     		currStoreMenu = grandCanyonShopMenu;
                     	}
 
@@ -1572,7 +1589,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, grandCanyonStore, "food", root, controller, "images/lamb.png");
                     		allShoppingChoiceName = "food";
                     		currStore = grandCanyonStore;
-                    		onCurrStore = onGrandCanyonShopMenu;
+                    		onCurrStoreMenu = onGrandCanyonShopMenu;
                     		currStoreMenu = grandCanyonShopMenu;
                     	}
 
@@ -1580,7 +1597,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, grandCanyonStore, "water", root, controller, "images/water.png");
                     		allShoppingChoiceName = "water";
                     		currStore = grandCanyonStore;
-                    		onCurrStore = onGrandCanyonShopMenu;
+                    		onCurrStoreMenu = onGrandCanyonShopMenu;
                     		currStoreMenu = grandCanyonShopMenu;
                     	}
 
@@ -1588,7 +1605,7 @@ public class View extends Application{
                     		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, grandCanyonStore, "ammo", root, controller, "images/bullet.png");
                     		allShoppingChoiceName = "ammo";
                     		currStore = grandCanyonStore;
-                    		onCurrStore = onGrandCanyonShopMenu;
+                    		onCurrStoreMenu = onGrandCanyonShopMenu;
                     		currStoreMenu = grandCanyonShopMenu;
                     	}
 
@@ -1601,7 +1618,7 @@ public class View extends Application{
 					// If player made a purchase
                     else if (onAllShoppingMenu.getTheBoolean()) {
 
-                    	buyAtShop(controller, allShoppingChoiceName, Integer.valueOf(allShoppingChoice), currStore, currStoreMenu, onCurrStore, root );
+                    	buyAtShop(controller, allShoppingChoiceName, Integer.valueOf(allShoppingChoice), currStore, currStoreMenu, onCurrStoreMenu, root );
                     }
 
                     else if (onSavedGameMenu.getTheBoolean()){
@@ -1664,99 +1681,92 @@ public class View extends Application{
                     		root.getChildren().add(gameOverMenu);
                     	}
                     }
-
-
 				}
-
 			}
 		});
-
 
 		// If we're on a menu and try typing something
 		scene.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent keyEvent) {
 
-
-
-
 				// If user types on MENU 2. NO TRANSITION
-				if (onMenu2.getTheBoolean()) {
-					name = printUserInput(keyEvent, name, nameText, menu2, Pos.BOTTOM_CENTER);
+				if (onNameMenu.getTheBoolean()) {
+					nameString = printUserInput(keyEvent, nameString, nameText, onNameStack, Pos.BOTTOM_CENTER);
 				}
 
 				// If user types on MENU 3. NO TRANSITION
-				else if (onMenu3.getTheBoolean()) {
-					jobPicked = printUserInputNumber(keyEvent, jobPicked, jobPickedText, menu3, Pos.BOTTOM_CENTER);
+				else if (onJobMenu.getTheBoolean()) {
+					jobPicked = printUserInputNumber(keyEvent, jobPicked, jobPickedText, onJobStack, Pos.BOTTOM_CENTER);
 				}
 
-				else if (onJobExplanationScreen.getTheBoolean()) {
+				else if (onJobExplanationMenu.getTheBoolean()) {
 					if (keyEvent.getCharacter().equals("\b")) {
 						jobPicked = "";
-						switchMenus(onMenu3);
-						root.getChildren().remove(menu3);
-						root.getChildren().add(menu3);
+						switchMenus(onJobMenu);
+						root.getChildren().remove(onJobStack);
+						root.getChildren().add(onJobStack);
 					}
 				}
 
 				// MENU 4
-				else if (onMenu4.getTheBoolean()) {
-					dogName = printUserInput(keyEvent, dogName, dogNameText, menu4, Pos.BOTTOM_CENTER);
+				else if (onPetMenu.getTheBoolean()) {
+					dogNameString = printUserInput(keyEvent, dogNameString, dogNameText, onPetStack, Pos.BOTTOM_CENTER);
 				}
 
 				// MENU 5
-				else if (onMenu5.getTheBoolean()) {
-					//travelingCompanionName = printUserInput(keyEvent, travelingCompanionName, travelingCompanionNameText, menu5, Pos.BOTTOM_CENTER);
-                    companionName = printUserInput(keyEvent, companionName, companionNameText, menu5, Pos.BOTTOM_CENTER);
+				else if (onCompanionMenu.getTheBoolean()) {
+					//travelingCompanionName = printUserInput(keyEvent, travelingCompanionName, travelingCompanionNameText, onCompanionStack, Pos.BOTTOM_CENTER);
+                    companionNameString = printUserInput(keyEvent, companionNameString, companionNameText, onCompanionStack, Pos.BOTTOM_CENTER);
                     //System.out.println();
 				}
 
 				// MENU 6
-				else if (onMenu6.getTheBoolean()) {
-					child1 = printUserInput(keyEvent, child1, child1Text, menu6, Pos.BOTTOM_CENTER);
+				else if (onChild1Menu.getTheBoolean()) {
+					child1String = printUserInput(keyEvent, child1String, child1Text, onChild1Stack, Pos.BOTTOM_CENTER);
 				}
 
                 //MENU 7
-                else if (onMenu7.getTheBoolean()) {
-					child2 = printUserInput(keyEvent, child2, child2Text, menu7, Pos.BOTTOM_CENTER);
+                else if (onChild2Menu.getTheBoolean()) {
+					child2String = printUserInput(keyEvent, child2String, child2Text, onChild2Stack, Pos.BOTTOM_CENTER);
 				}
 
                 //MENU 8
-                else if (onMenu8.getTheBoolean()) {
-					child3 = printUserInput(keyEvent, child3, child3Text, menu8, Pos.BOTTOM_CENTER);
+                else if (onChild3Menu.getTheBoolean()) {
+					child3String = printUserInput(keyEvent, child3String, child3Text, onChild3Stack, Pos.BOTTOM_CENTER);
 				}
 
 				// MENU 9
-				else if (onMenu9.getTheBoolean()) {
-					startingMonth = printUserInputNumber(keyEvent, startingMonth, startingMonthText, menu9, Pos.BOTTOM_CENTER);
+				else if (onSeasonMenu.getTheBoolean()) {
+					startingMonth = printUserInputNumber(keyEvent, startingMonth, startingMonthText, onSeasonStack, Pos.BOTTOM_CENTER);
 				}
 
                 //MENU 10
-                else if (onMenu10.getTheBoolean()) {
-                    numOxen = printUserInputBigNumber(keyEvent, numOxen, numOxenText, menu10, Pos.BOTTOM_CENTER);
+                else if (onShopIntroductionMenu.getTheBoolean()) {
+                    numOxenString = printUserInputBigNumber(keyEvent, numOxenString, numOxenText, onShopIntroductionStack, Pos.BOTTOM_CENTER);
                     //money -= Integer.parseInt(numOxen) * 20; //$20 per oxen
                 }
 
                 //MENU 11
-                else if (onMenu11.getTheBoolean()) {
-                    poundsFood = printUserInputBigNumber(keyEvent, poundsFood, poundsFoodText, menu11, Pos.BOTTOM_CENTER);
+                else if (onBuyOxenMenu.getTheBoolean()) {
+                    poundsFoodString = printUserInputBigNumber(keyEvent, poundsFoodString, poundsFoodText, onBuyOxenStack, Pos.BOTTOM_CENTER);
                     //money -= Integer.parseInt(poundsFood); //$1 per pound
                 }
 
                 //MENU 12
-                else if (onMenu12.getTheBoolean()) {
-                    numClothing = printUserInputBigNumber(keyEvent, numClothing, numClothingText, menu12, Pos.BOTTOM_CENTER);
+                else if (onBuyFoodMenu.getTheBoolean()) {
+                    numClothingString = printUserInputBigNumber(keyEvent, numClothingString, numClothingText, onBuyFoodStack, Pos.BOTTOM_CENTER);
                     //money -= Integer.parseInt(numClothing) * 10; //$10 per set
                 }
 
                 //MENU 13
-                else if (onMenu13.getTheBoolean()) {
-                    numAmmo = printUserInputBigNumber(keyEvent, numAmmo, numAmmoText, menu13, Pos.BOTTOM_CENTER);
+                else if (onBuyClothesMenu.getTheBoolean()) {
+                    numAmmoString = printUserInputBigNumber(keyEvent, numAmmoString, numAmmoText, onBuyClothesStack, Pos.BOTTOM_CENTER);
                     //money -= Integer.parseInt(numAmmo) * 2; //$2 per box
                 }
 
                 //MENU 14
-                else if (onMenu14.getTheBoolean()) {
-                    gallonsWater = printUserInputBigNumber(keyEvent, gallonsWater, gallonsWaterText, menu14, Pos.BOTTOM_CENTER);
+                else if (onBuyWheelsMenu.getTheBoolean()) {
+                    gallonsWaterString = printUserInputBigNumber(keyEvent, gallonsWaterString, gallonsWaterText, onBuyWheelsStack, Pos.BOTTOM_CENTER);
                     //money -= Integer.parseInt(numWagonWheels) * 10; //$10 per wheel
                 }
 
@@ -1777,11 +1787,11 @@ public class View extends Application{
                 }
 
                 else if (onTubacShopMenu.getTheBoolean()) {
-                	tubacShopChoice = printUserInputStoreNumber(keyEvent, tubacShopChoice, tubacShopChoiceText, tubacShopMenu, Pos.BOTTOM_CENTER);
+                	tubacShopChoiceString = printUserInputStoreNumber(keyEvent, tubacShopChoiceString, tubacShopChoiceText, tubacShopMenu, Pos.BOTTOM_CENTER);
                 }
 
                 else if (onTucsonShopMenu.getTheBoolean()) {
-                	tucsonShopChoice = printUserInputStoreNumber(keyEvent, tucsonShopChoice, tucsonShopChoiceText, tucsonShopMenu, Pos.BOTTOM_CENTER);
+                	tucsonShopChoiceString = printUserInputStoreNumber(keyEvent, tucsonShopChoiceString, tucsonShopChoiceText, tucsonShopMenu, Pos.BOTTOM_CENTER);
                 }
 
                 else if (onPicachoShopMenu.getTheBoolean()) {
@@ -2176,95 +2186,85 @@ public class View extends Application{
 		travelingMenu.getChildren().clear();
 
 
-		 //Courtesy of ApologeticbyNature on Spriter's Resource from the Original Apple 2 Oregon Trail copyright Don Rawitsch, Bill Heinemann, and Paul Dillenberger
-		 //final Image IMAGE = new Image("https://www.spriters-resource.com/resources/sheets/24/26478.gif");
+		//Courtesy of ApologeticbyNature on Spriter's Resource from the Original Apple 2 Oregon Trail copyright Don Rawitsch, Bill Heinemann, and Paul Dillenberger
+		//final Image IMAGE = new Image("https://www.spriters-resource.com/resources/sheets/24/26478.gif");
 		final Image IMAGE = new Image(new File("images/OregonTrailImages26478.gif").toURI().toString());
-		 final int COLUMNS  =   1;
-		 final int COUNT    =  2;
-		 final int OFFSET_X =  0;
-		 final int OFFSET_Y =  0;
-		 final int WIDTH    = 96;
-		 final int HEIGHT   = 29;
+		final int COLUMNS  =   1;
+		final int COUNT    =  2;
+		final int OFFSET_X =  0;
+		final int OFFSET_Y =  0;
+		final int WIDTH    = 96;
+		final int HEIGHT   = 29;
 
-	     final ImageView imageView = new ImageView(IMAGE);
-	     imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-	     final Animation animation = new WagonAnimation(
-	                imageView,
-	                Duration.millis(1000),
-	                COUNT, COLUMNS,
-	                OFFSET_X, OFFSET_Y,
-	                WIDTH, HEIGHT
-	        );
-	        animation.setCycleCount(Animation.INDEFINITE);
-	        animation.play();
-	        Rectangle sky = new Rectangle(1000,300,Color.SKYBLUE);
-			Rectangle ground = new Rectangle(1000,500,Color.DARKGOLDENROD);
-			sky.setY(-100);
-			ground.setY(200);
-	        ImageView layer3 = new ImageView(new Image("Layer3.png",1000,100,false,false));
+	    final ImageView imageView = new ImageView(IMAGE);
+	    imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+	    final Animation animation = new WagonAnimation(imageView, Duration.millis(1000), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+	    animation.setCycleCount(Animation.INDEFINITE);
+	    animation.play();
+	    Rectangle sky = new Rectangle(1000,300,Color.SKYBLUE);
+	    Rectangle ground = new Rectangle(1000,500,Color.DARKGOLDENROD);
+		sky.setY(-100);
+		ground.setY(200);
+	    ImageView layer3 = new ImageView(new Image("Layer3.png",1000,100,false,false));
 
-			ImageView layer3a = new ImageView(new Image("Layer3.png",1000,100,false,false));
-			Pane background = new Pane();
+	    ImageView layer3a = new ImageView(new Image("Layer3.png",1000,100,false,false));
+		Pane background = new Pane();
 
-			background.getChildren().addAll(ground,sky,layer3,layer3a);
+		background.getChildren().addAll(ground,sky,layer3,layer3a);
 
-			layer3a.setX(-1000);
-			layer3a.setY(100);
-			layer3.setY(100);
-			ground.setFill(controller.getGround());
-			// change mountain color
-			ColorAdjust groundColorEffect = changeMountainColor(controller.getGround());
-			layer3a.setEffect(groundColorEffect);
-			layer3.setEffect(groundColorEffect);
+		layer3a.setX(-1000);
+		layer3a.setY(100);
+		layer3.setY(100);
+		ground.setFill(controller.getGround());
+		// change mountain color
+		ColorAdjust groundColorEffect = changeMountainColor(controller.getGround());
+		layer3a.setEffect(groundColorEffect);
+		layer3.setEffect(groundColorEffect);
 
+		TranslateTransition tt3 = new TranslateTransition(Duration.millis(5000),layer3);
+		tt3.setByX(1000f);
+		tt3.setCycleCount(Animation.INDEFINITE);
+		tt3.setInterpolator(Interpolator.LINEAR);
+		tt3.play();
 
+		TranslateTransition tr3 = new TranslateTransition(Duration.millis(5000),layer3a);
+		tr3.setByX(1000f);
 
-			TranslateTransition tt3 = new TranslateTransition(Duration.millis(5000),layer3);
-			tt3.setByX(1000f);
-			tt3.setCycleCount(Animation.INDEFINITE);
-			tt3.setInterpolator(Interpolator.LINEAR);
-			tt3.play();
+		tr3.setCycleCount(Animation.INDEFINITE);
+		tr3.setInterpolator(Interpolator.LINEAR);
+		tr3.play();
+		travelingMenu.getChildren().add(background);
+	    travelingMenu.getChildren().add(imageView);
 
-			TranslateTransition tr3 = new TranslateTransition(Duration.millis(5000),layer3a);
-			tr3.setByX(1000f);
-
-			tr3.setCycleCount(Animation.INDEFINITE);
-			tr3.setInterpolator(Interpolator.LINEAR);
-			tr3.play();
-		 travelingMenu.getChildren().add(background);
-	     travelingMenu.getChildren().add(imageView);
-
-	     makeText("Travel Speed - " + controller.getPaceName(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -200);
-	     makeText("Date - " + controller.getFullDate(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -175);
-	     makeText("Weather - " + controller.getWeather(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -150);
-	     makeText("Health - " + controller.getFamilyStatus(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -125);
-	     makeText("Food - " + controller.getItemAmount("food"), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -100);
-         makeText("Water - " + controller.getItemAmount("water"), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -75);
-	     makeText("Next Landmark - " + controller.nextLandmarkXMilesAwayString(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -50);
-	     makeText("Miles Traveled - " + controller.totalMilesTraveledString(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -25);
-	     if (controller.getPace() == 0) {
-	    	 makeText("Press Space  to  Rest", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 0);
-	     }
-	     else {
-	    	 makeText("Press Space  to  Travel", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 0);
-	     }
-	     makeText("Press Enter to size up the situation", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 50);
-
-	     root.getChildren().remove(travelingMenu);
-	     root.getChildren().add(travelingMenu);
+	    makeText("Travel Speed - " + controller.getPaceName(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -200);
+	    makeText("Date - " + controller.getFullDate(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -175);
+	    makeText("Weather - " + controller.getWeather(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -150);
+	    makeText("Health - " + controller.getFamilyStatus(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -125);
+	    makeText("Food - " + controller.getItemAmount("food"), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -100);
+        makeText("Water - " + controller.getItemAmount("water"), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -75);
+	    makeText("Next Landmark - " + controller.nextLandmarkXMilesAwayString(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -50);
+	    makeText("Miles Traveled - " + controller.totalMilesTraveledString(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -25);
+	    if (controller.getPace() == 0) {
+	    	makeText("Press Space  to  Rest", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 0);
+	    }
+	    else {
+	    	makeText("Press Space  to  Travel", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 0);
+	    }
+	    makeText("Press Enter to size up the situation", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 50);
+	    root.getChildren().remove(travelingMenu);
+	    root.getChildren().add(travelingMenu);
 	}
 
 	public void buyAtShop(Controller controller, String item, int amount, Store store, StackPane menu, MenuClass menuClass, StackPane root) {
-
 
     	boolean validBuy = controller.buyItemTownStore(item, amount, store);
 
     	// only continue if buy is valid
     	if (validBuy) {
-    	allShoppingChoice = "";
-        switchMenus(menuClass);
-        root.getChildren().remove(menu);
-		root.getChildren().add(menu);
+	    	allShoppingChoice = "";
+	        switchMenus(menuClass);
+	        root.getChildren().remove(menu);
+			root.getChildren().add(menu);
     	}
 	}
 
@@ -2281,11 +2281,11 @@ public class View extends Application{
 		root.getChildren().add(menu);
 	}
 
-	public static void reduceShoppingCode(MenuClass onAllShoppingMenu, StackPane allShoppingMenu, Store store, String item, StackPane root, Controller controller, String image, String allShoppingChoiceName, Store currStore, MenuClass onCurrStore, MenuClass onShopMenu, StackPane currStoreMenu, StackPane storeMenu) {
+	public static void reduceShoppingCode(MenuClass onAllShoppingMenu, StackPane allShoppingMenu, Store store, String item, StackPane root, Controller controller, String image, String allShoppingChoiceName, Store currStore, MenuClass onCurrStoreMenu, MenuClass onShopMenu, StackPane currStoreMenu, StackPane storeMenu) {
 		shoppingAtShop(onAllShoppingMenu, allShoppingMenu, store, item, root, controller, image);
 		allShoppingChoiceName = item;
 		currStore = store;
-		onCurrStore = onShopMenu;
+		onCurrStoreMenu = onShopMenu;
 		currStoreMenu = storeMenu;
 	}
 
@@ -2293,9 +2293,7 @@ public class View extends Application{
 		Image mountain =  new Image("Layer3.png",1000,100,false,false);
 		PixelReader pr = mountain.getPixelReader();
 		Color actualMountainColor = pr.getColor((int) mountain.getWidth() - 1, (int) mountain.getHeight() - 1);
-
 		Color groundColor = controller.getGround();
-
 		ColorAdjust groundColorEffect = new ColorAdjust(
 				(groundColor.getHue() - actualMountainColor.getHue()) / 360,
 				groundColor.getSaturation() - actualMountainColor.getSaturation(),
