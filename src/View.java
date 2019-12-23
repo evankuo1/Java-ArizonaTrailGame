@@ -221,7 +221,7 @@ public class View extends Application{
 	/* Set up the StackPanes that will hold everything */
 	
 	// Beginning
-	StackPane root = new StackPane();
+	static StackPane root = new StackPane();
     StackPane mainMenu = new StackPane();
 	StackPane onNameStack = new StackPane();
 	StackPane onJobStack = new StackPane();
@@ -282,13 +282,23 @@ public class View extends Application{
 	 * @return TheText We return theText when we need user input. Most of the time this can be ignored.
 	 */
 	public static Text makeText(String aString, Color aColor, StackPane menu, Pos position, int translateX, int translateY) {
+		
+		// Make the new text
 		Text theText = new Text(aString);
+		
+		// Set its font and color
 		theText.setFont(new Font("ArcadeClassic", 24));
 		theText.setFill(aColor);
+		
+		// Add it to the menu and put it in the right spot
 		menu.getChildren().add(theText);
 		theText.setTranslateX(translateX);
 		theText.setTranslateY(translateY);
+		
+		// Put it on the stackpane
 		StackPane.setAlignment(theText, position);
+		
+		// Return the text we've created
 		return theText;
 	}
 
@@ -296,18 +306,20 @@ public class View extends Application{
 	 * This method allows for the quick switching of menus
 	 * @param currMenu The menu that we want to switch to
 	 */
-	public static void switchMenus(MenuClass currMenu) {
-		// Keeps track of whether or not this menu was already in the list.
-		// If it wasn't, then it is added.
+	public static void switchMenus(MenuClass currMenu, StackPane currStack) {
+		
+		// Keeps track of whether or not this menu was already in the list. If it wasn't, then it is added.
 		boolean wasntInIt = true;
 
 		// Loop through the list and see if this menu is in the list.
 		for (int i = 0; i < menuList.size(); i++) {
+			
 			// If it is in the list, set it to true
 			if (currMenu.equals(menuList.get(i))) {
 				currMenu.setTheBoolean(true);
 				wasntInIt = false; // It was in it.
 			}
+			
 			// If this isn't the menu we want to be displayed, then it must be false.
 			else {
 				menuList.get(i).setTheBoolean(false);
@@ -320,6 +332,9 @@ public class View extends Application{
 			currMenu.setTheBoolean(true);
 			menuList.add(currMenu);
 		}
+		
+		// Put the stack up front
+		currStack.toFront();
 	}
 
 	/**
@@ -333,8 +348,8 @@ public class View extends Application{
 	 * @return theString theString is returned so that it can be saved.
 	 */
 	public String printUserInput(KeyEvent keyEvent, String theString, TextClass theText, StackPane menu, Pos position) {
+		
 		// If the user hits any character other than backspace
-
 		if (!keyEvent.getCharacter().equals("\b")) {
 			theString = theString + keyEvent.getCharacter();
 		}
@@ -350,13 +365,17 @@ public class View extends Application{
 		if (theText.getText() == null) {
 			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
 		}
+		
 		// If not the 1st time.
 		else {
 			menu.getChildren().remove(theText.getText());
 			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
 		}
 
+		// Trim the string
 		theString.trim();
+		
+		// Return it
 		return theString;
 	}
 
@@ -366,6 +385,7 @@ public class View extends Application{
 		   && theString.length() == 0) {
 			theString = keyEvent.getCharacter();
 		}
+		
 		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
 			theString = "";
 		}
@@ -374,6 +394,7 @@ public class View extends Application{
 		if (theText.getText() == null) {
 			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
 		}
+		
 		// If not the 1st time.
 		else {
 			menu.getChildren().remove(theText.getText());
@@ -382,6 +403,8 @@ public class View extends Application{
 
 		// remove possible whitespace
 		theString.trim();
+		
+		// Return
 		return theString;
 	}
 
@@ -391,6 +414,7 @@ public class View extends Application{
 		   && theString.length() == 0) {
 			theString = keyEvent.getCharacter();
 		}
+		
 		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
 			theString = "";
 		}
@@ -407,6 +431,8 @@ public class View extends Application{
 
 		// remove possible whitespace
 		theString.trim();
+		
+		// Return it
 		return theString;
 	}
 
@@ -422,6 +448,7 @@ public class View extends Application{
 			// add num
 			theString = theString + keyEvent.getCharacter();
 		}
+		
 		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
 			theString = "";
 		}
@@ -430,6 +457,7 @@ public class View extends Application{
 		if (theText.getText() == null) {
 			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
 		}
+		
 		// If not the 1st time.
 		else {
 			menu.getChildren().remove(theText.getText());
@@ -438,6 +466,8 @@ public class View extends Application{
 
 		// remove possible whitespace
 		theString.trim();
+		
+		// Return it
 		return theString;
 	}
 
@@ -451,6 +481,7 @@ public class View extends Application{
 			// add num
 			theString = keyEvent.getCharacter();
 		}
+		
 		else if (keyEvent.getCharacter().equals("\b") && theString.length() > 0) {
 			theString = "";
 		}
@@ -459,6 +490,7 @@ public class View extends Application{
 		if (theText.getText() == null) {
 			theText.setText(makeText(theString, defaultColor, menu, position, 0, 0));
 		}
+		
 		// If not the 1st time.
 		else {
 			menu.getChildren().remove(theText.getText());
@@ -467,17 +499,23 @@ public class View extends Application{
 
 		// remove possible whitespace
 		theString.trim();
+		
+		// Return it
 		return theString;
 	}
 
-
-
+	
+	// Create a screen with the specified background and then puts it on the stackpane
 	public void buildMenu(StackPane root, StackPane menu, Color backgroundColor) {
+		// Make the background with the given colors
 		menu.setBackground(new Background(new BackgroundFill(backgroundColor, null, null)));
+		// Add it to the root
 		root.getChildren().add(menu);
 	}
 	
+	
 	public void buildMapScreen(StackPane root) {
+		
 		mapScreen.getChildren().clear();
 		root.getChildren().remove(mapScreen);
 		buildMenu(root, mapScreen, Color.BLACK);
@@ -500,8 +538,6 @@ public class View extends Application{
 		locationInfo.setTranslateX(0);
 		locationInfo.setTranslateY(0);
 		locationInfo.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
-		
-		//mapDisplay.getChildren().add(locationInfo);
 		
 		Location[] allLocations = controller.getAllLocations();
 		int mapScaleX = 100;
@@ -580,12 +616,6 @@ public class View extends Application{
 						}
 					});
 			
-			/*
-			location.setStyle("-fx-border-width: 5px; "
-					+ "-fx-border-style: solid; "
-					+ "-fx-border-color: purple;");
-			*/
-			
 			mapDisplay.getChildren().add(location);
 			initMapLocationInfo(locationInfo);
 		}
@@ -619,7 +649,7 @@ public class View extends Application{
 
         //boolean validBuy = controller.buyItem("water", Integer.valueOf(gallonsWater));
 		whileTravelingChoice = "";
-		switchMenus(onTravelingMenu);
+		switchMenus(onTravelingMenu, travelingMenu);
 
 		travelingMenu.getChildren().clear();
 
@@ -689,8 +719,6 @@ public class View extends Application{
 	    	makeText("Press Space  to  Travel", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 0);
 	    }
 	    makeText("Press Enter to size up the situation", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 50);
-	    root.getChildren().remove(travelingMenu);
-	    root.getChildren().add(travelingMenu);
 	}
 
 	public void buyAtShop(Controller controller, String item, int amount, Store store, StackPane menu, MenuClass menuClass, StackPane root) {
@@ -700,14 +728,12 @@ public class View extends Application{
     	// only continue if buy is valid
     	if (validBuy) {
 	    	allShoppingChoice = "";
-	        switchMenus(menuClass);
-	        root.getChildren().remove(menu);
-			root.getChildren().add(menu);
+	        switchMenus(menuClass, menu);
     	}
 	}
 
 	public static void shoppingAtShop(MenuClass menuClass, StackPane menu, Store store, String item, StackPane root, Controller controller, String image) {
-		switchMenus(menuClass);
+		switchMenus(menuClass, menu);
 		menu.getChildren().clear();
 		makeText("I have " + store.getItem(item).getQuantity() + " " + item + "in stock.", defaultColor, menu, Pos.TOP_CENTER, 0, 0);
 		makeText("Each " +  item + " costs " + store.getItem(item).getCost() + " dollars.", defaultColor, menu, Pos.TOP_CENTER, 0, 25);
@@ -715,8 +741,6 @@ public class View extends Application{
 		makeText("You have " + String.format("%.2f", controller.getMoney()) + " dollars to spend.", defaultColor, menu, Pos.TOP_CENTER, 0, 100);
 		makeText("Choose how many to buy.", defaultColor, menu, Pos.TOP_CENTER, 0, 150);
 		putScaledImage(image, menu, Pos.CENTER, 150, 150, 0, 0);
-		root.getChildren().remove(menu);
-		root.getChildren().add(menu);
 	}
 
 	public static void reduceShoppingCode(MenuClass onAllShoppingMenu, StackPane allShoppingMenu, Store store, String item, StackPane root, Controller controller, String image, String allShoppingChoiceName, Store currStore, MenuClass onCurrStoreMenu, MenuClass onShopMenu, StackPane currStoreMenu, StackPane storeMenu) {
@@ -745,14 +769,46 @@ public class View extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		// Setup canvas and gc to draw images.
+		// Setup canvas and gc to draw the main menu background image
 		Canvas canvas = new Canvas(1000,500);
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		mainMenu.getChildren().add(canvas);
-		
-		// Make the image
         Image trail = new Image(new File("images/oregonTrailBackground.jpg").toURI().toString(), 1000, 500, false, false);
-
+		gc.drawImage(trail, 0, 0);
+		
+		// Setup scene and show it.
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("/fontstyle.css").toExternalForm());
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("The Arizona Trail");
+		primaryStage.show();
+		
+		// Set up song and play it.
+		try {
+			// Default uses mp3
+			Media titleSong = new Media(new File("music/titletheme.mp3").toURI().toString());
+			playSong = new MediaPlayer(titleSong);
+			playSong.setCycleCount(MediaPlayer.INDEFINITE);
+			playSong.play();
+		}
+		catch (Exception e) {
+			// Use wav if mp3 doesn't work
+			Media titleSong = new Media(new File("music/titletheme.wav").toURI().toString());
+			playSong = new MediaPlayer(titleSong);
+			playSong.setCycleCount(MediaPlayer.INDEFINITE);
+			playSong.play();
+		}
+		
+        // Create title text
+		Text titleText = new Text("The  Arizona  Trail");
+		titleText.setFont(new Font("ArcadeClassic", 100));
+		StackPane.setAlignment(titleText, Pos.TOP_CENTER);
+		mainMenu.getChildren().add(titleText);
+		
+        // Create text
+		makeText("Press Space To Continue!", Color.BLACK, mainMenu, Pos.CENTER, 0, 0);
+        makeText("Press Enter to Load Previous Save",  Color.BLACK, mainMenu, Pos.CENTER, 0, 35);
+        
         // Build the menus
         buildMenu(root, mainMenu, Color.BLACK);
 		buildMenu(root, onNameStack, Color.BLACK);
@@ -800,49 +856,8 @@ public class View extends Application{
         buildMenu(root, starvationMenu, Color.BLACK);
         buildMenu(root, thirstMenu, Color.BLACK);
         
-        
 		// Go to main menu
-		switchMenus(onMainMenu);
-        
-        // Create text
-		makeText("Press Space To Continue!", Color.BLACK, mainMenu, Pos.CENTER, 0, 0);
-        makeText("Press Enter to Load Previous Save",  Color.BLACK, mainMenu, Pos.CENTER, 0, 35);
-        
-        // Create title text
-		Text titleText = new Text("The  Arizona  Trail");
-		titleText.setFont(new Font("ArcadeClassic", 100));
-		StackPane.setAlignment(titleText, Pos.TOP_CENTER);
-		mainMenu.getChildren().add(titleText);
-		mainMenu.toFront();
-
-		// Draw the image and the text.
-		gc.drawImage(trail, 0, 0);
-
-		// Setup scene and show it.
-		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/fontstyle.css").toExternalForm());
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("The Arizona Trail");
-		primaryStage.show();
-
-		// Set up song and play it.
-		try {
-			// Default uses mp3
-			Media titleSong = new Media(new File("music/titletheme.mp3").toURI().toString());
-			playSong = new MediaPlayer(titleSong);
-			playSong.setCycleCount(MediaPlayer.INDEFINITE);
-			playSong.play();
-		}
-
-		// For Micheal's PC
-		catch (Exception e) {
-			// Use wav if mp3 doesn't work
-			Media titleSong = new Media(new File("music/titletheme.wav").toURI().toString());
-			playSong = new MediaPlayer(titleSong);
-			playSong.setCycleCount(MediaPlayer.INDEFINITE);
-			playSong.play();
-		}
-
+		switchMenus(onMainMenu, mainMenu);
 		
 		// If the user presses space on the main menu
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
@@ -864,119 +879,94 @@ public class View extends Application{
 			        	Text askForNameText = makeText("What's your name?", defaultColor, onNameStack, Pos.CENTER, 0, 200);
 	
 			        	// Have this menu be displayed at the top.
-				    	switchMenus(onNameMenu);
+				    	switchMenus(onNameMenu, onNameStack);
 				    	nameString = "";
-			        	root.getChildren().remove(onNameStack);
-			        	root.getChildren().add(onNameStack);
 		        	}
 
-		        	if (onTravelingMenu.getTheBoolean()) {
+		        	else if (onTravelingMenu.getTheBoolean()) {
 		        		// see if someone should die
 		        		Person person = controller.healthNotGood();
 
 		        		if (person != null) {
 		        			if (person.getCauseOfDeath().equals("Dysentery")) {
-		        				switchMenus(onDeathScreenMenu);
+		        				switchMenus(onDeathScreenMenu, deathScreenMenu);
 		        				deathScreenMenu.getChildren().clear();
 		        				makeText("Tragedy has struck! The element have claimed the life of " + person.getName(), defaultColor, deathScreenMenu, Pos.TOP_CENTER, 0, 0);
 		        				makeText("They died of dysentry.", defaultColor, deathScreenMenu, Pos.TOP_CENTER, 0, 25);
 		        				putScaledImage("images/ghost.jpg", deathScreenMenu, Pos.CENTER, 300, 300, 0, 0);
-		        				root.getChildren().remove(deathScreenMenu);
-		        				root.getChildren().add(deathScreenMenu);
 		        			}
 		        			else if (person.getCauseOfDeath().equals("Thirst")) {
-			        			switchMenus(onThirstMenu);
+			        			switchMenus(onThirstMenu, thirstMenu);
 			        			thirstMenu.getChildren().clear();
 			        			makeText("Tragedy has struck! The element have claimed the life of " + person.getName(), defaultColor, thirstMenu, Pos.TOP_CENTER, 0, 0);
 			        			makeText("They died of thirst.", defaultColor, deathScreenMenu, Pos.TOP_CENTER, 0, 25);
 			        			putScaledImage("images/skeleton.gif", thirstMenu, Pos.CENTER, 300, 300, 0, 0);
-			        			root.getChildren().remove(thirstMenu);
-			        			root.getChildren().add(thirstMenu);
-		        				
 		        			}
 		        			
 		        			else if (person.getCauseOfDeath().equals("Starvation")) {
-			        			switchMenus(onStarvationMenu);
+			        			switchMenus(onStarvationMenu, starvationMenu);
 			        			starvationMenu.getChildren().clear();
 			        			makeText("Tragedy has struck! The element have claimed the life of " + person.getName(), defaultColor, starvationMenu, Pos.TOP_CENTER, 0, 0);
 			        			makeText("They died of starvation.", defaultColor, deathScreenMenu, Pos.TOP_CENTER, 0, 25);
 			        			putScaledImage("images/dry.jpg", starvationMenu, Pos.CENTER, 300, 300, 0, 0);
-			        			root.getChildren().remove(starvationMenu);
-			        			root.getChildren().add(starvationMenu);
 		        			}
 		        		}
 		        		else if (controller.doDayCycle()) {
 		        			
 		        			if (lastVisitedTown.equals("")) {
-			        			switchMenus(onTubacTransitionMenu);
+			        			switchMenus(onTubacTransitionMenu, tubacTransitionMenu);
 			        			makeText("You have reached Tubac!", defaultColor, tubacTransitionMenu, Pos.TOP_CENTER, 0,0);
 			        			putScaledImage("images/Tubac_Church.jpg", tubacTransitionMenu, Pos.CENTER, 400, 400, 0, -25);
-			        			root.getChildren().remove(tubacTransitionMenu);
-			        			root.getChildren().add(tubacTransitionMenu);
 			        			lastVisitedTown = "Tubac";
 		        			}
 
 		        			else if (lastVisitedTown.equals("Tubac")) {
-			        			switchMenus(onTucsonTransitionMenu);
+			        			switchMenus(onTucsonTransitionMenu, tucsonTransitionMenu);
 			        			makeText("You have reached Tucson!", defaultColor, tucsonTransitionMenu, Pos.TOP_CENTER, 0,0);
 			        			putScaledImage("images/tucson.jpg", tucsonTransitionMenu, Pos.CENTER, 400, 400, 0, -25);
-			        			root.getChildren().remove(tucsonTransitionMenu);
-			        			root.getChildren().add(tucsonTransitionMenu);
 			        			lastVisitedTown = "Tucson";
 		        			}
 
 		        			else if (lastVisitedTown.equals("Tucson")) {
-			        			switchMenus(onPicachoTransitionMenu);
+			        			switchMenus(onPicachoTransitionMenu, picachoTransitionMenu);
 			        			makeText("You have reached Picacho!", defaultColor, picachoTransitionMenu, Pos.TOP_CENTER, 0,0);
 			        			putScaledImage("images/picacho.jpg", picachoTransitionMenu, Pos.CENTER, 400, 400, 0, -25);
-			        			root.getChildren().remove(picachoTransitionMenu);
-			        			root.getChildren().add(picachoTransitionMenu);
 			        			lastVisitedTown = "Picacho";
 		        			}
 
 		        			else if (lastVisitedTown.equals("Picacho")) {
-		        				switchMenus(onPhoenixTransitionMenu);
+		        				switchMenus(onPhoenixTransitionMenu, phoenixTransitionMenu);
 			        			makeText("You have reached Phoenix!", defaultColor, phoenixTransitionMenu, Pos.TOP_CENTER, 0,0);
 			        			putScaledImage("images/phoenix.jpg", phoenixTransitionMenu, Pos.CENTER, 400, 400, 0, -25);
-			        			root.getChildren().remove(phoenixTransitionMenu);
-			        			root.getChildren().add(phoenixTransitionMenu);
 			        			lastVisitedTown = "Phoenix";
 		        			}
 
 		        			else if (lastVisitedTown.equals("Phoenix")) {
-		        				switchMenus(onPrescottTransitionMenu);
+		        				switchMenus(onPrescottTransitionMenu, prescottTransitionMenu);
 			        			makeText("You have reached Prescott!", defaultColor, prescottTransitionMenu, Pos.TOP_CENTER, 0,0);
 			        			putScaledImage("images/prescott.jpg", prescottTransitionMenu, Pos.CENTER, 400, 400, 0, -25);
-			        			root.getChildren().remove(prescottTransitionMenu);
-			        			root.getChildren().add(prescottTransitionMenu);
 			        			lastVisitedTown = "Prescott";
 		        			}
 
 		        			else if (lastVisitedTown.equals("Prescott")) {
-		        				switchMenus(onFlagstaffTransitionMenu);
+		        				switchMenus(onFlagstaffTransitionMenu, flagstaffTransitionMenu);
 			        			makeText("You have reached Flagstaff!", defaultColor, flagstaffTransitionMenu, Pos.TOP_CENTER, 0,0);
 			        			putScaledImage("images/flagstaff.jpg", flagstaffTransitionMenu, Pos.CENTER, 400, 400, 0, -25);
-			        			root.getChildren().remove(flagstaffTransitionMenu);
-			        			root.getChildren().add(flagstaffTransitionMenu);
 			        			lastVisitedTown = "Flagstaff";
 		        			}
 
 		        			else if (lastVisitedTown.equals("Flagstaff")) {
-		        				switchMenus(onGrandCanyonTransitionMenu);
+		        				switchMenus(onGrandCanyonTransitionMenu, grandCanyonTransitionMenu);
 			        			makeText("You have reached the Grand Canyon!", defaultColor, grandCanyonTransitionMenu, Pos.TOP_CENTER, 0,0);
 			        			putScaledImage("images/grandcanyon.jpg", grandCanyonTransitionMenu, Pos.CENTER, 400, 400, 0, -25);
-			        			root.getChildren().remove(grandCanyonTransitionMenu);
-			        			root.getChildren().add(grandCanyonTransitionMenu);
 			        			lastVisitedTown = "Grand Canyon";
 		        			}
 
 		        			else if (lastVisitedTown.equals("Grand Canyon")) {
-		        				switchMenus(onKanabTransitionMenu);
+		        				switchMenus(onKanabTransitionMenu, kanabTransitionMenu);
 			        			makeText("You have reached Kanab. You got to Utah! Game Over! You Won!", defaultColor, kanabTransitionMenu, Pos.TOP_CENTER, 0,0);
 			        			putScaledImage("images/kanab.jpg", kanabTransitionMenu, Pos.CENTER, 400, 400, 0, -25);
 			        			makeText("You got " + controller.getScore() + " points!", defaultColor, kanabTransitionMenu, Pos.BOTTOM_CENTER, 0, 0);
-			        			root.getChildren().remove(kanabTransitionMenu);
-			        			root.getChildren().add(kanabTransitionMenu);
 			        			lastVisitedTown = "Kanab";
 		        			}
 		        		}
@@ -1009,8 +999,7 @@ public class View extends Application{
 				if (keyEvent.getCode() == KeyCode.ENTER) {
 					
 					if (onGameOverMenu.getTheBoolean()) {
-						switchMenus(onMainMenu);
-                    	mainMenu.toFront();
+						switchMenus(onMainMenu, mainMenu);
 					}
 					// If user presses enter on MENU 2. MENU 2 -> MENU 3 TRANSITION
 					else if (onNameMenu.getTheBoolean()) {
@@ -1020,7 +1009,7 @@ public class View extends Application{
 
 						// Switch to menu 3 and set it up
 						jobPicked = "";
-						switchMenus(onJobMenu);
+						switchMenus(onJobMenu, onJobStack);
 						onJobStack.getChildren().clear();
 						Text whatJobText = makeText(nameString + ", what job do you have? Pick a Number.", defaultColor, onJobStack, Pos.TOP_CENTER, 0, 0);
 
@@ -1032,11 +1021,6 @@ public class View extends Application{
 						Text carpenterText = makeText("2. You are a carpenter", defaultColor, onJobStack, Pos.CENTER, 0, 50);
 						Text programmerText = makeText("3. You are a debt ridden  U  of A programming student", defaultColor, onJobStack, Pos.CENTER, 0, 100);
 						Text explanationText = makeText("4. Get an explanation about how your choices matter.", defaultColor, onJobStack, Pos.CENTER, 0, 150);
-
-
-						// switch to menu 3
-						root.getChildren().remove(onJobStack);
-						root.getChildren().add(onJobStack);
 
 					}
 
@@ -1060,17 +1044,15 @@ public class View extends Application{
 							}
 
 							dogNameString = "";
-							switchMenus(onPetMenu);
+							switchMenus(onPetMenu, onPetStack);
 
 							makeText("What is the name of your dog?", defaultColor, onPetStack, Pos.TOP_CENTER, 0, 0);
 
 							putScaledImage("images/annoying_dog_animation_pixel_art_by_tha_jackable-dadc6y2.png", onPetStack, Pos.CENTER, 150, 150, 0, 0);
-							root.getChildren().remove(onPetStack);
-							root.getChildren().add(onPetStack);
-
+							
 							// If the user actually wanted to go to the explanation screen.
 							if (jobPicked.equals("4")) {
-								switchMenus(onJobExplanationMenu);
+								switchMenus(onJobExplanationMenu, jobExplanationScreen);
 
 								makeText("Traveling in the hot Arizona desert requires lots of cash.", defaultColor, jobExplanationScreen, Pos.TOP_CENTER, 0, 0);
 								makeText("If you're the banker, you'll have a lot of money to buy supplies.", defaultColor, jobExplanationScreen, Pos.TOP_CENTER, 0, 50);
@@ -1079,8 +1061,6 @@ public class View extends Application{
 								makeText("However, the harder you go the more points you'll earn!", defaultColor, jobExplanationScreen, Pos.CENTER, 0, 50);
 								makeText("The banker earns the least points  while  the U of A student earns the most.", defaultColor, jobExplanationScreen, Pos.CENTER, 0, 100);
 								makeText("Press the backspace key to go back.", defaultColor, jobExplanationScreen, Pos.BOTTOM_CENTER, 0, 0);
-								root.getChildren().remove(jobExplanationScreen);
-								root.getChildren().add(jobExplanationScreen);
 							}
 						}
 					}
@@ -1093,12 +1073,10 @@ public class View extends Application{
 
 						companionNameString = "";
 						travelingCompanionNameString = "";
-						switchMenus(onCompanionMenu);
+						switchMenus(onCompanionMenu, onCompanionStack);
 
 						makeText("What is the name of your adult traveling companion?", defaultColor, onCompanionStack, Pos.TOP_CENTER, 0, 0);
 						putScaledImage("images/aol_s_running_man___pixel_edition_by_breadfries-d8aytm5.png", onCompanionStack, Pos.CENTER, 150, 150, 0,0);
-						root.getChildren().remove(onCompanionStack);
-						root.getChildren().add(onCompanionStack);
 					}
 
 					// MENU 5 -> MENU 6 TRANSITION
@@ -1108,14 +1086,12 @@ public class View extends Application{
 						controller.addFamilyMember(travelingCompanionNameString);
 
 						child1String = "";
-						switchMenus(onChild1Menu);
+						switchMenus(onChild1Menu, onChild1Stack);
 
 						makeText("What is the name of your first child?", defaultColor, onChild1Stack, Pos.TOP_CENTER, 0, 0);
 
 						//makeText("What is the name of your child traveling companion?", defaultColor, onChild1Stack, Pos.TOP_CENTER, 0, 0);
 						putScaledImage("images/child.png", onChild1Stack, Pos.CENTER, 150, 150, 0, 0);
-						root.getChildren().remove(onChild1Stack);
-						root.getChildren().add(onChild1Stack);
 					}
 
                     //MENU 6 -> MENU 7
@@ -1125,12 +1101,10 @@ public class View extends Application{
                     	controller.addFamilyMember(child1String);
 
                     	child2String = "";
-						switchMenus(onChild2Menu);
+						switchMenus(onChild2Menu, onChild2Stack);
 
 						putScaledImage("images/photo-961.png", onChild2Stack, Pos.CENTER, 150, 150, 0, 0);
 						makeText("What is the name of your second child?", defaultColor, onChild2Stack, Pos.TOP_CENTER, 0, 0);
-						root.getChildren().remove(onChild2Stack);
-						root.getChildren().add(onChild2Stack);
 					}
 
                     //MENU 7 -> 8
@@ -1140,12 +1114,10 @@ public class View extends Application{
                     	controller.addFamilyMember(child2String);
 
                     	child3String = "";
-						switchMenus(onChild3Menu);
+						switchMenus(onChild3Menu, onChild3Stack);
 
 						putScaledImage("images/girl.png", onChild3Stack, Pos.CENTER, 150, 150, 0, 0);
 						makeText("What is the name of your third child?", defaultColor, onChild3Stack, Pos.TOP_CENTER, 0, 0);
-						root.getChildren().remove(onChild3Stack);
-						root.getChildren().add(onChild3Stack);
 					}
 
 					// MENU 8 -> MENU 9 TRANSITION
@@ -1155,7 +1127,7 @@ public class View extends Application{
                     	controller.addFamilyMember(child3String);
 
                     	startingMonth = "";
-						switchMenus(onSeasonMenu);
+						switchMenus(onSeasonMenu, onSeasonStack);
 
 						makeText("It is the year 1840.", defaultColor, onSeasonStack, Pos.TOP_CENTER, 0, 0);
 						makeText("Your jumping  off point is the  town  of  Nogales  near  the  Mexican  border.", defaultColor, onSeasonStack, Pos.TOP_CENTER, 0, 50);
@@ -1167,8 +1139,6 @@ public class View extends Application{
 						makeText("3. May", defaultColor, onSeasonStack, Pos.CENTER, 0, 100);
 						makeText("4. October", defaultColor, onSeasonStack, Pos.CENTER, 0, 125);
 
-						root.getChildren().remove(onSeasonStack);
-						root.getChildren().add(onSeasonStack);
 					}
 
 					// MENU 7 -> BUYINGEXPLANATION TRANSITION
@@ -1189,40 +1159,36 @@ public class View extends Application{
 							controller.setMonth(9);
 						}
 
-						switchMenus(onBuyExplanationMenu);
+						switchMenus(onBuyExplanationMenu, buyingExplanation);
 						makeText("Before embarking on the Arizona Trail you should buy some equipment.", defaultColor, buyingExplanation, Pos.CENTER, 0, 0);
 						makeText("You have  " + controller.getMoney() + " dollars  but you don't have to spend it all here.", defaultColor, buyingExplanation, Pos.CENTER, 0, 50);
 						makeText("Press Enter to Continue", defaultColor, buyingExplanation, Pos.BOTTOM_CENTER, 0, 0);
 						putScaledImage("images/saloon.png", buyingExplanation, Pos.TOP_CENTER, 700, 200, 0, 0);
-						root.getChildren().remove(buyingExplanation);
-						root.getChildren().add(buyingExplanation);
 
 					}
 
 					// BUYINGEXPLANATION -> STARTSHOP TRANSITION
 					else if (onBuyExplanationMenu.getTheBoolean()) {
-						switchMenus(onStartShopMenu);
+						switchMenus(onStartShopMenu, startShop);
 						makeText("So, you're going on the Arizona Trail. You've come to the right place!", defaultColor, startShop, Pos.TOP_CENTER, 0, 0);
 						putScaledImage("images/merchant2.png", startShop, Pos.CENTER_LEFT, 300, 600, 0, 0);
 						makeText("You'll want bison, clothes, food, ammo, and spare parts.", defaultColor, startShop, Pos.CENTER_RIGHT, -50, -100);
 						makeText("I've got great prices, pardner, so make sure you spend a ton.", defaultColor, startShop, Pos.CENTER_RIGHT, -50, 100);
-						root.getChildren().remove(startShop);
-						root.getChildren().add(startShop);
+
 					}
 
                     //MENU 9 -> MENU 10
                     else if (onStartShopMenu.getTheBoolean()) {
 
                     	numOxenString = "";
-                        switchMenus(onShopIntroductionMenu);
+                        switchMenus(onShopIntroductionMenu, onShopIntroductionStack);
 
                         makeText("Before  heading out for the trail you should buy equipment and supplies.", defaultColor, onShopIntroductionStack, Pos.TOP_CENTER, 0, 0);
                         makeText("You have " + controller.getMoney() + " dollars.", defaultColor, onShopIntroductionStack, Pos.TOP_CENTER, 0, 50);
                         makeText("How many Oxen  would you like to buy? I recommend at least 2 Oxen.", defaultColor, onShopIntroductionStack, Pos.TOP_CENTER, 0, 100);
                         makeText("Oxen are " + controller.getCost("oxen") + " dollars.", defaultColor, onShopIntroductionStack, Pos.TOP_CENTER, 0, 150);
                         putScaledImage("images/ox.png", onShopIntroductionStack, Pos.CENTER, 150, 150, 0, 50);
-                        root.getChildren().remove(onShopIntroductionStack);
-						root.getChildren().add(onShopIntroductionStack);
+
                     }
 
 
@@ -1236,7 +1202,7 @@ public class View extends Application{
                     	// only continue is buy is valid
                     	if (validBuy) {
 	                    	poundsFoodString = "";
-	                        switchMenus(onBuyOxenMenu);
+	                        switchMenus(onBuyOxenMenu, onBuyOxenStack);
 	                        
 	                        onBuyOxenStack.getChildren().clear();
 	
@@ -1245,8 +1211,7 @@ public class View extends Application{
 	                        makeText("How many Pounds of Food would you like to buy? I recommend at least 200 lbs.", defaultColor, onBuyOxenStack, Pos.TOP_CENTER, 0, 100);
 	                        makeText("A pound of food is $" + controller.getCost("food"), defaultColor, onBuyOxenStack, Pos.TOP_CENTER, 0, 150);
 	                        putScaledImage("images/lamb.png", onBuyOxenStack, Pos.CENTER, 150, 150, 0, 50);
-	                        root.getChildren().remove(onBuyOxenStack);
-							root.getChildren().add(onBuyOxenStack);
+
                     	}
 
                     }
@@ -1259,7 +1224,7 @@ public class View extends Application{
                     	// only continue if buy is valid
                     	if (validBuy) {
 	                    	numClothingString = "";
-	                        switchMenus(onBuyFoodMenu);
+	                        switchMenus(onBuyFoodMenu, onBuyFoodStack);
 	
 	                        onBuyFoodStack.getChildren().clear();
 	
@@ -1268,8 +1233,7 @@ public class View extends Application{
 	                        makeText("How many blankets would you like to buy? I recommend at least 10 sets.", defaultColor, onBuyFoodStack, Pos.TOP_CENTER, 0, 100);
 	                        makeText("Blankets are $" + controller.getCost("blanket") + "   per set.", defaultColor, onBuyFoodStack, Pos.TOP_CENTER, 0, 150);
 	                        putScaledImage("images/blanket.jpg", onBuyFoodStack, Pos.CENTER, 150, 150, 0, 50);
-	                        root.getChildren().remove(onBuyFoodStack);
-							root.getChildren().add(onBuyFoodStack);
+
                     	}
 
                     }
@@ -1282,7 +1246,7 @@ public class View extends Application{
                     	// only continue is buy is valid
                     	if (validBuy) {
 	                    	numAmmoString = "";
-	                        switchMenus(onBuyClothesMenu);
+	                        switchMenus(onBuyClothesMenu, onBuyClothesStack);
 	                        //money -= Integer.valueOf(numClothing) * 10; //$10 per set
 	                        onBuyClothesStack.getChildren().clear();
 	                        makeText("Before heading out for the trail you should buy equipment and supplies.", defaultColor, onBuyClothesStack, Pos.TOP_CENTER, 0, 0);
@@ -1290,8 +1254,7 @@ public class View extends Application{
 	                        makeText("How many bullets would you like to buy? Bullets are good for hunting.", defaultColor, onBuyClothesStack, Pos.TOP_CENTER, 0, 100);
 	                        makeText("Bullets are $" + controller.getCost("ammo"), defaultColor, onBuyClothesStack, Pos.TOP_CENTER, 0, 150);
 	                        putScaledImage("images/bullet.png", onBuyClothesStack, Pos.CENTER, 150, 150, 0, 50);
-	                        root.getChildren().remove(onBuyClothesStack);
-							root.getChildren().add(onBuyClothesStack);
+
                     	}
                     }
 
@@ -1304,7 +1267,7 @@ public class View extends Application{
                     	if (validBuy) {
 	                    		
 	                    	gallonsWaterString = "";
-	                        switchMenus(onBuyWheelsMenu);
+	                        switchMenus(onBuyWheelsMenu, onBuyWheelsStack);
 	                        //money -= Integer.valueOf(numAmmo) * 2; //$2 per box
 	                        
 	                        onBuyWheelsStack.getChildren().clear();
@@ -1314,8 +1277,7 @@ public class View extends Application{
 	                        makeText("How many Gallons of water would you like to buy? I recommend at least 600 gallons. Water is very important for your health.", defaultColor, onBuyWheelsStack, Pos.TOP_CENTER, 0, 100);
 	                        makeText("One gallon is $" + controller.getCost("water"), defaultColor, onBuyWheelsStack, Pos.TOP_CENTER, 0, 150);
 	                        putScaledImage("images/water.png", onBuyWheelsStack, Pos.CENTER, 150, 150, 0, 50);
-	                        root.getChildren().remove(onBuyWheelsStack);
-							root.getChildren().add(onBuyWheelsStack);
+
                     	}
                     }
 
@@ -1323,8 +1285,7 @@ public class View extends Application{
                      else if (onBuyWheelsMenu.getTheBoolean()) {
                     	 if (controller.buyItem("water", Integer.valueOf(gallonsWaterString))) {
                  			buildMapScreen(root);
-                 			switchMenus(onMapMenu);
-                 			mapScreen.toFront();
+                 			switchMenus(onMapMenu, mapScreen);
                     	 }
                     	}
 
@@ -1333,7 +1294,7 @@ public class View extends Application{
                     else if (onMapMenu.getTheBoolean()) {
                     		
                             boolean validBuy = controller.buyItem("water", Integer.valueOf(gallonsWaterString));
-                    		switchMenus(onTravelingMenu);
+                    		switchMenus(onTravelingMenu, travelingMenu);
 
                     		travelingMenu.getChildren().clear();
 
@@ -1409,11 +1370,6 @@ public class View extends Application{
                     	     }
                     	     makeText("Press Enter to size up the situation", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 50);
 
-                    	     root.getChildren().remove(travelingMenu);
-     						 root.getChildren().add(travelingMenu);
-
-
-
                     }
 
                     else if (onBuyAxlesMenu.getTheBoolean()){
@@ -1424,7 +1380,7 @@ public class View extends Application{
 					// If on the traveling menu
                     else if (onTravelingMenu.getTheBoolean()) {
                     	whileTravelingChoice = "";
-                    	switchMenus(onWhileTravelingMenu);
+                    	switchMenus(onWhileTravelingMenu, whileTravelingMenu);
                     	whileTravelingMenu.getChildren().clear();
                     	makeText("You can do the following", defaultColor, whileTravelingMenu, Pos.TOP_CENTER, 0, 0);
                     	makeText("1. Continue on the trail.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, -150);
@@ -1436,9 +1392,6 @@ public class View extends Application{
                     	makeText("7. Save Game.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 150);
                     	makeText("8. Main Menu - !!!WILL NOT SAVE GAME!!!.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 200);
 
-
-                    	 root.getChildren().remove(whileTravelingMenu);
- 						 root.getChildren().add(whileTravelingMenu);
                     }
 
 					// This is for the various choices the user can pick on the whileTraveling menu
@@ -1452,7 +1405,7 @@ public class View extends Application{
                     	}
 
                     	else if (whileTravelingChoice.equals("2")) {
-                    		switchMenus(onSuppliesMenu);
+                    		switchMenus(onSuppliesMenu, suppliesMenu);
                     		suppliesMenu.getChildren().clear();
                     		makeText("You have the following supplies", defaultColor, suppliesMenu, Pos.TOP_CENTER, 0, 0);
                     		makeText("Oxen - " + controller.getItemAmount("oxen"), defaultColor, suppliesMenu, Pos.CENTER, 0, -150);
@@ -1462,22 +1415,19 @@ public class View extends Application{
                     		makeText("Gallons of Water - " + controller.getItemAmount("water"), defaultColor, suppliesMenu, Pos.CENTER, 0, -50);
                     		makeText("Press Backspace to Go Back", defaultColor, suppliesMenu, Pos.BOTTOM_CENTER, 0, 0);
 
-                    		root.getChildren().remove(suppliesMenu);
-                    		root.getChildren().add(suppliesMenu);
-
                     	}
 
                         else if (whileTravelingChoice.equals("3")) {
                     		//view map
                         	buildMapScreen(root);
-                        	switchMenus(onMapMenu);
-                        	mapScreen.toFront();
+                        	switchMenus(onMapMenu, mapScreen);
+
                     	}
 
                         else if (whileTravelingChoice.equals("4")) {
                     		//change travel pace
                         	changePace = "";
-                            switchMenus(onChangePaceMenu);
+                            switchMenus(onChangePaceMenu, changePaceMenu);
 
                             putScaledImage("images/running.gif", changePaceMenu, Pos.CENTER, 150, 150, 0, -100);
 
@@ -1489,13 +1439,12 @@ public class View extends Application{
                             makeText("5 - Grueling", defaultColor, changePaceMenu, Pos.CENTER, 0, 200);
 
                             //controller.setPace(Integer.valueOf(travelingPace) - 1);
-                            root.getChildren().remove(changePaceMenu);
-                            root.getChildren().add(changePaceMenu);
+
                     	}
 
                         else if (whileTravelingChoice.equals("5")) {
                         	changeRations = "";
-                            switchMenus(onRationsMenu);
+                            switchMenus(onRationsMenu, rationsMenu);
                             rationsMenu.getChildren().clear();
                             makeText("Change food rations", defaultColor, rationsMenu, Pos.TOP_CENTER, 0,0);
                             makeText("Change the amount of food your party can eat each day.", defaultColor, rationsMenu, Pos.TOP_CENTER, 0,50);
@@ -1518,42 +1467,34 @@ public class View extends Application{
                             //     }
                             // });
 
-                            root.getChildren().remove(rationsMenu);
-                            root.getChildren().add(rationsMenu);
                     	}
 
                     	// chose hunting game
                     	else if (whileTravelingChoice.equals("6")) {
-                    		switchMenus(onHuntingExplanationMenu);
+                    		switchMenus(onHuntingExplanationMenu, huntingExplanationMenu);
                     		makeText("You will now hunt the Coues. These are Arizona's very own deer!", defaultColor, huntingExplanationMenu, Pos.TOP_CENTER, 0, 0);
                     		makeText("Press space to shoot. When you shoot you will lose 1 bullet.", defaultColor, huntingExplanationMenu, Pos.TOP_CENTER, 0, 25);
                     		putScaledImage("images/coues.jpg", huntingExplanationMenu, Pos.CENTER, 300, 300, 0, 0);
                     		makeText("When you're done hunting press the Escape key.", defaultColor, huntingExplanationMenu, Pos.BOTTOM_CENTER, 0, 0);
-                    		root.getChildren().remove(huntingExplanationMenu);
-                    		root.getChildren().add(huntingExplanationMenu);
                     	}
 
                         else if (whileTravelingChoice.equals("7")) {
                     		//save game
-                            switchMenus(onSavedGameMenu);
+                            switchMenus(onSavedGameMenu, savedGameMenu);
 
                             makeText("Your Game Was Saved!", defaultColor, savedGameMenu, Pos.TOP_CENTER, 0,50);
                             putScaledImage("images/save_game.jpg", savedGameMenu, Pos.CENTER, 300, 600, 0, 50);
                             makeText("Press Enter to continue.", defaultColor, savedGameMenu, Pos.BOTTOM_CENTER, 0,0);
 
-                            root.getChildren().remove(savedGameMenu);
-                            root.getChildren().add(savedGameMenu);
-
                     	}
+                    	
                         else if (whileTravelingChoice.equals("8")) {
-                        	switchMenus(onMainMenu);
-                        	mainMenu.toFront();
+                        	switchMenus(onMainMenu, mainMenu);
                         }
                     }
 					
                     else if (onHuntingExplanationMenu.getTheBoolean()) {
                 		try {
-                			switchMenus(onHuntingMenu);
 							HuntingGame huntingGame = new HuntingGame();
 							huntingGame.setBullets(controller.getItemAmount("ammo"));
 							int originalNumBullets = huntingGame.getBullets();
@@ -1604,7 +1545,7 @@ public class View extends Application{
                     else if (onTubacTransitionMenu.getTheBoolean()) {
                     	allShoppingChoice = "";
                     	tubacShopChoiceString = "";
-                    	switchMenus(onTubacShopMenu);
+                    	switchMenus(onTubacShopMenu, tubacShopMenu);
 
                     	// Fill each town's store with items
                     	// make a store and then fill it up with its times
@@ -1622,16 +1563,12 @@ public class View extends Application{
                     	makeText("4. Buy Ammo", defaultColor, tubacShopMenu, Pos.CENTER, 0, 100);
                     	makeText("5. Leave store and continue on Arizona Trail", defaultColor, tubacShopMenu, Pos.CENTER, 0, 125);
 
-
-                    	root.getChildren().remove(tubacShopMenu);
-                    	root.getChildren().add(tubacShopMenu);
-
                     }
 
                     else if (onTucsonTransitionMenu.getTheBoolean()) {
                     	allShoppingChoice = "";
                     	tucsonShopChoiceString = "";
-                    	switchMenus(onTucsonShopMenu);
+                    	switchMenus(onTucsonShopMenu, tucsonShopMenu);
 
                     	// Fill each town's store with items
                     	// make a store and then fill it up with its times
@@ -1649,16 +1586,12 @@ public class View extends Application{
                     	makeText("4. Buy Ammo", defaultColor, tucsonShopMenu, Pos.CENTER, 0, 100);
                     	makeText("5. Leave store and continue on Arizona Trail", defaultColor, tucsonShopMenu, Pos.CENTER, 0, 125);
 
-
-                    	root.getChildren().remove(tucsonShopMenu);
-                    	root.getChildren().add(tucsonShopMenu);
-
                     }
 
                     else if (onPicachoTransitionMenu.getTheBoolean()) {
                     	allShoppingChoice = "";
                     	picachoShopChoice = "";
-                    	switchMenus(onPicachoShopMenu);
+                    	switchMenus(onPicachoShopMenu, picachoShopMenu);
 
                     	// Fill each town's store with items
                     	// make a store and then fill it up with its times
@@ -1677,15 +1610,12 @@ public class View extends Application{
                     	makeText("5. Leave store and continue on Arizona Trail", defaultColor, picachoShopMenu, Pos.CENTER, 0, 125);
 
 
-                    	root.getChildren().remove(picachoShopMenu);
-                    	root.getChildren().add(picachoShopMenu);
-
                     }
 
                     else if (onPhoenixTransitionMenu.getTheBoolean()) {
                     	allShoppingChoice = "";
                     	phoenixShopChoice = "";
-                    	switchMenus(onPhoenixShopMenu);
+                    	switchMenus(onPhoenixShopMenu, phoenixShopMenu);
 
                     	// Fill each town's store with items
                     	// make a store and then fill it up with its times
@@ -1712,7 +1642,7 @@ public class View extends Application{
                     else if (onPrescottTransitionMenu.getTheBoolean()) {
                     	allShoppingChoice = "";
                     	prescottShopChoice = "";
-                    	switchMenus(onPrescottShopMenu);
+                    	switchMenus(onPrescottShopMenu, prescottShopMenu);
 
                     	// Fill each town's store with items
                     	// make a store and then fill it up with its times
@@ -1730,15 +1660,12 @@ public class View extends Application{
                     	makeText("4. Buy Ammo", defaultColor, prescottShopMenu, Pos.CENTER, 0, 100);
                     	makeText("5. Leave store and continue on Arizona Trail", defaultColor, prescottShopMenu, Pos.CENTER, 0, 125);
 
-
-                    	root.getChildren().remove(prescottShopMenu);
-                    	root.getChildren().add(prescottShopMenu);
                     }
 
                     else if (onFlagstaffTransitionMenu.getTheBoolean()) {
                     	allShoppingChoice = "";
                     	flagstaffShopChoice = "";
-                    	switchMenus(onFlagstaffShopMenu);
+                    	switchMenus(onFlagstaffShopMenu, flagstaffShopMenu);
 
                     	// Fill each town's store with items
                     	// make a store and then fill it up with its times
@@ -1756,15 +1683,12 @@ public class View extends Application{
                     	makeText("4. Buy Ammo", defaultColor, flagstaffShopMenu, Pos.CENTER, 0, 100);
                     	makeText("5. Leave store and continue on Arizona Trail", defaultColor, flagstaffShopMenu, Pos.CENTER, 0, 125);
 
-
-                    	root.getChildren().remove(flagstaffShopMenu);
-                    	root.getChildren().add(flagstaffShopMenu);
                     }
 
                     else if (onGrandCanyonTransitionMenu.getTheBoolean()) {
                     	allShoppingChoice = "";
                     	grandCanyonShopChoice = "";
-                    	switchMenus(onGrandCanyonShopMenu);
+                    	switchMenus(onGrandCanyonShopMenu, grandCanyonShopMenu);
 
                     	// Fill each town's store with items
                     	// make a store and then fill it up with its times
@@ -1782,16 +1706,11 @@ public class View extends Application{
                     	makeText("4. Buy Ammo", defaultColor, grandCanyonShopMenu, Pos.CENTER, 0, 100);
                     	makeText("5. Leave store and continue on Arizona Trail", defaultColor, grandCanyonShopMenu, Pos.CENTER, 0, 125);
 
-
-                    	root.getChildren().remove(grandCanyonShopMenu);
-                    	root.getChildren().add(grandCanyonShopMenu);
-
                     }
 					
 					// enter to go back from map to traveling menu
                     else if(onMapMenu.getTheBoolean()) {
-                    	switchMenus(onWhileTravelingMenu);
-                    	whileTravelingMenu.toFront();
+                    	switchMenus(onWhileTravelingMenu, whileTravelingMenu);
 			        }
 
 					// hit enter on shop menu
@@ -2099,13 +2018,11 @@ public class View extends Application{
                     	}
                     	
                     	else {
-                    		switchMenus(onGameOverMenu);
+                    		switchMenus(onGameOverMenu, gameOverMenu);
                     		makeText("Game over. Everyone died.", defaultColor, gameOverMenu, Pos.TOP_CENTER, 0, 0);
                     		makeText(String.format("You earned %d points.", controller.getScore()), defaultColor, gameOverMenu, Pos.TOP_CENTER, 0, 50);
                     		makeText("Press ENTER to return to Main Menu", defaultColor, gameOverMenu, Pos.BOTTOM_CENTER, 0, 0);
                     		putScaledImage("images/death.jpg", gameOverMenu, Pos.CENTER, 300, 300, 0, 0);
-                    		root.getChildren().remove(gameOverMenu);
-                    		root.getChildren().add(gameOverMenu);
                     	}
                     }
 					
@@ -2115,13 +2032,11 @@ public class View extends Application{
                     	}
                     	
                     	else {
-                    		switchMenus(onGameOverMenu);
+                    		switchMenus(onGameOverMenu, gameOverMenu);
                     		makeText("Game over. Everyone died.", defaultColor, gameOverMenu, Pos.TOP_CENTER, 0, 0);
                     		makeText(String.format("You earned %d points.", controller.getScore()), defaultColor, gameOverMenu, Pos.TOP_CENTER, 0, 50);
                     		makeText("Press ENTER to return to Main Menu", defaultColor, gameOverMenu, Pos.BOTTOM_CENTER, 0, 0);
                     		putScaledImage("images/death.jpg", gameOverMenu, Pos.CENTER, 300, 300, 0, 0);
-                    		root.getChildren().remove(gameOverMenu);
-                    		root.getChildren().add(gameOverMenu);
                     	}
                     }
 					
@@ -2131,13 +2046,11 @@ public class View extends Application{
                     	}
                     	
                     	else {
-                    		switchMenus(onGameOverMenu);
+                    		switchMenus(onGameOverMenu, gameOverMenu);
                     		makeText("Game over. Everyone died.", defaultColor, gameOverMenu, Pos.TOP_CENTER, 0, 0);
                     		makeText(String.format("You earned %d points.", controller.getScore()), defaultColor, gameOverMenu, Pos.TOP_CENTER, 0, 50);
                     		makeText("Press ENTER to return to Main Menu", defaultColor, gameOverMenu, Pos.BOTTOM_CENTER, 0, 0);
                     		putScaledImage("images/death.jpg", gameOverMenu, Pos.CENTER, 300, 300, 0, 0);
-                    		root.getChildren().remove(gameOverMenu);
-                    		root.getChildren().add(gameOverMenu);
                     	}
                     }
 				}
@@ -2161,9 +2074,7 @@ public class View extends Application{
 				else if (onJobExplanationMenu.getTheBoolean()) {
 					if (keyEvent.getCharacter().equals("\b")) {
 						jobPicked = "";
-						switchMenus(onJobMenu);
-						root.getChildren().remove(onJobStack);
-						root.getChildren().add(onJobStack);
+						switchMenus(onJobMenu, onJobStack);
 					}
 				}
 
