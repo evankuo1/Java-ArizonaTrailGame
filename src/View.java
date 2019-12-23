@@ -345,7 +345,7 @@ public class View extends Application{
 		// Set up song and play it.
 		try {
 			// Default uses mp3
-			Media titleSong = new Media(new File("titletheme.mp3").toURI().toString());
+			Media titleSong = new Media(new File("music/titletheme.mp3").toURI().toString());
 			playSong = new MediaPlayer(titleSong);
 			playSong.setCycleCount(MediaPlayer.INDEFINITE);
 			playSong.play();
@@ -354,7 +354,7 @@ public class View extends Application{
 		// For Micheal's PC
 		catch (Exception e) {
 			// Use wav if mp3 doesn't work
-			Media titleSong = new Media(new File("titletheme.wav").toURI().toString());
+			Media titleSong = new Media(new File("music/titletheme.wav").toURI().toString());
 			playSong = new MediaPlayer(titleSong);
 			playSong.setCycleCount(MediaPlayer.INDEFINITE);
 			playSong.play();
