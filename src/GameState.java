@@ -1,10 +1,7 @@
 /**
  * GameState
  * Model
- *
- *
  * @author John Yang
- *
  */
 
 import java.util.*;
@@ -528,13 +525,7 @@ public class GameState implements Serializable{
     }
 
     public void loadSavedGame(File filename){
-        //create new board object from saved game data
-        //set current board to new board
-        //Family tempFam = new Family();
-        //Inventory tempInv = new Inventory();
-        //ArrayList<Location> tempVisited = new ArrayList<Location>();
-        //ArrayList<Location> tempNotVisited = new ArrayList<Location>();
-
+    	
         try{
             FileInputStream fileInStream = new FileInputStream(filename);
             ObjectInputStream objInStream = new ObjectInputStream(fileInStream);
@@ -553,32 +544,24 @@ public class GameState implements Serializable{
             notVisitedLocations = (ArrayList<Location>)objInStream.readObject();
             weather = (Weather)objInStream.readObject();
             currCalendar = (Calendar)objInStream.readObject();
-        }catch(FileNotFoundException fnf){
+        }
+        
+        catch(FileNotFoundException fnf){
             System.err.println("File not found.");
-        }catch(ClassNotFoundException cnf){
+        }
+        
+        catch(ClassNotFoundException cnf){
             System.err.println("Class not found");
-        }catch(IOException ioe){
+        }
+        
+        catch(IOException ioe){
             System.err.println(ioe);
             System.out.println("here");
             Thread.currentThread().getStackTrace();
         }
-
-        for(int i = 0; i < 7;i ++){
-            for(int j = 0; j < 6; j++){
-                // Connect4MoveMessage mess = new Connect4MoveMessage();
-                // if(board[i][j] == 0){
-                //     mess.setColor(Color.WHITE);
-                // } else if(board[i][j] == 1){
-                //     mess.setColor(Color.YELLOW);
-                // } else{
-                //     mess.setColor(Color.RED);
-                // }
-                // mess.setRow(j);
-                // mess.setColumn(i);
-                // setChanged();
-        		// notifyObservers(mess);
-            }
+        
+        catch(Exception e) {
+        	e.printStackTrace();
         }
     }
-
 }

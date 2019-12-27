@@ -786,6 +786,7 @@ public class View extends Application{
 			Media titleSong = new Media(new File("music/titletheme.mp3").toURI().toString());
 			playSong = new MediaPlayer(titleSong);
 			playSong.setCycleCount(MediaPlayer.INDEFINITE);
+			playSong.setVolume(0.35);
 			playSong.play();
 		}
 		catch (Exception e) {
@@ -793,6 +794,7 @@ public class View extends Application{
 			Media titleSong = new Media(new File("music/titletheme.wav").toURI().toString());
 			playSong = new MediaPlayer(titleSong);
 			playSong.setCycleCount(MediaPlayer.INDEFINITE);
+			playSong.setVolume(0.35);
 			playSong.play();
 		}
 		
@@ -2118,16 +2120,27 @@ public class View extends Application{
 		});
 
         primaryStage.setOnCloseRequest((WindowClosing) -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Exit Game");
-            alert.setHeaderText("Save game before exiting?");
-            //alert.setContentText("Are you ok with this?");
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
+        	if (!onMainMenu.getTheBoolean() && !onNameMenu.getTheBoolean()) {
+	            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+	            alert.setTitle("Exit Game");
+	            alert.setHeaderText("Save game before exiting?");
+	
                 //user clicks OK
-                controller.saveGame(save_game_file);
-            }
+	            Optional<ButtonType> result = alert.showAndWait();
+	            if (result.get() == ButtonType.OK){
+	                controller.saveGame(save_game_file);
+	            }
+        	}
+        	
+        	else {
+	            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+	            alert.setTitle("Exit Game");
+	            alert.setHeaderText("Are you sure you want to exit?");
+	            Optional<ButtonType> result = alert.showAndWait();
+	            if (result.get() == ButtonType.OK){
+	            	// do nothing. just exit
+	            }
+        	}
         });
 	}
 

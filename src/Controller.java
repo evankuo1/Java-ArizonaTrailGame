@@ -1,10 +1,9 @@
 /**
  * Controller
- *
- * @author John Yang
- *
+ * @author John Yang. Edited by Evan Kuo
  */
 
+// Imports
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
@@ -12,6 +11,8 @@ import java.io.File;
 import javafx.scene.paint.Color;
 
 public class Controller {
+	
+	// Generate a Gamestate object, which is the model of our MVC model
 	GameState currGame;
 
 	// Set up inventory
@@ -21,12 +22,14 @@ public class Controller {
 	Item food = new Item("food", .5, 0);
 	Item blanket = new Item("blanket", 10, 0);
 
+	
+	// The constructor
 	public Controller() {
+		
 		currGame = new GameState(Calendar.JUNE);
 
 		// Let controller know about items
 		currGame.addItem(oxen);
-
 		currGame.addItem(ammo);
 		currGame.addItem(food);
 		currGame.addItem(blanket);
@@ -35,101 +38,88 @@ public class Controller {
 		this.chooseNearestDestination();
 	}
 
-	// getHealth()
-	// getInventory()
-	// useItem(String name)
-
+	// Get the current location as a string
 	public String getCurrLocation() {
 		return currGame.getCurrLocation().getName();
 	}
 	
+	// Get the current location as an object
 	public Location getCurrLocationObj() {
 		return currGame.getCurrLocation();
 	}
 	
+	// Get the current destination
 	public Location getCurrDestination() {
 		return currGame.getDestination();
 	}
 	
+	// Get all of the locations in a list
 	public Location[] getAllLocations(){
 		return currGame.getAllLocations();
 	}
 
-	/**
-	 * !!!!!!!!!!!unfinished
-	 * @return
-	 */
+	// NOT IMPLEMENTED YET
 	public String[] getXNearestLocations(int i) {
 		// search through notVisitedLocations for nearest i locations
 		return null;
 	}
 
-	// months start from 0
+	// Sets the current month to the month chosen
 	public void setMonth(int month) {
 		currGame.setCurrMonth(month);
 	}
 
+	// Gets the day the game is currently in
 	public String getFullDate() {
 		return currGame.getDateMMMMDDYYYY();
 	}
  
+	// Adds food to the player inventory
 	public void addHuntingFood(int amount) {
 		currGame.incrItemBy("food", amount);
 	}
 
+	// Uses a given amount of the specified item
 	public void useItemAmount(String item, int amount) {
 		currGame.useItemMultipleTimes(item, amount);
 	}
 
+	// Returns the health of the family
 	public String getFamilyStatus() {
 		return currGame.getFamilyStatus();
 	}
 
-
-	// generateEvent()
-
+	// Returns the current weather (snow, rain, sunny, etc) as a String
 	public String getWeather() {
-		// returns the current weather (snow, rain, sunny, etc) as a String
 		return currGame.getWeatherConditions();
 	}
 
-	@Deprecated
-	public String[] getWeatherArray() {
-		return new String[]{"Sunny", "Windy"};
-	}
-
-	/**
-	 *
-	 *
-	 * @return
-	 */
+	// Returns the state of the ground (grassy, snowy, bare, etc)
 	public Color getGround() {
 		return currGame.getGround();
 	}
 	
+	// Returns the number of miles from one location to another
 	public double calcMiles(Location from, Location to) {
 		return currGame.calcMiles(from, to);
 	}
 
-	/**
-	 * will modify to only show nearest X locations
-	 *
-	 * @return
-	 */
+	// Gets the destinations that haven't been visited yet
 	public String[] getDestinations() {
 		ArrayList<Location> locations = currGame.getNotVisitedLocations();
 		String[] destinations = new String[locations.size()];
 		for (int i = 0; i < locations.size(); i++) {
 			destinations[i] = locations.get(i).getName();
 		}
-
 		return destinations;
 	}
 	
+	// Gets the locations visited so far
 	public ArrayList<Location> getVisitedLocations() {
 		return currGame.getVisitedLocations();
 	}
 
+	// Gets the nearest unvisited location
 	public void chooseNearestDestination() {
 		ArrayList<Location> locations = currGame.getNotVisitedLocations();
 
@@ -146,37 +136,12 @@ public class Controller {
 				bestDestination = l;
 			}
 		}
-
 		this.chooseDestination(bestDestination.getName());
 	}
 
-	/**
-	 * choose the destination as a string
-	 *
-	 * @param name
-	 */
+	// Choose the destination as a string
 	public void chooseDestination(String name) {
 		currGame.setDestination(name);
-	}
-
-	/**
-	 * rounds actual distance up
-	 *
-	 * @return
-	 */
-	@Deprecated
-	public int nextLandmarkXMilesAway() {
-		// returns an int describing how far away the next landmark is
-		return (int) Math.ceil(currGame.getDistanceToDestination());
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	@Deprecated
-	public double nextLandmarkXMilesAwayDouble() {
-		return currGame.getDistanceToDestination();
 	}
 
 	/**
@@ -404,6 +369,7 @@ public class Controller {
 		if (this.getFamilyDead()) {
 			score = 500;
 		}
+		
 		else if (endingHealth.equals("Poor")) {
 			score = 1000;
 		}
@@ -452,13 +418,4 @@ public class Controller {
     	}
     	return false;
     }
-
-    // public void eatRations(int type){
-    //     if(type == 1){
-    //         currGame.incPartyHealth(20);
-    //     } else {
-    //         currGame.incPartyHealth(10);
-    //     }
-    // }
-
 }
