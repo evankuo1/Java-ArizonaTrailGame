@@ -61,6 +61,10 @@ public class View extends Application{
 	Person mainCharacter;											// Put all of the various people/inventory objects here
 	static Color defaultColor = Color.WHITE;						// the color for the text
 	
+	// Put up here so we can resize the screen
+	Image trail;
+	GraphicsContext gc;
+	Canvas canvas;
 	
 	/* The Screens */
 	
@@ -287,13 +291,14 @@ public class View extends Application{
 		Text theText = new Text(aString);
 		
 		// Set its font and color
-		theText.setFont(new Font("ArcadeClassic", 24));
+		theText.setFont(new Font("Press Start", 16));
 		theText.setFill(aColor);
 		
 		// Add it to the menu and put it in the right spot
 		menu.getChildren().add(theText);
 		theText.setTranslateX(translateX);
 		theText.setTranslateY(translateY);
+		
 		
 		// Put it on the stackpane
 		StackPane.setAlignment(theText, position);
@@ -662,13 +667,13 @@ public class View extends Application{
 	    final Animation animation = new WagonAnimation(imageView, Duration.millis(1000), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
 	    animation.setCycleCount(Animation.INDEFINITE);
 	    animation.play();
-	    Rectangle sky = new Rectangle(1000,300,Color.SKYBLUE);
-	    Rectangle ground = new Rectangle(1000,500,Color.DARKGOLDENROD);
+	    Rectangle sky = new Rectangle(canvas.getWidth(),300,Color.SKYBLUE);
+	    Rectangle ground = new Rectangle(canvas.getWidth(),500,Color.DARKGOLDENROD);
 		sky.setY(-100);
 		ground.setY(200);
-	    ImageView layer3 = new ImageView(new Image("Layer3.png",1000,100,false,false));
+	    ImageView layer3 = new ImageView(new Image("Layer3.png",canvas.getWidth(),100,false,false));
 
-	    ImageView layer3a = new ImageView(new Image("Layer3.png",1000,100,false,false));
+	    ImageView layer3a = new ImageView(new Image("Layer3.png",canvas.getWidth(),100,false,false));
 		Pane background = new Pane();
 
 		background.getChildren().addAll(ground,sky,layer3,layer3a);
@@ -765,13 +770,6 @@ public class View extends Application{
     
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
-		// Setup canvas and gc to draw the main menu background image
-		Canvas canvas = new Canvas(1000,500);
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		mainMenu.getChildren().add(canvas);
-        Image trail = new Image(new File("images/oregonTrailBackground.jpg").toURI().toString(), 1000, 500, false, false);
-		gc.drawImage(trail, 0, 0);
 		
 		// Setup scene and show it.
 		Scene scene = new Scene(root);
@@ -779,6 +777,13 @@ public class View extends Application{
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("The Arizona Trail");
 		primaryStage.show();
+		
+		// Setup canvas and gc to draw the main menu background image
+		canvas = new Canvas(1000,500);
+		gc = canvas.getGraphicsContext2D();
+		mainMenu.getChildren().add(canvas);
+        trail = new Image(new File("images/oregonTrailBackground.jpg").toURI().toString(), 1000, 500, false, false);
+		gc.drawImage(trail, 0, 0);
 		
 		// Set up song and play it.
 		try {
@@ -799,8 +804,9 @@ public class View extends Application{
 		}
 		
         // Create title text
-		Text titleText = new Text("The  Arizona  Trail");
-		titleText.setFont(new Font("ArcadeClassic", 100));
+		Text titleText = new Text("The Arizona Trail");
+		titleText.setFont(new Font("Press Start", 50));
+		titleText.setTranslateY(50);
 		StackPane.setAlignment(titleText, Pos.TOP_CENTER);
 		mainMenu.getChildren().add(titleText);
 		
@@ -857,6 +863,29 @@ public class View extends Application{
         
 		// Go to main menu
 		switchMenus(onMainMenu, mainMenu);
+		
+		// Add listeners to see if the screen size changes
+		// Width changes 
+		primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
+			canvas.setWidth(primaryStage.getWidth());
+			canvas.setHeight(primaryStage.getHeight());
+	        trail = new Image(new File("images/oregonTrailBackground.jpg").toURI().toString(), primaryStage.getWidth(), primaryStage.getHeight(), false, false);
+	        gc.drawImage(trail, 0, 0);
+			if (onTravelingMenu.getTheBoolean()) {
+				redrawTravelingMenu(root, travelingMenu);
+			}
+		});
+
+		// Height changes
+		primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
+			canvas.setWidth(primaryStage.getWidth());
+			canvas.setHeight(primaryStage.getHeight());
+			trail = new Image(new File("images/oregonTrailBackground.jpg").toURI().toString(), primaryStage.getWidth(), primaryStage.getHeight(), false, false);
+			gc.drawImage(trail, 0, 0);
+			if (onTravelingMenu.getTheBoolean()) {
+				redrawTravelingMenu(root, travelingMenu);
+			}
+		});
 		
 		// User presses Space
 		scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
@@ -1019,7 +1048,7 @@ public class View extends Application{
 			public void handle(KeyEvent keyEvent) {
 				
 				if (keyEvent.getCode() == KeyCode.ENTER) {
-					
+			
 					// Gameover -> mainMenu
 					if (onGameOverMenu.getTheBoolean()) {
 						switchMenus(onMainMenu, mainMenu);
@@ -1323,14 +1352,14 @@ public class View extends Application{
                     	switchMenus(onWhileTravelingMenu, whileTravelingMenu);
                     	whileTravelingMenu.getChildren().clear();
                     	makeText("You can do the following", defaultColor, whileTravelingMenu, Pos.TOP_CENTER, 0, 0);
-                    	makeText("1. Continue on the trail.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, -150);
-                    	makeText("2. Check your supplies.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, -100);
-                    	makeText("3. Look at the map.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, -50);
-                    	makeText("4. Change pace.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 0);
-                    	makeText("5. Change food rations.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 50);
-                    	makeText("6. Hunt for food.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 100);
-                    	makeText("7. Save Game.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 150);
-                    	makeText("8. Main Menu - WILL NOT SAVE GAME!.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 200);
+                    	makeText("1. Continue on the trail.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, -175);
+                    	makeText("2. Check your supplies.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, -125);
+                    	makeText("3. Look at the map.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, -75);
+                    	makeText("4. Change pace.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, -25);
+                    	makeText("5. Change food rations.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 25);
+                    	makeText("6. Hunt for food.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 75);
+                    	makeText("7. Save Game.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 125);
+                    	makeText("8. Main Menu - WILL NOT SAVE GAME!.", defaultColor, whileTravelingMenu, Pos.CENTER, 0, 175);
                     }
 
 					// This is for the various choices the user can pick on the whileTraveling menu

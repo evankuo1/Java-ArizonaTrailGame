@@ -1,14 +1,14 @@
 
 @font-face {
-    font-family: 'ArcadeClassic';
-    src: url('ARCADECLASSIC.TTF');
+    font-family: 'Press Start';
+    src: url('prstart.ttf');
 }
 
 .label {
-    -fx-font-family: 'ARCADECLASSIC';
+    -fx-font-family: 'Press Start';
     -fx-font-size: 50;
 }
 
 .button .text {
-    -fx-font-family: 'ARCADECLASSIC';
+    -fx-font-family: 'Press Start';
 }
