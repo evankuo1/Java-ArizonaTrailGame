@@ -772,7 +772,7 @@ public class View extends Application{
 		
 		// Setup scene and show it.
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/fontstyle.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("fontstyle.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("The Arizona Trail");
 		primaryStage.setWidth(1130);
@@ -2147,8 +2147,17 @@ public class View extends Application{
 			}
 		});
 
+		// If the user clicks the exit
         primaryStage.setOnCloseRequest((WindowClosing) -> {
-        	if (!onMainMenu.getTheBoolean() && !onNameMenu.getTheBoolean()) {
+        	
+        	// If the user has gotten through character creation, ask to save
+        	if (!onMainMenu.getTheBoolean() && !onNameMenu.getTheBoolean() && !onJobMenu.getTheBoolean()
+        		&& ! onPetMenu.getTheBoolean() && !onCompanionMenu.getTheBoolean() && !onChild1Menu.getTheBoolean()
+        		&& !onChild2Menu.getTheBoolean() && !onChild3Menu.getTheBoolean() && !onSeasonMenu.getTheBoolean()
+        		&& !onShopIntroductionMenu.getTheBoolean() && !onShopIntroductionMenu.getTheBoolean() && !onBuyOxenMenu.getTheBoolean()
+        		&& !onBuyFoodMenu.getTheBoolean() && !onBuyClothesMenu.getTheBoolean() && !onBuyWheelsMenu.getTheBoolean()
+        		&& !onBuyAxlesMenu.getTheBoolean() && !onJobExplanationMenu.getTheBoolean() && !onBuyExplanationMenu.getTheBoolean()
+        		&& !onStartShopMenu.getTheBoolean()) {
 	            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 	            alert.setTitle("Exit Game");
 	            alert.setHeaderText("Save game before exiting?");
@@ -2160,6 +2169,7 @@ public class View extends Application{
 	            }
         	}
         	
+        	// If the user hasn't gotten through character creation, then ask to exit
         	else {
 	            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 	            alert.setTitle("Exit Game");
@@ -2167,6 +2177,9 @@ public class View extends Application{
 	            Optional<ButtonType> result = alert.showAndWait();
 	            if (result.get() == ButtonType.OK){
 	            	// do nothing. just exit
+	            }
+	            if (result.get() == ButtonType.CANCEL) {
+	            	WindowClosing.consume();
 	            }
         	}
         });
