@@ -697,14 +697,14 @@ public class View extends Application{
 		travelingMenu.getChildren().add(background);
 	    travelingMenu.getChildren().add(imageView);
 
-	    makeText("Travel Speed - " + controller.getPaceName(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -200);
-	    makeText("Date - " + controller.getFullDate(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -175);
-	    makeText("Weather - " + controller.getWeather(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -150);
-	    makeText("Health - " + controller.getFamilyStatus(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -125);
-	    makeText("Food - " + controller.getItemAmount("food"), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -100);
-        makeText("Water - " + controller.getItemAmount("water"), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -75);
-	    makeText("Next Landmark - " + controller.nextLandmarkXMilesAwayString(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -50);
-	    makeText("Miles Traveled - " + controller.totalMilesTraveledString(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -25);
+	    makeText("Travel Speed - " + controller.getPaceName(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -175);
+	    makeText("Date - " + controller.getFullDate(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -150);
+	    makeText("Weather - " + controller.getWeather(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -125);
+	    makeText("Health - " + controller.getFamilyStatus(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -100);
+	    makeText("Food - " + controller.getItemAmount("food"), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -75);
+        makeText("Water - " + controller.getItemAmount("water"), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -50);
+	    makeText("Next Landmark - " + controller.nextLandmarkXMilesAwayString(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, -25);
+	    makeText("Miles Traveled - " + controller.totalMilesTraveledString(), defaultColor, travelingMenu, Pos.BOTTOM_CENTER, 0, 0);
 	    if (controller.getPace() == 0) {
 	    	makeText("Press Space  to  Rest", defaultColor, travelingMenu, Pos.TOP_CENTER, 0, 0);
 	    }
@@ -876,7 +876,7 @@ public class View extends Application{
 			        	putScaledImage("images/thMRQA2QMB.jpg", onNameStack, Pos.CENTER, 800, 300, 0, 0);
 	
 			        	// Ask the user for a name. 
-			        	Text askForNameText = makeText("What's your name?", defaultColor, onNameStack, Pos.CENTER, 0, 200);
+			        	Text askForNameText = makeText("What's your name?", defaultColor, onNameStack, Pos.CENTER, 0, 175);
 	
 			        	// Have this menu be displayed at the top.
 				    	switchMenus(onNameMenu, onNameStack);
@@ -1935,10 +1935,8 @@ public class View extends Application{
 					
 					// load previous save
                     else if (onMainMenu.getTheBoolean()) {
-
                         controller.loadGame(save_game_file);
-                        redrawTravelingMenu(root, travelingMenu);
-                            
+                        redrawTravelingMenu(root, travelingMenu);    
                     }
 					
                     else if (onDeathScreenMenu.getTheBoolean()) {

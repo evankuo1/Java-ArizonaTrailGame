@@ -15,12 +15,7 @@ public class WagonAnimation extends Transition {
 
     private int lastIndex;
 
-    public WagonAnimation(
-            ImageView imageView, 
-            Duration duration, 
-            int count,   int columns,
-            int offsetX, int offsetY,
-            int width,   int height) {
+    public WagonAnimation(ImageView imageView, Duration duration, int count, int columns, int offsetX, int offsetY, int width, int height) {
         this.imageView = imageView;
         this.count     = count;
         this.columns   = columns;
@@ -31,9 +26,9 @@ public class WagonAnimation extends Transition {
         setCycleDuration(duration);
         setInterpolator(Interpolator.LINEAR);
     }
+    
 	@Override
 	protected void interpolate(double arg0) {
-		// TODO Auto-generated method stub
 		final int index = Math.min((int) Math.floor(arg0 * count), count - 1);
         if (index != lastIndex) {
             final int x = (index % columns) * width  + offsetX;
