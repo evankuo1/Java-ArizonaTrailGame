@@ -672,7 +672,6 @@ public class View extends Application{
 		sky.setY(-100);
 		ground.setY(200);
 	    ImageView layer3 = new ImageView(new Image("Layer3.png",canvas.getWidth(),100,false,false));
-
 	    ImageView layer3a = new ImageView(new Image("Layer3.png",canvas.getWidth(),100,false,false));
 		Pane background = new Pane();
 
