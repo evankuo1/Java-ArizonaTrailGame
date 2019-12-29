@@ -776,13 +776,15 @@ public class View extends Application{
 		scene.getStylesheets().add(getClass().getResource("/fontstyle.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("The Arizona Trail");
+		primaryStage.setWidth(1130);
+		primaryStage.setHeight(500);
 		primaryStage.show();
 		
 		// Setup canvas and gc to draw the main menu background image
-		canvas = new Canvas(1000,500);
+		canvas = new Canvas(1130,500);
 		gc = canvas.getGraphicsContext2D();
 		mainMenu.getChildren().add(canvas);
-        trail = new Image(new File("images/oregonTrailBackground.jpg").toURI().toString(), 1000, 500, false, false);
+        trail = new Image(new File("images/oregonTrailBackground.jpg").toURI().toString(), 1130, 500, false, false);
 		gc.drawImage(trail, 0, 0);
 		
 		// Set up song and play it.
