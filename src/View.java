@@ -785,7 +785,7 @@ public class View extends Application{
 		gc = canvas.getGraphicsContext2D();
 		mainMenu.getChildren().add(canvas);
         trail = new Image(new File("images/oregonTrailBackground.jpg").toURI().toString(), 1130, 500, false, false);
-		gc.drawImage(trail, 0, 0);
+		gc.drawImage(trail, 0, 0); 
 		
 		// Set up song and play it.
 		try {
